@@ -1,0 +1,24 @@
+{
+  "name": "so-pizza",
+  "version": "0.1.0",
+  "description": "Só Pizza web application",
+  "main": "server.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "^3.8.8"
+  },
+  "scripts": {
+    "start": "node server.js --harmony",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com"
+  },
+  "keywords": [
+    "pizza"
+  ],
+  "author": "Só Pizza",
+  "license": "ISC"
+}
