@@ -1,6 +1,5 @@
 'use strict';
 
-var argv       = require('yargs').argv;
 var gulp       = require('gulp');
 var gulpif     = require('gulp-if');
 var concat     = require('gulp-concat');
@@ -9,6 +8,9 @@ var sourcemaps = require('gulp-sourcemaps');
 var ngAnnotate = require('gulp-ng-annotate');
 var symlink    = require('gulp-symlink');
 var uglify     = require('gulp-uglify');
+var argv       = require('yargs')
+                  .alias('p', 'production')
+                  .argv;
 
 gulp.task('default', function() {
   // place code for your default task here
