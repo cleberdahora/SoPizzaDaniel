@@ -19,7 +19,7 @@ gulp.task('default', function() {
 
 gulp.task('js', function() {
   var production = argv.production;
-  gulp.src('public/js/**/*.js')
+  gulp.src('app/js/**/*.js')
     .pipe(gulpif(!production, symlink('public/dist/js')))
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(concat('app.js'))
@@ -27,7 +27,7 @@ gulp.task('js', function() {
       .pipe(ngAnnotate())
      .pipe(gulpif(production, uglify({ warnings: true })))
     .pipe(gulpif(!production, sourcemaps.write('.')))
-    .pipe(gulp.dest('public/dist'));
+    .pipe(gulp.dest('app/dist'));
 });
 
 
