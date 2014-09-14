@@ -10,6 +10,7 @@ var symlink      = require('gulp-symlink');
 var uglify       = require('gulp-uglify');
 var sass         = require('gulp-ruby-sass');
 var autoprefixer = require('gulp-autoprefixer');
+var minifyCSS    = require('gulp-minify-css');
 var argv         = require('yargs')
                     .alias('p', 'production')
                     .argv;
@@ -38,6 +39,7 @@ gulp.task('sass', function() {
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(sass(!production ? { sourcemap: true } : {}))
       .pipe(autoprefixer({ browsers: ['> 4%', 'last 2 versions'] }))
+      .pipe(gulpif(production, minifyCSS()))
     .pipe(gulpif(!production, sourcemaps.write('.')))
     .pipe(gulp.dest('app/dist'));
 });
