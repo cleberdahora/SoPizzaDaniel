@@ -1,17 +1,18 @@
 'use strict';
 
-var gulp       = require('gulp');
-var gulpif     = require('gulp-if');
-var concat     = require('gulp-concat');
-var traceur    = require('gulp-traceur');
-var sourcemaps = require('gulp-sourcemaps');
-var ngAnnotate = require('gulp-ng-annotate');
-var symlink    = require('gulp-symlink');
-var uglify     = require('gulp-uglify');
-var sass       = require('gulp-ruby-sass');
-var argv       = require('yargs')
-                  .alias('p', 'production')
-                  .argv;
+var gulp         = require('gulp');
+var gulpif       = require('gulp-if');
+var concat       = require('gulp-concat');
+var traceur      = require('gulp-traceur');
+var sourcemaps   = require('gulp-sourcemaps');
+var ngAnnotate   = require('gulp-ng-annotate');
+var symlink      = require('gulp-symlink');
+var uglify       = require('gulp-uglify');
+var sass         = require('gulp-ruby-sass');
+var autoprefixer = require('gulp-autoprefixer');
+var argv         = require('yargs')
+                    .alias('p', 'production')
+                    .argv;
 
 var production = argv.production;
 
@@ -36,6 +37,7 @@ gulp.task('sass', function() {
     .pipe(gulpif(!production, symlink('app/dist/sass')))
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(sass(!production ? { sourcemap: true } : {}))
+      .pipe(autoprefixer({ browsers: ['> 4%', 'last 2 versions'] }))
     .pipe(gulpif(!production, sourcemaps.write('.')))
     .pipe(gulp.dest('app/dist'));
 });
