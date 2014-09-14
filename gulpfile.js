@@ -11,17 +11,22 @@ var uglify       = require('gulp-uglify');
 var sass         = require('gulp-ruby-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var minifyCSS    = require('gulp-minify-css');
+var browserSync  = require('browser-sync');
 var argv         = require('yargs')
                     .alias('p', 'production')
                     .argv;
 
 var production = argv.production;
 
-gulp.task('default', ['js']);
+gulp.task('default', ['bs'], function () {
+  // Build on file changes
+  gulp.watch('app/js/**/*.js', ['js']);
+  gulp.watch('app/sass/**/*.scss', ['sass']);
+});
 
 // JavaScript build
 gulp.task('js', function() {
-  gulp.src('app/js/**/*.js')
+  return gulp.src('app/js/**/*.js')
     .pipe(gulpif(!production, symlink('app/dist/js')))
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(concat('app.js'))
@@ -29,17 +34,28 @@ gulp.task('js', function() {
       .pipe(ngAnnotate())
      .pipe(gulpif(production, uglify({ warnings: true })))
     .pipe(gulpif(!production, sourcemaps.write('.')))
-    .pipe(gulp.dest('app/dist'));
+    .pipe(gulp.dest('app/dist'))
+    .pipe(browserSync.reload({ stream: true }));
 });
 
 // Sass build
 gulp.task('sass', function() {
-  gulp.src('app/sass/**/*.scss')
+  return gulp.src('app/sass/**/*.scss')
     .pipe(gulpif(!production, symlink('app/dist/sass')))
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(sass(!production ? { sourcemap: true } : {}))
       .pipe(autoprefixer({ browsers: ['> 4%', 'last 2 versions'] }))
       .pipe(gulpif(production, minifyCSS()))
     .pipe(gulpif(!production, sourcemaps.write('.')))
-    .pipe(gulp.dest('app/dist'));
+    .pipe(gulp.dest('app/dist'))
+    .pipe(browserSync.reload({ stream: true }));
+});
+
+gulp.task('bs', function() {
+  browserSync({
+    server: {
+      baseDir: 'app/dist',
+      index: 'index.html'
+    }
+  });
 });
