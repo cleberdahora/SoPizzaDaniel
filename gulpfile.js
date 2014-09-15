@@ -11,6 +11,7 @@ var less         = require('gulp-less');
 var prefixer     = require('gulp-autoprefixer');
 var minifyCSS    = require('gulp-minify-css');
 var htmlmin      = require('gulp-htmlmin');
+var htmlhint     = require('gulp-htmlhint');
 var browserSync  = require('browser-sync');
 var argv         = require('yargs')
                     .alias('p', 'production')
@@ -65,6 +66,11 @@ gulp.task('html', function() {
   };
 
   gulp.src(['app/html/**/*.html'])
+    // Lint
+    .pipe(htmlhint())
+    .pipe(htmlhint.reporter())
+    //.pipe(htmlhint.failReporter())
+    // Build
     .pipe(htmlmin(htmlminOptions))
     .pipe(gulp.dest('app/dist/html'))
     .pipe(browserSync.reload({ stream: true }));
