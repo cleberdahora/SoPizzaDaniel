@@ -1,33 +1,60 @@
 'use strict';
 
-var gulp       = require('gulp');
-var gulpif     = require('gulp-if');
-var concat     = require('gulp-concat');
-var traceur    = require('gulp-traceur');
-var sourcemaps = require('gulp-sourcemaps');
-var ngAnnotate = require('gulp-ng-annotate');
-var symlink    = require('gulp-symlink');
-var uglify     = require('gulp-uglify');
-var argv       = require('yargs')
-                  .alias('p', 'production')
-                  .argv;
+var gulp         = require('gulp');
+var gulpif       = require('gulp-if');
+var concat       = require('gulp-concat');
+var traceur      = require('gulp-traceur');
+var sourcemaps   = require('gulp-sourcemaps');
+var ngAnnotate   = require('gulp-ng-annotate');
+var uglify       = require('gulp-uglify');
+var less         = require('gulp-less');
+var prefixer     = require('gulp-autoprefixer');
+var minifyCSS    = require('gulp-minify-css');
+var browserSync  = require('browser-sync');
+var argv         = require('yargs')
+                    .alias('p', 'production')
+                    .argv;
 
-gulp.task('default', function() {
-  // place code for your default task here
-  //
+var production = argv.production;
+
+gulp.task('default', ['js', 'css', 'bs'], function () {
+  // Build on file changes
+  gulp.watch('app/js/**/*.js', ['js']);
+  gulp.watch('app/css/**/*.less', ['css']);
 });
 
+// JavaScript build
 gulp.task('js', function() {
-  var production = argv.production;
-  gulp.src('app/js/**/*.js')
-    .pipe(gulpif(!production, symlink('public/dist/js')))
+  return gulp.src('app/js/**/*.js')
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(concat('app.js'))
       .pipe(traceur({ sourceMaps: true, experimental: true }))
       .pipe(ngAnnotate())
-     .pipe(gulpif(production, uglify({ warnings: true })))
-    .pipe(gulpif(!production, sourcemaps.write('.')))
-    .pipe(gulp.dest('app/dist'));
+      .pipe(gulpif(production, uglify({ warnings: true })))
+    .pipe(gulpif(!production, sourcemaps.write()))
+    .pipe(gulp.dest('app/dist'))
+    .pipe(browserSync.reload({ stream: true }));
 });
 
+// CSS build
+gulp.task('css', function() {
+  return gulp.src('app/css/**/*.less')
+    .pipe(gulpif(!production, sourcemaps.init()))
+      .pipe(concat('app.css'))
+      .pipe(less())
+      // autoprefixer disabled, not working with less (2014-09-14)
+      //.pipe(prefixer({ browsers: ['> 4%', 'last 2 versions'] }))
+      .pipe(gulpif(production, minifyCSS()))
+    .pipe(gulpif(!production, sourcemaps.write()))
+    .pipe(gulp.dest('app/dist'))
+    .pipe(browserSync.reload({ stream: true }));
+});
 
+gulp.task('bs', function() {
+  browserSync({
+    server: {
+      baseDir: 'app/dist',
+      index: 'index.html'
+    }
+  });
+});
