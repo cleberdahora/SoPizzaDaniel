@@ -10,6 +10,7 @@ var uglify       = require('gulp-uglify');
 var less         = require('gulp-less');
 var prefixer     = require('gulp-autoprefixer');
 var minifyCSS    = require('gulp-minify-css');
+var htmlmin      = require('gulp-htmlmin');
 var browserSync  = require('browser-sync');
 var argv         = require('yargs')
                     .alias('p', 'production')
@@ -17,10 +18,11 @@ var argv         = require('yargs')
 
 var production = argv.production;
 
-gulp.task('default', ['js', 'css', 'bs'], function () {
+gulp.task('default', ['js', 'css', 'html', 'bs'], function () {
   // Build on file changes
   gulp.watch('app/js/**/*.js', ['js']);
   gulp.watch('app/css/**/*.less', ['css']);
+  gulp.watch('app/html/**/*.html', ['html']);
 });
 
 // JavaScript build
@@ -47,6 +49,14 @@ gulp.task('css', function() {
       .pipe(gulpif(production, minifyCSS()))
     .pipe(gulpif(!production, sourcemaps.write()))
     .pipe(gulp.dest('app/dist'))
+    .pipe(browserSync.reload({ stream: true }));
+});
+
+// HTML build
+gulp.task('html', function() {
+  return gulp.src(['app/html/**/*.html'])
+    .pipe(htmlmin())
+    .pipe(gulp.dest('app/dist/html'))
     .pipe(browserSync.reload({ stream: true }));
 });
 
