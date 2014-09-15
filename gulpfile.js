@@ -7,7 +7,7 @@ var traceur      = require('gulp-traceur');
 var sourcemaps   = require('gulp-sourcemaps');
 var ngAnnotate   = require('gulp-ng-annotate');
 var uglify       = require('gulp-uglify');
-var sass         = require('gulp-ruby-sass');
+var less         = require('gulp-less');
 var prefixer     = require('gulp-autoprefixer');
 var minifyCSS    = require('gulp-minify-css');
 var browserSync  = require('browser-sync');
@@ -17,10 +17,10 @@ var argv         = require('yargs')
 
 var production = argv.production;
 
-gulp.task('default', ['js', 'sass', 'bs'], function () {
+gulp.task('default', ['js', 'css', 'bs'], function () {
   // Build on file changes
   gulp.watch('app/js/**/*.js', ['js']);
-  gulp.watch('app/sass/**/*.scss', ['sass']);
+  gulp.watch('app/css/**/*.less', ['css']);
 });
 
 // JavaScript build
@@ -36,12 +36,14 @@ gulp.task('js', function() {
     .pipe(browserSync.reload({ stream: true }));
 });
 
-// Sass build
-gulp.task('sass', function() {
-  return gulp.src('app/sass/**/*.scss')
-    .pipe(sass(!production ? { sourcemap: true } : {}))
-    .pipe(gulpif(!production, sourcemaps.init({ loadMaps: true })))
-      .pipe(prefixer({ browsers: ['> 4%', 'last 2 versions'] }))
+// CSS build
+gulp.task('css', function() {
+  return gulp.src('app/css/**/*.less')
+    .pipe(gulpif(!production, sourcemaps.init()))
+      .pipe(concat('app.css'))
+      .pipe(less())
+      // autoprefixer disabled, not working with less (2014-09-14)
+      //.pipe(prefixer({ browsers: ['> 4%', 'last 2 versions'] }))
       .pipe(gulpif(production, minifyCSS()))
     .pipe(gulpif(!production, sourcemaps.write()))
     .pipe(gulp.dest('app/dist'))
