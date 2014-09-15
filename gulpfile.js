@@ -27,7 +27,7 @@ gulp.task('default', ['js', 'css', 'html', 'bs'], function () {
 
 // JavaScript build
 gulp.task('js', function() {
-  return gulp.src('app/js/**/*.js')
+  gulp.src('app/js/**/*.js')
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(concat('app.js'))
       .pipe(traceur({ sourceMaps: true, experimental: true }))
@@ -40,7 +40,7 @@ gulp.task('js', function() {
 
 // CSS build
 gulp.task('css', function() {
-  return gulp.src('app/css/**/*.less')
+  gulp.src('app/css/**/*.less')
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(concat('app.css'))
       .pipe(less())
@@ -54,7 +54,7 @@ gulp.task('css', function() {
 
 // HTML build
 gulp.task('html', function() {
-  return gulp.src(['app/html/**/*.html'])
+  gulp.src(['app/html/**/*.html'])
     .pipe(htmlmin())
     .pipe(gulp.dest('app/dist/html'))
     .pipe(browserSync.reload({ stream: true }));
