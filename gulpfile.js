@@ -54,8 +54,18 @@ gulp.task('css', function() {
 
 // HTML build
 gulp.task('html', function() {
+  var htmlminOptions = {
+    removeComments: true,
+    collapseWhitespace: true,
+    collapseBooleanAttributes: true,
+    removeAttributeQuotes: true,
+    removeRedundantAttributes: true,
+    removeEmptyAttributes: true,
+    lint: false
+  };
+
   gulp.src(['app/html/**/*.html'])
-    .pipe(htmlmin())
+    .pipe(htmlmin(htmlminOptions))
     .pipe(gulp.dest('app/dist/html'))
     .pipe(browserSync.reload({ stream: true }));
 });
