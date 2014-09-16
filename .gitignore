@@ -1,12 +1,11 @@
 node_modules/
-public/components/
-public/dist/*
+app/components/
+app/dist/*
 .sass-cache/
 *.sublime-project
 *.sublime-workspace
 *.cache
 *.swp
 *.un~
-.tern-project
 .nodemonignore
 npm-debug.log
