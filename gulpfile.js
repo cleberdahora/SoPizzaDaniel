@@ -2,6 +2,7 @@
 
 var gulp         = require('gulp');
 var gulpif       = require('gulp-if');
+var plumber      = require('gulp-plumber');
 var concat       = require('gulp-concat');
 var traceur      = require('gulp-traceur');
 var sourcemaps   = require('gulp-sourcemaps');
@@ -13,6 +14,7 @@ var minifyCSS    = require('gulp-minify-css');
 var htmlmin      = require('gulp-htmlmin');
 var htmlhint     = require('gulp-htmlhint');
 var browserSync  = require('browser-sync');
+var jshint       = require('gulp-jshint');
 var argv         = require('yargs')
                     .alias('p', 'production')
                     .argv;
@@ -29,6 +31,11 @@ gulp.task('default', ['js', 'css', 'html', 'bs'], function () {
 // JavaScript build
 gulp.task('js', function() {
   gulp.src('app/js/**/*.js')
+    .pipe(plumber())
+    // Lint
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'))
+    // Build
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(concat('app.js'))
       .pipe(traceur({ sourceMaps: true, experimental: true }))
@@ -42,6 +49,7 @@ gulp.task('js', function() {
 // CSS build
 gulp.task('css', function() {
   gulp.src('app/css/**/*.less')
+    .pipe(plumber())
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(concat('app.css'))
       .pipe(less())
@@ -66,10 +74,10 @@ gulp.task('html', function() {
   };
 
   gulp.src(['app/html/**/*.html'])
+    .pipe(plumber())
     // Lint
     .pipe(htmlhint())
-    .pipe(htmlhint.reporter())
-    //.pipe(htmlhint.failReporter())
+    .pipe(htmlhint.failReporter())
     // Build
     .pipe(htmlmin(htmlminOptions))
     .pipe(gulp.dest('app/dist/html'))
