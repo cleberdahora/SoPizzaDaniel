@@ -10,6 +10,8 @@ var uglify       = require('gulp-uglify');
 var less         = require('gulp-less');
 var prefixer     = require('gulp-autoprefixer');
 var minifyCSS    = require('gulp-minify-css');
+var htmlmin      = require('gulp-htmlmin');
+var htmlhint     = require('gulp-htmlhint');
 var browserSync  = require('browser-sync');
 var argv         = require('yargs')
                     .alias('p', 'production')
@@ -17,15 +19,16 @@ var argv         = require('yargs')
 
 var production = argv.production;
 
-gulp.task('default', ['js', 'css', 'bs'], function () {
+gulp.task('default', ['js', 'css', 'html', 'bs'], function () {
   // Build on file changes
   gulp.watch('app/js/**/*.js', ['js']);
   gulp.watch('app/css/**/*.less', ['css']);
+  gulp.watch('app/html/**/*.html', ['html']);
 });
 
 // JavaScript build
 gulp.task('js', function() {
-  return gulp.src('app/js/**/*.js')
+  gulp.src('app/js/**/*.js')
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(concat('app.js'))
       .pipe(traceur({ sourceMaps: true, experimental: true }))
@@ -38,7 +41,7 @@ gulp.task('js', function() {
 
 // CSS build
 gulp.task('css', function() {
-  return gulp.src('app/css/**/*.less')
+  gulp.src('app/css/**/*.less')
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(concat('app.css'))
       .pipe(less())
@@ -50,11 +53,34 @@ gulp.task('css', function() {
     .pipe(browserSync.reload({ stream: true }));
 });
 
+// HTML build
+gulp.task('html', function() {
+  var htmlminOptions = {
+    removeComments: true,
+    collapseWhitespace: true,
+    collapseBooleanAttributes: true,
+    removeAttributeQuotes: true,
+    removeRedundantAttributes: true,
+    removeEmptyAttributes: true,
+    lint: false
+  };
+
+  gulp.src(['app/html/**/*.html'])
+    // Lint
+    .pipe(htmlhint())
+    .pipe(htmlhint.reporter())
+    //.pipe(htmlhint.failReporter())
+    // Build
+    .pipe(htmlmin(htmlminOptions))
+    .pipe(gulp.dest('app/dist/html'))
+    .pipe(browserSync.reload({ stream: true }));
+});
+
 gulp.task('bs', function() {
   browserSync({
     server: {
       baseDir: 'app/dist',
-      index: 'index.html'
+      index: 'html/index.html'
     }
   });
 });
