@@ -52,7 +52,7 @@ gulp.task('css', function() {
     .pipe(plumber())
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(concat('app.css'))
-      .pipe(less())
+      .pipe(less({ paths: ['app/components/lesshat/build'], ieCompat: false }))
       // autoprefixer disabled, not working with less (2014-09-14)
       //.pipe(prefixer({ browsers: ['> 4%', 'last 2 versions'] }))
       .pipe(gulpif(production, minifyCSS()))
@@ -88,7 +88,10 @@ gulp.task('bs', function() {
   browserSync({
     server: {
       baseDir: 'app/dist',
-      index: 'html/index.html'
+      index: 'html/index.html',
+      routes: {
+        '/resources': 'app/dist'
+      }
     }
   });
 });
