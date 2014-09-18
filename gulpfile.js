@@ -88,7 +88,10 @@ gulp.task('bs', function() {
   browserSync({
     server: {
       baseDir: 'app/dist',
-      index: 'html/index.html'
+      index: 'html/index.html',
+      routes: {
+        '/resources': 'app/dist'
+      }
     }
   });
 });
