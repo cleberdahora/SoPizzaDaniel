@@ -8,9 +8,9 @@
     $urlRouterProvider.otherwise('/404');
 
     states.push({
-      name    : 'home',
-      template: templatePath('home/index.html'),
-      url     : '/'
+      name       : 'home',
+      templateUrl: templatePath('home/index.html'),
+      url        : '/'
     });
 
     states.forEach(state => {
