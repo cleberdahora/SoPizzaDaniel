@@ -1,5 +1,71 @@
 @import (reference) "lesshat";
+@import (reference) "mixins";
 
 #page-home {
+  position: relative;
 
+  .logo {
+    position: absolute;
+    left: 0; 
+    right: 0;
+    top: 1rem;
+    margin: auto;
+    width: 10rem;
+    height: 5rem;
+    background-color: black;
+  }
+
+  .jumbotron {
+    @height: 25rem;
+
+    height: @height;
+    padding: 5rem;
+
+    background-image: url(http://farolshopping.com.br/uploads/noticias/4319/imagens_default/original_0c867caf135e39af561a1ae99f431b2b.jpg);
+    background-size: cover;
+    color: white;
+    text-shadow: 0 0 1rem black;
+
+    .title {
+      text-align: center;
+      font-size: 4rem;
+      margin: (@height / 3) 0 0;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin: 0.5rem;
+    }
+
+    .search-bar {
+      font-size: 1.125rem;
+      margin-top: 2.5rem;
+      width: 100%;
+      text-align: center;
+
+      .geolocate {
+        #elements > .button();
+        vertical-align: middle;
+      }
+
+      .conjunction {
+        margin: 0 1rem;
+        vertical-align: middle;
+      }
+
+      .search-form {
+        display: inline-block;
+        vertical-align: middle;
+
+        .search-input {
+          #elements > .textbox();
+          width: 30rem;
+        }
+
+        .search-button {
+          #elements > .button();
+        }
+      }
+    }
+  }
 }
