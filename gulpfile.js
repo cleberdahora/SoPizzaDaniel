@@ -48,6 +48,11 @@ gulp.task('js', function() {
 
 // CSS build
 gulp.task('css', function() {
+  var lessConfig = {
+    paths: ['app/components/lesshat/build', 'app/css'],
+    ieCompat: false
+  };
+
   gulp.src('app/css/**/*.less')
     .pipe(plumber())
     .pipe(gulpif(!production, sourcemaps.init()))
