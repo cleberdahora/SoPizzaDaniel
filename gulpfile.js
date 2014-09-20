@@ -9,10 +9,10 @@ var sourcemaps   = require('gulp-sourcemaps');
 var ngAnnotate   = require('gulp-ng-annotate');
 var uglify       = require('gulp-uglify');
 var less         = require('gulp-less');
-var prefixer     = require('gulp-autoprefixer');
+//var prefixer     = require('gulp-autoprefixer');
 var minifyCSS    = require('gulp-minify-css');
 var htmlmin      = require('gulp-htmlmin');
-var htmlhint     = require('gulp-htmlhint');
+//var htmlhint     = require('gulp-htmlhint');
 var browserSync  = require('browser-sync');
 var jshint       = require('gulp-jshint');
 var argv         = require('yargs')
@@ -81,8 +81,8 @@ gulp.task('html', function() {
   gulp.src(['app/html/**/*.html'])
     .pipe(plumber())
     // Lint
-    .pipe(htmlhint())
-    .pipe(htmlhint.failReporter())
+    //.pipe(htmlhint())
+    //.pipe(htmlhint.failReporter())
     // Build
     .pipe(htmlmin(htmlminOptions))
     .pipe(gulp.dest('app/dist/html'))
