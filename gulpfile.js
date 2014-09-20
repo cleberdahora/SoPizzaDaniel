@@ -57,7 +57,7 @@ gulp.task('css', function() {
     .pipe(plumber())
     .pipe(gulpif(!production, sourcemaps.init()))
       .pipe(concat('app.css'))
-      .pipe(less({ paths: ['app/components/lesshat/build'], ieCompat: false }))
+      .pipe(less(lessConfig))
       // autoprefixer disabled, not working with less (2014-09-14)
       //.pipe(prefixer({ browsers: ['> 4%', 'last 2 versions'] }))
       .pipe(gulpif(production, minifyCSS()))
