@@ -1,7 +1,9 @@
 {
   "name": "so-pizza",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "angular-parallax": "*"
+  },
   "devDependencies": {
     "lesshat": "~3.0.2"
   }
