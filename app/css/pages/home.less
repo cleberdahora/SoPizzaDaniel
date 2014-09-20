@@ -17,12 +17,15 @@
 
   .jumbotron {
     @height: 25rem;
+    @shadow-height: 10rem;
 
     position: relative;
     height: @height;
     padding: 5rem;
     color: white;
     text-shadow: 0 0 1rem black;
+    overflow: hidden;
+    box-shadow: inset 0 -@shadow-height @shadow-height -@shadow-height black;
 
     .background {
       width: 100%;
