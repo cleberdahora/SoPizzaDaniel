@@ -21,11 +21,12 @@ var argv         = require('yargs')
 
 var production = argv.production;
 
-gulp.task('default', ['js', 'css', 'html', 'bs'], function () {
+gulp.task('default', ['js', 'css', 'html', 'components', 'bs'], function () {
   // Build on file changes
   gulp.watch('app/js/**/*.js', ['js']);
   gulp.watch('app/css/**/*.less', ['css']);
   gulp.watch('app/html/**/*.html', ['html']);
+  gulp.watch('app/components', ['components']);
 });
 
 // JavaScript build
@@ -87,6 +88,11 @@ gulp.task('html', function() {
     .pipe(htmlmin(htmlminOptions))
     .pipe(gulp.dest('app/dist/html'))
     .pipe(browserSync.reload({ stream: true }));
+});
+
+gulp.task('components', function() {
+  gulp.src(['app/components/**/*'])
+    .pipe(gulp.dest('app/dist/components'));
 });
 
 gulp.task('bs', function() {
