@@ -10,8 +10,9 @@
   padding: 5rem;
   color: white;
   text-shadow: 0 0 1rem black;
-  overflow: hidden;
+  text-align: center;
   box-shadow: inset 0 -@shadow-height @shadow-height -@shadow-height black;
+  overflow: hidden;
 
   .background {
     width: 100%;
@@ -36,37 +37,5 @@
 
   .subtitle {
     margin: 0.5rem;
-  }
-
-  .search-bar {
-    font-size: 1.125rem;
-    margin-top: 2.5rem;
-    width: 100%;
-
-    .geolocate {
-      #elements > .button();
-
-      vertical-align: middle;
-    }
-
-    .conjunction {
-      margin: 0 1rem;
-      vertical-align: middle;
-    }
-
-    .search-form {
-      display: inline-block;
-      vertical-align: middle;
-
-      .search-input {
-        #elements > .textbox();
-
-        width: 30rem;
-      }
-
-      .search-button {
-        #elements > .button();
-      }
-    }
   }
 }
