@@ -21,13 +21,23 @@ var argv         = require('yargs')
 
 var production = argv.production;
 
-var defaultTasks = ['js', 'css', 'html', 'components', 'bs', 'images'];
+var defaultTasks = [
+  'js',
+  'css',
+  'html',
+  'components',
+  'bs',
+  'images',
+  'videos'
+];
+
 gulp.task('default', defaultTasks, function () {
   // Build on file changes
   gulp.watch('app/js/**/*.js', ['js']);
   gulp.watch('app/css/**/*.less', ['css']);
   gulp.watch('app/html/**/*.html', ['html']);
   gulp.watch('app/images/**/*', ['images']);
+  gulp.watch('app/videos/**/*', ['videos']);
   gulp.watch('app/components', ['components']);
 });
 
@@ -100,6 +110,11 @@ gulp.task('components', function() {
 gulp.task('images', function() {
   gulp.src(['app/images/**/*'])
     .pipe(gulp.dest('app/dist/images'));
+});
+
+gulp.task('videos', function() {
+  gulp.src(['app/videos/**/*'])
+    .pipe(gulp.dest('app/dist/videos'));
 });
 
 gulp.task('bs', function() {
