@@ -92,8 +92,15 @@
     text-align: center;
 
     h2 {
-      font-size: 2rem;
+      font-height: 2rem;
     }
+  }
+
+  .how-it-works {
+    &:extend(#page-home .tile);
+
+    padding: 1rem;
+    background-color: blue;
   }
 
   .steps {

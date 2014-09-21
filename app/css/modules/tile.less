@@ -1,0 +1,26 @@
+@import (reference) "lesshat";
+@import (reference) "mixins";
+
+.tile {
+  text-align: center;
+
+  &.how-it-works {
+    padding: 1rem;
+    background-color: blue;
+
+    .steps {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      .step {
+        box-shadow: 0.125rem 0.125rem 0.25rem brown;
+        margin: 1rem;
+        width: 20rem;
+        height: 15rem;
+        background-color: #EBB200;
+      }
+    }
+  }
+}
+
