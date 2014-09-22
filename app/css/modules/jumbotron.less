@@ -1,0 +1,41 @@
+@import (reference) "lesshat";
+@import (reference) "mixins";
+
+.jumbotron {
+  @height: 25rem;
+  @shadow-height: 10rem;
+
+  position: relative;
+  height: @height;
+  padding: 5rem;
+  color: white;
+  text-shadow: 0 0 1rem black;
+  text-align: center;
+  box-shadow: inset 0 -@shadow-height @shadow-height -@shadow-height black;
+  overflow: hidden;
+
+  .background {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+
+    img, video {
+      width: 100%;
+    }
+  }
+
+  .title {
+    font-size: 4rem;
+    margin: (@height / 4) 0 0;
+  }
+
+  .subtitle {
+    margin: 0.5rem;
+  }
+}

@@ -1,0 +1,115 @@
+@import (reference) "lesshat";
+@import (reference) "mixins";
+
+.steps {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  text-shadow: none;
+  color: black;
+
+  .step {
+    @size: 7.5rem;
+    list-style-type: none;
+    box-shadow: 0.125rem 0.125rem 0.25rem brown;
+    box-shadow: 0 0 0.25rem brown;
+    margin: 1rem 2rem;
+    width: @size;
+    height: @size;
+    background-color: #EBB200;
+    border-radius: @size;
+    padding: 1rem;
+    position: relative;
+
+    // Arrow between steps
+    &:not(:last-child):after {
+      @size: 3rem;
+      @border-size: 0.125rem;
+
+      content: '>'; // TODO: Use a icon instead of a > character
+      font-size: 2rem;
+      vertical-align: middle;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: -(@size + 0.5rem + @border-size);
+      margin: auto;
+      line-height: @size;
+      height: @size;
+      width: @size;
+      background-color: white;
+      border-radius: @size;
+      border: @border-size solid lightgray;
+      color: gray;
+    }
+  }
+
+  &.animated {
+    .animate(@n, @i: 1) when (@i =< @n) {
+      &:nth-child(@{i}) {
+        @delay: @i / 2;
+
+        -webkit-animation-delay: @delay * 1s;
+
+        &:not(:last-child):after {
+          -webkit-animation-delay: @delay + 2s;
+          -webkit-animation-fill-mode: backwards;
+        }
+      }
+
+      .animate(@n, @i + 1);
+    }
+
+    .step {
+      animation: step 1s;
+      -webkit-animation: step 1s;
+      -webkit-animation-fill-mode: backwards;
+
+      &:not(:last-child):after {
+        animation: step-arrow 0.5s;
+        -webkit-animation: step-arrow 0.5s;
+        -webkit-animation-fill-mode: backwards;
+      }
+
+      .animate(5);
+    }
+  }
+}
+
+@-webkit-keyframes step {
+  0% {
+    transform: scale(0.5, 0.5);
+    margin-top: 3rem;
+    opacity: 0;
+    color: transparent;
+  }
+  50% {
+    transform: scale(1.2, 1.2);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(1, 1);
+    padding-top: 2rem;
+    padding-bottom: 0;
+    color: transparent;
+  }
+  100% {
+    color: black;
+  }
+}
+
+@-webkit-keyframes step-arrow {
+  0% {
+    transform: scale(0.5, 0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2, 1.2);
+  }
+  100% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
