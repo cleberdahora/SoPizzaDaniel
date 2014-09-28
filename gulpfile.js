@@ -12,9 +12,9 @@ var less         = require('gulp-less');
 //var prefixer     = require('gulp-autoprefixer');
 var minifyCSS    = require('gulp-minify-css');
 var htmlmin      = require('gulp-htmlmin');
-//var htmlhint     = require('gulp-htmlhint');
 var browserSync  = require('browser-sync');
 var jshint       = require('gulp-jshint');
+var cdnizer      = require('gulp-cdnizer');
 var argv         = require('yargs')
                     .alias('p', 'production')
                     .argv;
@@ -91,11 +91,14 @@ gulp.task('html', function() {
     lint: false
   };
 
-  gulp.src(['app/html/**/*.html'])
+  gulp.src('app/html/index.html')
+    .pipe(cdnizer([
+      '**/*.js'
+    ]))
+    .pipe(gulp.dest('app/dist/html'));
+
+  gulp.src(['app/html/*/**/*.html'])
     .pipe(plumber())
-    // Lint
-    //.pipe(htmlhint())
-    //.pipe(htmlhint.failReporter())
     // Build
     .pipe(htmlmin(htmlminOptions))
     .pipe(gulp.dest('app/dist/html'))
