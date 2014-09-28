@@ -93,13 +93,15 @@ gulp.task('html', function() {
 
   gulp.src('app/html/index.html')
     .pipe(cdnizer([
-      '**/*.js'
+      'cdnjs:jquery',
+      'cdnjs:angular.js',
+      'cdnjs:angular-ui-router',
+      'cdnjs:restangular'
     ]))
     .pipe(gulp.dest('app/dist/html'));
 
   gulp.src(['app/html/*/**/*.html'])
     .pipe(plumber())
-    // Build
     .pipe(htmlmin(htmlminOptions))
     .pipe(gulp.dest('app/dist/html'))
     .pipe(browserSync.reload({ stream: true }));

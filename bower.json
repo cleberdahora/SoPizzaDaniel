@@ -2,7 +2,12 @@
   "name": "so-pizza",
   "private": true,
   "dependencies": {
-    "angular-parallax": "*"
+    "angular-parallax": "*",
+    "angular": "~1.2.25",
+    "angular-animate": "~1.2.25",
+    "jquery": "~2.1.1",
+    "angular-ui-router": "~0.2.11",
+    "restangular": "~1.4.0"
   },
   "devDependencies": {
     "lesshat": "~3.0.2"
