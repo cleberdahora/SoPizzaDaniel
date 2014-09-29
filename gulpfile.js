@@ -14,7 +14,10 @@ var minifyCSS    = require('gulp-minify-css');
 var htmlmin      = require('gulp-htmlmin');
 var browserSync  = require('browser-sync');
 var jshint       = require('gulp-jshint');
-var cdnizer      = require('gulp-cdnizer');
+var nodemon      = require('gulp-nodemon');
+//var cdnizer      = require('gulp-cdnizer');
+var url          = require('url');
+var proxy        = require('proxy-middleware');
 var argv         = require('yargs')
                     .alias('p', 'production')
                     .argv;
@@ -26,9 +29,10 @@ var defaultTasks = [
   'css',
   'html',
   'components',
-  'bs',
   'images',
-  'videos'
+  'videos',
+  'nodemon',
+  'bs',
 ];
 
 gulp.task('default', defaultTasks, function () {
@@ -92,7 +96,6 @@ gulp.task('html', function() {
   };
 
   gulp.src('app/html/index.html')
-    gulp.src('app/html/index.html')
     //.pipe(cdnizer({
       //files: [
         //'cdnjs:jquery',
@@ -128,13 +131,30 @@ gulp.task('videos', function() {
 });
 
 gulp.task('bs', function() {
+  var proxyOptions = url.parse('http://localhost:8888/api');
+  proxyOptions.route = '/api';
+
   browserSync({
     server: {
       baseDir: 'app/dist',
       index: 'html/index.html',
       routes: {
         '/resources': 'app/dist'
-      }
+      },
+      middleware: [proxy(proxyOptions)]
+    }
+  });
+});
+
+gulp.task('nodemon', function(cb) {
+  nodemon({
+    script: 'server.js',
+    nodeArgs: ['--harmony'],
+    ext: 'js',
+    watch: 'api',
+    env: {
+      IP: '127.0.0.1',
+      PORT: 8888
     }
   });
 });
