@@ -36,8 +36,10 @@
     </li>
   </ul>
 </section>
-<masonry class="suggestions">
-  <div masonry-brick></div>
-</masonry>
+<section class="suggestions">
+  <masonry class="suggestion-list">
+    <div class="suggestion" masonry-brick ng-repeat="suggestion in suggestions">{{suggestion}}</div>
+  </masonry>
+</section>
 
 <footer id="page-footer">© 2014 Só Pizza</footer>
