@@ -4,7 +4,7 @@
   "description": "Só Pizza web application",
   "main": "server.js",
   "dependencies": {
-    "gulp-cdnizer": "^1.0.3"
+    "express": "^4.9.5"
   },
   "devDependencies": {
     "browser-sync": "^1.3.7",
