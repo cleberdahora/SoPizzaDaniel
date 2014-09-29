@@ -7,7 +7,8 @@
     "angular-animate": "~1.2.25",
     "jquery": "~2.1.1",
     "angular-ui-router": "~0.2.11",
-    "restangular": "~1.4.0"
+    "restangular": "~1.4.0",
+    "angular-latest": "~1.2.25"
   },
   "devDependencies": {
     "lesshat": "~3.0.2"

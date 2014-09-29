@@ -92,12 +92,17 @@ gulp.task('html', function() {
   };
 
   gulp.src('app/html/index.html')
-    .pipe(cdnizer([
-      'cdnjs:jquery',
-      'cdnjs:angular.js',
-      'cdnjs:angular-ui-router',
-      'cdnjs:restangular'
-    ]))
+    gulp.src('app/html/index.html')
+    //.pipe(cdnizer({
+      //files: [
+        //'cdnjs:jquery',
+        //'cdnjs:angular.js',
+        //'cdnjs:angular-ui-router',
+        //'cdnjs:restangular'
+      //],
+      //fallbackScript: '<script>function cdnizerLoad(u) { document.write(' +
+                      //'"<scr"+"ipt src=" + u + "></scr"+"ipt>"); }</script>',
+    //}))
     .pipe(gulp.dest('app/dist/html'));
 
   gulp.src(['app/html/*/**/*.html'])
