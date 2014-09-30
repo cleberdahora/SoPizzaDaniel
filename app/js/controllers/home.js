@@ -1,14 +1,12 @@
 (function() {
   'use strict';
 
-  function HomeCtrl($scope) {
-    $scope.suggestions = [
-      'a',
-      'b',
-      'c',
-      'd',
-      'e',
-    ];
+  function HomeCtrl($scope, Restangular) {
+    Restangular.all('pizzerias')
+      .getList()
+      .then(function (pizzerias) {
+        $scope.pizzerias = pizzerias;
+      });
   }
 
   angular.module('app')
