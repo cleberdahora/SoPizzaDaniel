@@ -149,7 +149,7 @@ gulp.task('bs', function() {
 gulp.task('nodemon', function(cb) {
   nodemon({
     script: 'server.js',
-    //nodeArgs: ['--harmony'],
+    nodeArgs: ['--harmony'],
     ext: 'js',
     watch: 'api',
     env: {
