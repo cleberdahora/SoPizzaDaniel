@@ -154,7 +154,8 @@ gulp.task('nodemon', function(cb) {
     watch: 'api',
     env: {
       IP: '127.0.0.1',
-      PORT: 8888
+      PORT: 8888,
+      DB_URI: 'mongodb://localhost/so_pizza'
     }
   });
 });

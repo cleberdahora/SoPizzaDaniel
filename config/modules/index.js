@@ -1,7 +1,9 @@
 'use strict';
 
 // Configuration modules
-var modules = [ ];
+var modules = [ 
+  require('./mongoose')
+];
 
 module.exports = function(app, server) {
   // Configure other modules
