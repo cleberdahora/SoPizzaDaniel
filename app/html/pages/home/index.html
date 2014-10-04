@@ -38,7 +38,9 @@
 </section>
 <section class="suggestions">
   <masonry class="suggestion-list">
-    <div class="suggestion" masonry-brick ng-repeat="suggestion in suggestions">{{suggestion}}</div>
+  <div class="suggestion" masonry-brick ng-repeat="suggestion in suggestions">
+    {{suggestion.name}}
+  </div>
   </masonry>
 </section>
 

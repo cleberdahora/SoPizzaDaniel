@@ -5,7 +5,7 @@
     Restangular.all('pizzerias')
       .getList()
       .then(function (pizzerias) {
-        $scope.pizzerias = pizzerias;
+        $scope.suggestions = pizzerias;
       });
   }
 
