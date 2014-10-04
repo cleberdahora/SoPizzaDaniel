@@ -49,10 +49,29 @@ module.exports = function(router) {
    * Create a pizzeria
    */
   function post(req, res) {
-    let pizzeria = new Pizzeria({ name: 'teste' });
-    pizzeria.save();
+    let name = req.body.name;
+    let address = req.body.address || {};
+    let location = address.location;
 
-    res.status(201).end(); // Created
+    // Verify required fields
+    if (!name || !location) {
+      return res.status(422).end(); // Unprocessable Entity
+    }
+
+    let pizzeria = new Pizzeria({
+      name: req.body.name,
+      description: req.body.description,
+      address: {
+      }
+    });
+
+    pizzeria.save(function(err) {
+      if (err) {
+        return res.status(500).end(); // Internal Server Error
+      }
+
+      return res.status(201).end(); // Created
+    });
   }
 
   router.get('/', get);
