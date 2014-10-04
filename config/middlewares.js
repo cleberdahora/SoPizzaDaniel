@@ -20,7 +20,7 @@ function registerMiddlewares(app) {
 
   // General
   app.use(compression());
-  app.use(bodyParser());
+  app.use(bodyParser.json());
   app.use(morgan('dev')); // logger
 
   // API
