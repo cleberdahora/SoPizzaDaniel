@@ -28,6 +28,7 @@ module.exports = function(router) {
     let id = req.params.id;
 
     Pizzeria.findById(id, function(err, pizzeria) {
+
       if (err) {
         res.status(500).end(); // Internal Server Error
       }
@@ -36,11 +37,39 @@ module.exports = function(router) {
         return res.status(404).end(); // Not Found
       }
 
+      // Extract coordinates from array [lat, lng]
+      // TODO: Use ES6 destructuring when available on node
+
       return res.json({
         id         : pizzeria._id,
         name       : pizzeria.name,
-        description: pizzeria.description
+        description: pizzeria.description,
+        address    : {
+          coordinates: pizzeria.getCoordinates()
+        }
       });
+    });
+  }
+
+  /**
+   * GET /:id/picture
+   * Get the main picture of a pizzeria
+   */
+  function getPicture(req, res) {
+    let id = req.params.id;
+
+    Pizzeria.findById(id, function(err, pizzeria) {
+      if (err) {
+        return res.status(500).end(); // Internal Server Error
+      }
+
+      if (!pizzeria) {
+        return res.status(404).end(); // Not Found
+      }
+
+      //res.set('Content-Type', 'image/jpg');
+      res.contentType('image/jpg');
+      return res.send(pizzeria.picture);
     });
   }
 
@@ -76,5 +105,6 @@ module.exports = function(router) {
 
   router.get('/', get);
   router.get('/:id', getSingle);
+  router.get('/:id/picture', getPicture);
   router.post('/', post);
 };
