@@ -2,14 +2,14 @@
 
 <section class="jumbotron">
   <my-video-slider class="background" parallax parallax-ratio="0.5">
-  <img src="http://farolshopping.com.br/uploads/noticias/4319/imagens_default/original_0c867caf135e39af561a1ae99f431b2b.jpg"></img>
-  <video loop autoload muted>
-    <source src="/resources/videos/jumbotron.webm" type="video/webm">
-    <!--<source src=http://techslides.com/demos/sample-videos/small.webm type=video/webm>-->
-    <!--<source src=http://techslides.com/demos/sample-videos/small.ogv type=video/ogg>-->
-    <!--<source src=http://techslides.com/demos/sample-videos/small.mp4 type=video/mp4>-->
-    <!--<source src=http://techslides.com/demos/sample-videos/small.3gp type=video/3gp>-->
-  </video>
+    <img src="http://farolshopping.com.br/uploads/noticias/4319/imagens_default/original_0c867caf135e39af561a1ae99f431b2b.jpg">
+    <video loop autoload muted>
+      <source src="/resources/videos/jumbotron.webm" type="video/webm">
+      <!--<source src=http://techslides.com/demos/sample-videos/small.webm type=video/webm>-->
+      <!--<source src=http://techslides.com/demos/sample-videos/small.ogv type=video/ogg>-->
+      <!--<source src=http://techslides.com/demos/sample-videos/small.mp4 type=video/mp4>-->
+      <!--<source src=http://techslides.com/demos/sample-videos/small.3gp type=video/3gp>-->
+    </video>
   </my-video-slider>
   <h1 class="title">Experimente novos sabores</h1>
   <h2 class="subtitle">Encontre aqui as melhores pizzarias da região</h2>
@@ -37,10 +37,12 @@
   </ul>
 </section>
 <section class="suggestions">
+  <h2 class="title">Sugestões da região</h2>
   <masonry class="suggestion-list">
-  <div class="suggestion" masonry-brick ng-repeat="suggestion in suggestions">
-    {{suggestion.name}}
-  </div>
+    <div class="suggestion" masonry-brick ng-repeat="suggestion in suggestions">
+      <img class="background" ng-src="http://lorempixel.com/300/200/" ng-alt="{{suggestion.name}}">
+      <div class="title">{{suggestion.name}}</div>
+    </div>
   </masonry>
 </section>
 
