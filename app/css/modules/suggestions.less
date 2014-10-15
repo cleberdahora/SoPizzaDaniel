@@ -26,10 +26,10 @@
         .filter(brightness(25%) blur(0.125rem));
       }
 
-      .title, .description, .call {
+      .title, .description, .actions, .call, .menu {
         .transition(opacity 0.5s 0.25s, transform 0.5s 0.25s);
 
-        .translateY(0);
+        .translate(0);
         opacity: 1;
       }
     }
@@ -64,9 +64,7 @@
       font-size: 1rem;
     }
 
-    .call {
-      #elements > .button();
-
+    .actions {
       .transition(opacity 0.5s, transform 0.5s);
       .translateY(1rem);
 
@@ -75,12 +73,29 @@
       left: 0;
       right: 0;
       margin: auto;
+      opacity: 0;
+    }
+
+    .call, .menu {
+      #elements > .button();
+
+      .transition(transform 0.5s);
+
+      display: inline-block;
       padding: 0.5rem;
       width: 6rem;
+      margin: 0.5rem;
       font-size: 1.25rem;
       background: green;
       color: white;
-      opacity: 0;
+    }
+
+    .call {
+      .translateX(-1rem);
+    }
+
+    .menu {
+      .translateX(1rem);
     }
   }
 }
