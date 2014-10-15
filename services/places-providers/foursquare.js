@@ -14,7 +14,7 @@ function find(location, callback) {
       location: {},
       street: '',
     }
-  }]);
+  }, {}, {}, {}, {}]);
 }
 
 let foursquare = {

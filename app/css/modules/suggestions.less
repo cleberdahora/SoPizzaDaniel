@@ -1,4 +1,5 @@
 @import (reference) "lesshat";
+@import (reference) "mixins";
 
 .suggestions {
   text-align: center;
@@ -14,26 +15,26 @@
     position: relative;
     display: inline-block;
     margin: 0.5rem;
-    padding: 0;
+    padding: 1rem;
     border: 0.0625rem solid black;
-    width: 16rem;
-    height: 8rem;
+    width: 20rem;
+    height: 10rem;
     vertical-align: top;
 
     &:hover {
-      > .background {
+      .background {
         .filter(brightness(25%) blur(0.125rem));
       }
 
-      .title {
-        .transition(opacity 0.5s 0.25s, margin 0.5s 0.25s);
+      .title, .description, .call {
+        .transition(opacity 0.5s 0.25s, transform 0.5s 0.25s);
 
+        .translateY(0);
         opacity: 1;
-        margin-top: 1rem;
       }
     }
 
-    > .background {
+    .background {
       .transition(filter 0.5s);
 
       position: absolute;
@@ -46,13 +47,40 @@
       left: 0;
     }
 
-    .title {
-      .transition(opacity 0.5s, margin 0.5s);
+    .title, .description {
+      .transition(opacity 0.5s, transform 0.5s);
+      .translateY(-1rem);
 
       color: white;
       opacity: 0;
-      margin: 0;
-      font-size: 2rem;
+      margin: 0.5rem;
+      font-size: 1.5rem;
+    }
+
+    .description {
+      .translateY(-1.5rem);
+
+      color: lightgray;
+      font-size: 1rem;
+    }
+
+    .call {
+      #elements > .button();
+
+      .transition(opacity 0.5s, transform 0.5s);
+      .translateY(1rem);
+
+      position: absolute;
+      bottom: 1rem;
+      left: 0;
+      right: 0;
+      margin: auto;
+      padding: 0.5rem;
+      width: 6rem;
+      font-size: 1.25rem;
+      background: green;
+      color: white;
+      opacity: 0;
     }
   }
 }
