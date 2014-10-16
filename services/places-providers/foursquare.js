@@ -29,7 +29,8 @@ function find(location, callback) {
       return {
         id: venue.id,
         name: venue.name,
-        description: venue.location.address
+        description: venue.location.address,
+        phoneNumber: venue.contact.phone
       };
     });
 
