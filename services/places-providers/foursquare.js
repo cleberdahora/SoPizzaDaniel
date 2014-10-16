@@ -17,7 +17,6 @@ function getPhotos(venueId, callback) {
 }
 
 function find(ll, callback) {
-  console.log('' + ll);
   let pizzeriaCategoryId = '4bf58dd8d48988d1ca941735';
   let url = 'https://api.foursquare.com/v2/venues/search' +
     '?ll=' + ll +
