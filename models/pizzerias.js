@@ -1,10 +1,10 @@
 'use strict';
 
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
-//let Buffer = mongoose.Types.Buffer;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+//var Buffer = mongoose.Types.Buffer;
 
-let pizzeriaSchema = new Schema({
+var pizzeriaSchema = new Schema({
   name: String,
   description: String,
   //picture: { type: Schema.Buffer },
@@ -27,10 +27,10 @@ pizzeriaSchema.index({
  * @return {Object} An object containing latitude and longitude informations.
  */
 function getCoordinates() {
-  let address = this.address || {};
-  let coordinates = address.coordinates || [];
-  let lat = coordinates[0];
-  let lng = coordinates[1];
+  var address = this.address || {};
+  var coordinates = address.coordinates || [];
+  var lat = coordinates[0];
+  var lng = coordinates[1];
 
   if (typeof lat !== 'undefined' && typeof lng !== 'undefined') {
     return {
