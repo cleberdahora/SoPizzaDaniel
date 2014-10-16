@@ -8,7 +8,8 @@
     "jquery": "~2.1.1",
     "angular-ui-router": "~0.2.11",
     "restangular": "~1.4.0",
-    "angular-masonry": "~0.9.1"
+    "angular-masonry": "~0.9.1",
+    "angular-scrollto": "~0.1.4"
   },
   "devDependencies": {
     "lesshat": "~3.0.2"

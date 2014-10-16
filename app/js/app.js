@@ -5,6 +5,7 @@
     'ui.router',
     'angular-parallax',
     'restangular',
-    'wu.masonry'
+    'wu.masonry',
+    'scrollto'
   ]);
 })();
