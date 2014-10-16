@@ -23,19 +23,19 @@ module.exports = function(router) {
     }
 
     // Get places info from database
-    function fromDB(callback) {
-      Pizzeria.find(function(err, pizzerias) {
-        callback(null, pizzerias.map(function(val) {
-          return {
-            id           : val._id,
-            name         : val.name,
-            description  : val.description,
-            externalLinks: val.externalLinks,
-            address      : val.address
-          };
-        }));
-      });
-    }
+    //function fromDB(callback) {
+      //Pizzeria.find(function(err, pizzerias) {
+        //callback(null, pizzerias.map(function(val) {
+          //return {
+            //id           : val._id,
+            //name         : val.name,
+            //description  : val.description,
+            //externalLinks: val.externalLinks,
+            //address      : val.address
+          //};
+        //}));
+      //});
+    //}
 
     // Get places info from providers
     function fromProviders(callback) {
@@ -43,7 +43,8 @@ module.exports = function(router) {
     }
 
     // Get places info from database and providers asynchronously
-    async.parallel([fromDB, fromProviders], function(err, results) {
+    //async.parallel([fromDB, fromProviders], function(err, results) {
+    async.parallel([fromProviders], function(err, results) {
       if (err) {
         return res.status(500).end();
       }
