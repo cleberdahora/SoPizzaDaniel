@@ -23,8 +23,18 @@
     padding: 1rem;
     position: relative;
 
+    .title {
+      margin: 0.5rem 0;
+      //font-size: 1.5rem;
+    }
+
+    .icon {
+      width: 5rem;
+      height: 5rem;
+    }
+
     // Arrow between steps
-    &:not(:last-child):after {
+    &:not(:last-child)::after {
       @size: 3rem;
       @border-size: 0.125rem;
 
@@ -53,7 +63,8 @@
 
         -webkit-animation-delay: @delay * 1s;
 
-        &:not(:last-child):after {
+        // Animate arrows after 1 second
+        &:not(:last-child)::after {
           -webkit-animation-delay: @delay + 2s;
           -webkit-animation-fill-mode: backwards;
         }
@@ -67,7 +78,7 @@
       -webkit-animation: step 1s;
       -webkit-animation-fill-mode: backwards;
 
-      &:not(:last-child):after {
+      &:not(:last-child)::after {
         animation: step-arrow 0.5s;
         -webkit-animation: step-arrow 0.5s;
         -webkit-animation-fill-mode: backwards;
