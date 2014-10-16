@@ -3,6 +3,7 @@
 let path     = require('path');
 let async    = require('async');
 let lodash   = require('lodash');
+let geoip    = require('geoip-lite');
 let places   = require(path.join(global.root, '/services/places'));
 let mongoose = require('mongoose');
 let Pizzeria = mongoose.model('Pizzeria');
@@ -13,10 +14,13 @@ module.exports = function(router) {
    * Get a list of pizzerias
    */
   function get(req, res) {
-    let location = {
-      latitude : req.query.latitude,
-      longitude: req.query.longitude
-    };
+    let ll = [req.query.latitude, req.query.longitude];
+
+    if (lodash.isEmpty(lodash.compact(ll))) {
+      let location = geoip.lookup(req.ip);
+
+      ll = (({} || location).ll) || [-23.5505199,-46.6333094];
+    }
 
     // Get places info from database
     function fromDB(callback) {
@@ -35,7 +39,7 @@ module.exports = function(router) {
 
     // Get places info from providers
     function fromProviders(callback) {
-      places.find(location, callback);
+      places.find(ll, callback);
     }
 
     // Get places info from database and providers asynchronously

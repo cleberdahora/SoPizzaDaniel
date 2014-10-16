@@ -10,14 +10,14 @@ let providers    = requireAll(providersDir);
 /**
  * Find places based on a search query near a geographic position
  * @param {string} query - Search query
- * @param {string} location - Geographic position to use for proximity
+ * @param {array} ll - Geographic position as [lat, lng] used for proximity
  * @param {function} callback - Callback called on success
  */
-function find(location, callback) {
+function find(ll, callback) {
   // Wrap a provider to be called by async library
   function wrap(provider) {
     return function(asyncCallback) {
-      provider(location, asyncCallback);
+      provider(ll, asyncCallback);
     };
   }
 
