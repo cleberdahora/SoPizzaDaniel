@@ -2,7 +2,7 @@
 @import (reference) "mixins";
 
 .jumbotron {
-  @height: 25rem;
+  @height: 33rem;
   @shadow-height: 10rem;
 
   position: relative;
@@ -11,7 +11,7 @@
   color: white;
   text-shadow: 0 0 1rem black;
   text-align: center;
-  box-shadow: inset 0 -@shadow-height @shadow-height -@shadow-height black;
+  //box-shadow: inset 0 -@shadow-height @shadow-height -@shadow-height black;
   overflow: hidden;
 
   .background {
@@ -30,7 +30,7 @@
     }
   }
 
-  .title {
+  > .title {
     font-size: 4rem;
     margin: (@height / 4) 0 0;
   }

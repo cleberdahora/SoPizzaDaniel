@@ -3,6 +3,9 @@
 
   angular.module('app', [
     'ui.router',
-    'angular-parallax'
+    'angular-parallax',
+    'restangular',
+    'wu.masonry',
+    'scrollto'
   ]);
 })();

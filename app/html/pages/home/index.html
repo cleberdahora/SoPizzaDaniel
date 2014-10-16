@@ -2,14 +2,14 @@
 
 <section class="jumbotron">
   <my-video-slider class="background" parallax parallax-ratio="0.5">
-  <img src="http://farolshopping.com.br/uploads/noticias/4319/imagens_default/original_0c867caf135e39af561a1ae99f431b2b.jpg"></img>
-  <video loop autoload muted>
-    <source src="/resources/videos/jumbotron.webm" type="video/webm">
-    <!--<source src=http://techslides.com/demos/sample-videos/small.webm type=video/webm>-->
-    <!--<source src=http://techslides.com/demos/sample-videos/small.ogv type=video/ogg>-->
-    <!--<source src=http://techslides.com/demos/sample-videos/small.mp4 type=video/mp4>-->
-    <!--<source src=http://techslides.com/demos/sample-videos/small.3gp type=video/3gp>-->
-  </video>
+    <img src="http://farolshopping.com.br/uploads/noticias/4319/imagens_default/original_0c867caf135e39af561a1ae99f431b2b.jpg">
+    <!--<video loop autoload muted>-->
+      <!--<source src="/resources/videos/jumbotron.webm" type="video/webm">-->
+      <!--<source src=http://techslides.com/demos/sample-videos/small.webm type=video/webm>-->
+      <!--<source src=http://techslides.com/demos/sample-videos/small.ogv type=video/ogg>-->
+      <!--<source src=http://techslides.com/demos/sample-videos/small.mp4 type=video/mp4>-->
+      <!--<source src=http://techslides.com/demos/sample-videos/small.3gp type=video/3gp>-->
+    <!--</video>-->
   </my-video-slider>
   <h1 class="title">Experimente novos sabores</h1>
   <h2 class="subtitle">Encontre aqui as melhores pizzarias da região</h2>
@@ -22,28 +22,37 @@
     </form>
   </div>
   <ul class="steps animated">
-      <li class="step">
-        <h3>Localize pizzarias próximas</h3>
-        <img src="" alt="">
-      </li>
-      <li class="step">
-        <h3>Escolha o sabor</h3>
-        <img src="" alt="">
-      </li>
-      <li class="step">
-        <h3>Ligue!</h3>
-        <img src="" alt="">
-      </li>
+  <!--<ul class="steps">-->
+    <li class="step">
+      <!--<h3>Localize pizzarias próximas</h3>-->
+      <img class="icon" src="https://cdn0.iconfinder.com/data/icons/ballicons/128/magnifier-128.png" alt="">
+      <h3 class="title">Procure</h3>
+    </li>
+    <li class="step">
+      <!--<h3>Escolha o sabor</h3>-->
+      <img class="icon" src="https://cdn2.iconfinder.com/data/icons/color-svg-vector-icons-part-2/512/apply_ok_check_yes_dialog-128.png" alt="">
+      <h3 class="title">Escolha</h3>
+    </li>
+    <li class="step">
+      <img class="icon" src="https://cdn4.iconfinder.com/data/icons/flatron-set-2/512/call-128.png" alt="">
+      <h3 class="title">Ligue!</h3>
+    </li>
   </ul>
+  <a href="#" class="more" scroll-to="#suggestions" duration="slow">Ver mais</a>
 </section>
-<section class="suggestions">
-  <h2>Quer conhecer mais?</h2>
-  <video controls>
-    <source src=http://techslides.com/demos/sample-videos/small.webm type=video/webm>
-    <source src=http://techslides.com/demos/sample-videos/small.ogv type=video/ogg>
-    <source src=http://techslides.com/demos/sample-videos/small.mp4 type=video/mp4>
-    <source src=http://techslides.com/demos/sample-videos/small.3gp type=video/3gp>
-  </video>
+<section id="suggestions" class="suggestions">
+  <h2 class="title">Sugestões da região</h2>
+  <masonry class="suggestion-list">
+    <div masonry-brick class="suggestion" ng-repeat="suggestion in suggestions | limitTo:8">
+      <img class="background" ng-src="{{suggestion.photo}}" ng-alt="{{suggestion.name}}">
+      <div class="title">{{suggestion.name}}</div>
+      <div class="description">{{suggestion.description}}</div>
+      <div class="actions">
+        <a class="call" ng-href="tel:{{suggestion.phoneNumber}}">Ligar</a>
+        <a class="menu" href="#">Cardápio</a>
+      </div>
+    </div>
+  </masonry>
 </section>
 
 <footer id="page-footer">© 2014 Só Pizza</footer>

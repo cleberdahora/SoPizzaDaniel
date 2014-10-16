@@ -9,8 +9,9 @@
 
     states.push({
       name       : 'home',
+      url        : '/',
       templateUrl: templatePath('home/index.html'),
-      url        : '/'
+      controller : 'HomeCtrl'
     });
 
     states.forEach(state => {
