@@ -68,7 +68,7 @@ gulp.task('css', function() {
   var lessConfig = {
     paths: ['app/components/lesshat/build', 'app/css/globals'],
     ieCompat: false,
-    strictMath: true
+    //strictMath: true
   };
 
   gulp.src('app/css/**/*.less')
