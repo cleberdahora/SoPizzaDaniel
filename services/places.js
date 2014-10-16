@@ -1,11 +1,11 @@
 'use strict';
 
-let async        = require('async');
-let path         = require('path');
-let lodash       = require('lodash');
-let requireAll   = require('require-all');
-let providersDir = path.resolve('./services/places-providers');
-let providers    = requireAll(providersDir);
+var async        = require('async');
+var path         = require('path');
+var lodash       = require('lodash');
+var requireAll   = require('require-all');
+var providersDir = path.resolve('./services/places-providers');
+var providers    = requireAll(providersDir);
 
 /**
  * Find places based on a search query near a geographic position
@@ -21,7 +21,7 @@ function find(ll, callback) {
     };
   }
 
-  let providersFind = lodash.values(providers)
+  var providersFind = lodash.values(providers)
     .map(lodash.property('find')) // Use find method of providers
     .map(wrap);                   // Wrap methods to be used by async
 
@@ -31,7 +31,7 @@ function find(ll, callback) {
   });
 }
 
-let places = {
+var places = {
   find: find
 };
 

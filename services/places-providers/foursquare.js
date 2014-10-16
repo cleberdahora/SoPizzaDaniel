@@ -1,10 +1,10 @@
 'use strict';
 
-let async   = require('async');
-let request = require('request');
+var async   = require('async');
+var request = require('request');
 
 function getPhotos(venueId, callback) {
-  let url = 'https://api.foursquare.com/v2/venues/' + venueId + '/photos?' +
+  var url = 'https://api.foursquare.com/v2/venues/' + venueId + '/photos?' +
     'client_id=LKEEQ0LFB0YDKXBXZLWXHDMZK1YZYHPKCGIJ3Q5WI2BEBIAU&' +
     'client_secret=ERGCV1WDFX2DVCP030M5URJK24YQGWOFIM5PEDJRQ4G1SYIN&' +
     'v=20141015&';
@@ -17,8 +17,8 @@ function getPhotos(venueId, callback) {
 }
 
 function find(ll, callback) {
-  let pizzeriaCategoryId = '4bf58dd8d48988d1ca941735';
-  let url = 'https://api.foursquare.com/v2/venues/search' +
+  var pizzeriaCategoryId = '4bf58dd8d48988d1ca941735';
+  var url = 'https://api.foursquare.com/v2/venues/search' +
     '?ll=' + ll +
     '&client_id=LKEEQ0LFB0YDKXBXZLWXHDMZK1YZYHPKCGIJ3Q5WI2BEBIAU' +
     '&client_secret=ERGCV1WDFX2DVCP030M5URJK24YQGWOFIM5PEDJRQ4G1SYIN' +
@@ -27,7 +27,7 @@ function find(ll, callback) {
     '&categoryId=' + pizzeriaCategoryId;
 
   request.get({ uri: url, json: true }, function(err, res, body) {
-    let venues = body.response.venues.map(function (venue) {
+    var venues = body.response.venues.map(function (venue) {
       return {
         id: venue.id,
         name: venue.name,
@@ -50,7 +50,7 @@ function find(ll, callback) {
   });
 }
 
-let foursquare = {
+var foursquare = {
   find: find
 };
 

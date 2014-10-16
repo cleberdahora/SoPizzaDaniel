@@ -1,12 +1,12 @@
 'use strict';
 
-let path     = require('path');
-let async    = require('async');
-let lodash   = require('lodash');
-let geoip    = require('geoip-lite');
-let places   = require(path.join(global.root, '/services/places'));
-let mongoose = require('mongoose');
-let Pizzeria = mongoose.model('Pizzeria');
+var path     = require('path');
+var async    = require('async');
+var lodash   = require('lodash');
+var geoip    = require('geoip-lite');
+var places   = require(path.join(global.root, '/services/places'));
+var mongoose = require('mongoose');
+var Pizzeria = mongoose.model('Pizzeria');
 
 module.exports = function(router) {
   /**
@@ -14,10 +14,10 @@ module.exports = function(router) {
    * Get a list of pizzerias
    */
   function get(req, res) {
-    let ll = [req.query.latitude, req.query.longitude];
+    var ll = [req.query.latitude, req.query.longitude];
 
     if (lodash.isEmpty(lodash.compact(ll))) {
-      let location = geoip.lookup(req.ip);
+      var location = geoip.lookup(req.ip);
 
       ll = (({} || location).ll) || [-23.5505199,-46.6333094];
     }
@@ -57,7 +57,7 @@ module.exports = function(router) {
    * Find a pizzeria by id
    */
   function getSingle(req, res) {
-    let id = req.params.id;
+    var id = req.params.id;
 
     Pizzeria.findById(id, function(err, pizzeria) {
 
@@ -88,7 +88,7 @@ module.exports = function(router) {
    * Get the main picture of a pizzeria
    */
   function getPicture(req, res) {
-    let id = req.params.id;
+    var id = req.params.id;
 
     Pizzeria.findById(id, function(err, pizzeria) {
       if (err) {
@@ -110,16 +110,16 @@ module.exports = function(router) {
    * Create a pizzeria
    */
   function post(req, res) {
-    let name = req.body.name;
-    let address = req.body.address || {};
-    let location = address.location;
+    var name = req.body.name;
+    var address = req.body.address || {};
+    var location = address.location;
 
     // Verify required fields
     if (!name || !location) {
       return res.status(422).end(); // Unprocessable Entity
     }
 
-    let pizzeria = new Pizzeria({
+    var pizzeria = new Pizzeria({
       name: req.body.name,
       description: req.body.description,
       address: {
