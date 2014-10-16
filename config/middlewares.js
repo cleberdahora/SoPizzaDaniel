@@ -36,6 +36,7 @@ function registerMiddlewares(app) {
   // SPA
   app.get(regex, function(req, res, next) {
     if (req.accepts('html')) {
+      res.set('Content-Type', 'text/html');
       res.send(fs.readFileSync(mapPath('app/dist/html/index.html')));
     } else {
       next();
