@@ -45,6 +45,8 @@ gulp.task('default', defaultTasks, function () {
   gulp.watch('app/components', ['components']);
 });
 
+gulp.task('build', ['js', 'css', 'html', 'components', 'images', 'videos']);
+
 // JavaScript build
 gulp.task('js', function() {
   gulp.src('app/js/**/*.js')
