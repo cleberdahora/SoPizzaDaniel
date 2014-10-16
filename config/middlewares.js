@@ -27,6 +27,7 @@ function registerMiddlewares(app) {
   app.use(compression());
   app.use(bodyParser.json());
   app.use(morgan('dev')); // logger
+  app.use('/resources', express.static(mapPath('app/dist')));
 
   // API
   app.use('/api', enrouten({
