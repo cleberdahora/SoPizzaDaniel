@@ -61,12 +61,12 @@
       &:nth-child(@{i}) {
         @delay: @i / 2;
 
-        -webkit-animation-delay: @delay * 1s;
+        animation-delay: @delay * 1s;
 
         // Animate arrows after 1 second
         &:not(:last-child)::after {
-          -webkit-animation-delay: @delay + 2s;
-          -webkit-animation-fill-mode: backwards;
+          animation-delay: @delay + 2s;
+          animation-fill-mode: backwards;
         }
       }
 
@@ -75,13 +75,11 @@
 
     .step {
       animation: step 1s;
-      -webkit-animation: step 1s;
-      -webkit-animation-fill-mode: backwards;
+      animation-fill-mode: backwards;
 
       &:not(:last-child)::after {
         animation: step-arrow 0.5s;
-        -webkit-animation: step-arrow 0.5s;
-        -webkit-animation-fill-mode: backwards;
+        animation-fill-mode: backwards;
       }
 
       .animate(5);
@@ -89,7 +87,7 @@
   }
 }
 
-@-webkit-keyframes step {
+@keyframes step {
   0% {
     transform: scale(0.5, 0.5);
     margin-top: 3rem;
@@ -111,7 +109,7 @@
   }
 }
 
-@-webkit-keyframes step-arrow {
+@keyframes step-arrow {
   0% {
     transform: scale(0.5, 0.5);
     opacity: 0;

@@ -9,15 +9,14 @@ var sourcemaps   = require('gulp-sourcemaps');
 var ngAnnotate   = require('gulp-ng-annotate');
 var uglify       = require('gulp-uglify');
 var less         = require('gulp-less');
-//var prefixer     = require('gulp-autoprefixer');
+var prefixer     = require('gulp-autoprefixer');
 var minifyCSS    = require('gulp-minify-css');
 var htmlmin      = require('gulp-htmlmin');
 var browserSync  = require('browser-sync');
 var jshint       = require('gulp-jshint');
 var nodemon      = require('gulp-nodemon');
 //var cdnizer      = require('gulp-cdnizer');
-var url          = require('url');
-var proxy        = require('proxy-middleware');
+var lodash       = require('lodash');
 var argv         = require('yargs')
                     .alias('p', 'production')
                     .argv;
@@ -31,8 +30,7 @@ var defaultTasks = [
   'components',
   'images',
   'videos',
-  //'nodemon',
-  'bs',
+  'server'
 ];
 
 gulp.task('default', defaultTasks, function () {
@@ -72,16 +70,16 @@ gulp.task('css', function() {
     ieCompat: false,
     //strictMath: true
   };
+  var prefixerConfig = {
+    browsers: ['> 4%', 'last 2 versions']
+  };
 
   gulp.src('app/css/**/*.less')
     .pipe(plumber())
-    .pipe(gulpif(!production, sourcemaps.init()))
-      .pipe(concat('app.css'))
-      .pipe(less(lessConfig))
-      // autoprefixer disabled, not working with less (2014-09-14)
-      //.pipe(prefixer({ browsers: ['> 4%', 'last 2 versions'] }))
-      .pipe(gulpif(production, minifyCSS()))
-    .pipe(gulpif(!production, sourcemaps.write()))
+    .pipe(less(lessConfig))
+    .pipe(concat('app.css'))
+    .pipe(prefixer(prefixerConfig))
+    .pipe(gulpif(production, minifyCSS()))
     .pipe(gulp.dest('app/dist'))
     .pipe(browserSync.reload({ stream: true }));
 });
@@ -133,23 +131,14 @@ gulp.task('videos', function() {
     .pipe(gulp.dest('app/dist/videos'));
 });
 
-gulp.task('bs', function() {
-  var proxyOptions = url.parse('http://localhost:8888/api');
-  proxyOptions.route = '/api';
-
-  browserSync({
-    server: {
-      baseDir: 'app/dist',
-      index: 'html/index.html',
-      routes: {
-        '/resources': 'app/dist'
-      },
-      middleware: [proxy(proxyOptions)]
-    }
+gulp.task('server', function(cb) {
+  var startProxy = lodash.once(function() {
+    browserSync({
+      proxy: 'localhost:8888'
+    });
+    cb();
   });
-});
 
-gulp.task('nodemon', function(cb) {
   nodemon({
     script: 'server.js',
     nodeArgs: ['--harmony'],
@@ -160,5 +149,8 @@ gulp.task('nodemon', function(cb) {
       PORT: 8888,
       DB_URI: 'mongodb://localhost/so_pizza'
     }
+  })
+  .on('start', function() {
+    lodash.delay(startProxy, 1000);
   });
 });
