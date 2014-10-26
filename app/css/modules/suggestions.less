@@ -35,12 +35,12 @@
 
     &:hover {
       .background {
-        .filter(brightness(25%) blur(0.125rem));
+        filter: brightness(25%) blur(0.125rem);
       }
 
       .title, .description, .actions, .call, .menu {
-        .transition(opacity 0.5s 0.25s, transform 0.5s 0.25s, background-color 0.5s, padding 0.5s);
-        .translate(0);
+        transition: opacity 0.5s 0.25s, transform 0.5s 0.25s, background-color 0.5s, padding 0.5s;
+        transform: translate(0);
 
         opacity: 1;
       }
@@ -51,8 +51,7 @@
     }
 
     .background {
-      .transition(filter 0.5s);
-
+      transition: filter 0.5s;
       position: absolute;
       z-index: -1;
       width: 100%;
@@ -64,8 +63,8 @@
     }
 
     .title, .description {
-      .transition(opacity 0.5s, transform 0.5s, background-color 0.5s);
-      .translateY(-1rem);
+      transition: opacity 0.5s, transform 0.5s, background-color 0.5s;
+      transform: translateY(-1rem);
 
       color: white;
       opacity: 0;
@@ -73,8 +72,7 @@
     }
 
     .title {
-      .transform(translateY(3rem), scale(1.5));
-
+      transform: translateY(3rem) scale(1.5);
       text-shadow: 0 0 0.125rem black;
       background-color: rgba(0, 0, 0, 0.5);
       opacity: 1;
@@ -82,15 +80,15 @@
     }
 
     .description {
-      .translateY(-1.5rem);
+      transform: translateY(-1.5rem);
 
       color: lightgray;
       font-size: 1rem;
     }
 
     .actions {
-      .transition(opacity 0.5s, transform 0.5s);
-      .translateY(1rem);
+      transition: opacity 0.5s, transform 0.5s;
+      transform: translateY(1rem);
 
       position: absolute;
       bottom: 1rem;
@@ -103,7 +101,7 @@
     .call, .menu {
       #elements > .button();
 
-      .transition(transform 0.5s);
+      transition: transform 0.5s;
 
       display: inline-block;
       padding: 0.5rem;
@@ -115,11 +113,11 @@
     }
 
     .call {
-      .translateX(-1rem);
+      transform: translateX(-1rem);
     }
 
     .menu {
-      .translateX(1rem);
+      transform: translateX(1rem);
     }
   }
 }
