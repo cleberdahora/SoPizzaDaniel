@@ -5,11 +5,11 @@ var mongoose = require('mongoose');
 var requireAll = require('require-all');
 
 function mongooseConfig(app, server) {
-  //var uri = app.get('db-uri');
-  //mongoose.connect(uri);
+  var uri = app.get('db-uri');
+  mongoose.connect(uri);
 
-  //Load all models
-  //requireAll(path.join(global.root, '/models'));
+  // Load all models
+  requireAll(path.join(global.root, '/models'));
 }
 
 module.exports = {

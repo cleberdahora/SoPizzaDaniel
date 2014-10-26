@@ -5,8 +5,8 @@ var async    = require('async');
 var lodash   = require('lodash');
 var geoip    = require('geoip-lite');
 var places   = require(path.join(global.root, '/services/places'));
-//var mongoose = require('mongoose');
-//var Pizzeria = mongoose.model('Pizzeria');
+var mongoose = require('mongoose');
+var Pizzeria = mongoose.model('Pizzeria');
 
 module.exports = function(router) {
   /**
@@ -23,19 +23,19 @@ module.exports = function(router) {
     }
 
     // Get places info from database
-    //function fromDB(callback) {
-      //Pizzeria.find(function(err, pizzerias) {
-        //callback(null, pizzerias.map(function(val) {
-          //return {
-            //id           : val._id,
-            //name         : val.name,
-            //description  : val.description,
-            //externalLinks: val.externalLinks,
-            //address      : val.address
-          //};
-        //}));
-      //});
-    //}
+    function fromDB(callback) {
+      Pizzeria.find(function(err, pizzerias) {
+        callback(null, pizzerias.map(function(val) {
+          return {
+            id           : val._id,
+            name         : val.name,
+            description  : val.description,
+            externalLinks: val.externalLinks,
+            address      : val.address
+          };
+        }));
+      });
+    }
 
     // Get places info from providers
     function fromProviders(callback) {
@@ -43,8 +43,7 @@ module.exports = function(router) {
     }
 
     // Get places info from database and providers asynchronously
-    //async.parallel([fromDB, fromProviders], function(err, results) {
-    async.parallel([fromProviders], function(err, results) {
+    async.parallel([fromDB, fromProviders], function(err, results) {
       if (err) {
         return res.status(500).end();
       }
@@ -58,30 +57,30 @@ module.exports = function(router) {
    * Find a pizzeria by id
    */
   function getSingle(req, res) {
-    //var id = req.params.id;
+    var id = req.params.id;
 
-    //Pizzeria.findById(id, function(err, pizzeria) {
+    Pizzeria.findById(id, function(err, pizzeria) {
 
-      //if (err) {
-        //res.status(500).end(); // Internal Server Error
-      //}
+      if (err) {
+        res.status(500).end(); // Internal Server Error
+      }
 
-      //if (!pizzeria) {
-        //return res.status(404).end(); // Not Found
-      //}
+      if (!pizzeria) {
+        return res.status(404).end(); // Not Found
+      }
 
       // Extract coordinates from array [lat, lng]
       // TODO: Use ES6 destructuring when available on node
 
-      //return res.json({
-        //id         : pizzeria._id,
-        //name       : pizzeria.name,
-        //description: pizzeria.description,
-        //address    : {
-          //coordinates: pizzeria.getCoordinates()
-        //}
-      //});
-    //});
+      return res.json({
+        id         : pizzeria._id,
+        name       : pizzeria.name,
+        description: pizzeria.description,
+        address    : {
+          coordinates: pizzeria.getCoordinates()
+        }
+      });
+    });
   }
 
   /**
@@ -89,20 +88,20 @@ module.exports = function(router) {
    * Get the main picture of a pizzeria
    */
   function getPicture(req, res) {
-    //var id = req.params.id;
+    var id = req.params.id;
 
-    //Pizzeria.findById(id, function(err, pizzeria) {
-      //if (err) {
-        //return res.status(500).end(); // Internal Server Error
-      //}
+    Pizzeria.findById(id, function(err, pizzeria) {
+      if (err) {
+        return res.status(500).end(); // Internal Server Error
+      }
 
-      //if (!pizzeria) {
-        //return res.status(404).end(); // Not Found
-      //}
+      if (!pizzeria) {
+        return res.status(404).end(); // Not Found
+      }
 
-      //res.contentType('image/jpg');
-      //return res.send(pizzeria.picture);
-    //});
+      res.contentType('image/jpg');
+      return res.send(pizzeria.picture);
+    });
   }
 
   /**
@@ -119,20 +118,20 @@ module.exports = function(router) {
       return res.status(422).end(); // Unprocessable Entity
     }
 
-    //var pizzeria = new Pizzeria({
-      //name: req.body.name,
-      //description: req.body.description,
-      //address: {
-      //}
-    //});
+    var pizzeria = new Pizzeria({
+      name: req.body.name,
+      description: req.body.description,
+      address: {
+      }
+    });
 
-    //pizzeria.save(function(err) {
-      //if (err) {
-        //return res.status(500).end(); // Internal Server Error
-      //}
+    pizzeria.save(function(err) {
+      if (err) {
+        return res.status(500).end(); // Internal Server Error
+      }
 
-      //return res.status(201).end(); // Created
-    //});
+      return res.status(201).end(); // Created
+    });
   }
 
   router.get('/', get);
