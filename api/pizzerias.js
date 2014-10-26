@@ -14,7 +14,7 @@ module.exports = function(router) {
    * Get a list of pizzerias
    */
   function get(req, res) {
-    var ll = [req.query.latitude, req.query.longitude];
+    var ll = req.query.ll;
 
     if (lodash.isEmpty(lodash.compact(ll))) {
       var location = geoip.lookup(req.ip);
@@ -69,15 +69,12 @@ module.exports = function(router) {
         return res.status(404).end(); // Not Found
       }
 
-      // Extract coordinates from array [lat, lng]
-      // TODO: Use ES6 destructuring when available on node
-
       return res.json({
         id         : pizzeria._id,
         name       : pizzeria.name,
         description: pizzeria.description,
         address    : {
-          coordinates: pizzeria.getCoordinates()
+          ll: pizzeria.ll
         }
       });
     });
