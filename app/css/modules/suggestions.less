@@ -34,10 +34,6 @@
     overflow: hidden;
 
     &:hover {
-      .background {
-        filter: brightness(25%) blur(0.125rem);
-      }
-
       .title, .description, .actions, .call, .menu {
         transition: opacity 0.5s 0.25s, transform 0.5s 0.25s, background-color 0.5s, padding 0.5s;
         transform: translate(0);
@@ -48,10 +44,27 @@
       .title {
         background-color: rgba(0, 0, 0, 0);
       }
+
+      &::before {
+        opacity: 0.75;
+      }
+    }
+
+    // Hackish way to lower the brightness of background.
+    // Use filters when well supported by modern browsers.
+    &::before {
+      transition: opacity 0.5s;
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: black;
+      opacity: 0;
     }
 
     .background {
-      transition: filter 0.5s;
       position: absolute;
       z-index: -1;
       width: 100%;
