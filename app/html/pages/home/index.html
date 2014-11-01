@@ -14,7 +14,7 @@
   <h1 class="title">Experimente novos sabores</h1>
   <h2 class="subtitle">Encontre aqui as melhores pizzarias da região</h2>
   <div class="search-bar">
-    <button class="geolocate">Buscar nas proximidades</button>
+    <button class="geolocate" ng-click="home.getLocation()">Buscar nas proximidades</button>
     <span class="conjunction">ou</span>
     <form class="search-form" ng-submit="">
       <input class="search-input" placeholder="Digite um CEP ou endereço">
@@ -44,7 +44,7 @@
 <section id="suggestions" class="suggestions">
   <h2 class="title">Sugestões da região</h2>
   <masonry class="suggestion-list">
-    <div masonry-brick class="suggestion" ng-repeat="suggestion in suggestions | limitTo:8">
+    <div masonry-brick class="suggestion" ng-repeat="suggestion in home.suggestions | limitTo:8">
       <img class="background" ng-src="{{suggestion.photo}}" ng-alt="{{suggestion.name}}">
       <div class="title">{{suggestion.name}}</div>
       <div class="description">{{suggestion.description}}</div>

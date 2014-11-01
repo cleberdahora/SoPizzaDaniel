@@ -11,7 +11,7 @@
       name       : 'home',
       url        : '/',
       templateUrl: templatePath('home/index.html'),
-      controller : 'HomeCtrl'
+      controller : 'HomeCtrl as home'
     });
 
     states.forEach(state => {

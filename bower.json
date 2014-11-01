@@ -9,7 +9,8 @@
     "angular-ui-router": "~0.2.11",
     "restangular": "~1.4.0",
     "angular-masonry": "~0.9.1",
-    "angular-scrollto": "~0.1.4"
+    "angular-scrollto": "~0.1.4",
+    "angularjs-geolocation": "~0.1.1"
   },
   "devDependencies": {
     "lesshat": "~3.0.2"
