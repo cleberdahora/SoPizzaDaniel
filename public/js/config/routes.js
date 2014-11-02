@@ -14,9 +14,14 @@
       controller : 'HomeCtrl as home'
     });
 
-    states.forEach(state => {
-      $stateProvider.state(state);
+    states.push({
+      name       : 'search',
+      url        : '/search',
+      templateUrl: templatePath('search/index.html'),
+      controller : 'SearchCtrl as search'
     });
+
+    states.forEach(state => $stateProvider.state(state));
   }
 
   function templatePath(relativePath) {

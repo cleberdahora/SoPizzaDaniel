@@ -12,7 +12,8 @@
     "angular-scrollto": "~0.1.4",
     "angularjs-geolocation": "~0.1.1",
     "ng-lodash": "~0.0.2",
-    "angular-leaflet-directive": "~0.7.9"
+    "angular-leaflet-directive": "~0.7.9",
+    "leaflet": "~0.7.3"
   },
   "devDependencies": {
     "lesshat": "~3.0.2"
