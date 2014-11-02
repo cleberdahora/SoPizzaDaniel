@@ -16,7 +16,7 @@
   <div class="search-bar">
     <button class="geolocate" ng-click="home.getLocation()">Buscar nas proximidades</button>
     <span class="conjunction">ou</span>
-    <form class="search-form" ng-submit="">
+    <form class="search-form" ng-submit="home.search(home.query)">
       <input class="search-input" placeholder="Digite um CEP ou endereço" ng-model="home.query">
       <button class="search-button" type="submit">Buscar!</button>
     </form>
