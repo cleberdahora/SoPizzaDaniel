@@ -8,6 +8,7 @@
     'wu.masonry',
     'scrollto',
     'geolocation',
-    'ngLodash'
+    'ngLodash',
+    'leaflet-directive'
   ]);
 })();
