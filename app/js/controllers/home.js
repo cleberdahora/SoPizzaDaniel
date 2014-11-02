@@ -1,16 +1,28 @@
 (function() {
   'use strict';
 
-  function HomeCtrl($scope, Restangular, geolocation) {
+  function HomeCtrl($state, lodash, Restangular, geolocation) {
     let self = this;
+
+    function search(query) {
+      $state.go('search', { query: query });
+    }
+
     function getLocation() {
       geolocation.getLocation()
         .then(function(data) {
-          if (data.coords) {
-            let { longitude, latitude } = data.coords;
-            let ll = [longitude, latitude];
-            console.log(ll);
-          }
+          let { longitude, latitude } = data.coords;
+          let ll = [longitude, latitude];
+
+          return Restangular.all('locations')
+            .post({ ll: ll });
+        })
+        .then(function(location) {
+          self.query = lodash.compact([
+            location.streetName,
+            location.steetNumber,
+            location.state
+          ]).join(', ');
         });
     }
 
@@ -20,6 +32,7 @@
         self.suggestions = pizzerias;
       });
 
+    self.search      = search;
     self.getLocation = getLocation;
   }
 

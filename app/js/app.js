@@ -7,6 +7,7 @@
     'restangular',
     'wu.masonry',
     'scrollto',
-    'geolocation'
+    'geolocation',
+    'ngLodash'
   ]);
 })();
