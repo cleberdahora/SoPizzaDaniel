@@ -1,6 +1,6 @@
 node_modules/
-app/components/
-app/dist/*
+public/components/
+public/dist/*
 .sass-cache/
 *.sublime-project
 *.sublime-workspace
