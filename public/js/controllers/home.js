@@ -12,10 +12,10 @@
       geolocation.getLocation()
         .then(function(data) {
           let { longitude, latitude } = data.coords;
-          let ll = [longitude, latitude];
+          let coordinates = [longitude, latitude];
 
           return Restangular.all('locations')
-            .post({ ll: ll });
+            .post({ coordinates: coordinates });
         })
         .then(function(location) {
           self.query = lodash.compact([

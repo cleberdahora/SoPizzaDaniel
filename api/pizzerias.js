@@ -16,9 +16,9 @@ module.exports = function(router) {
   function get(req, res) {
     // [longitude, latitude] as defined in GeoJSON specification
     // http://geojson.org/geojson-spec.html#appendix-a-geometry-examples
-    var ll = req.query.ll || [];
+    var coordinates = req.query.coordinates || [];
 
-    if (lodash.isEmpty(lodash.compact(ll))) {
+    if (lodash.isEmpty(lodash.compact(coordinates))) {
       var location  = geoip.lookup(req.ip);
 
       if (location) {
@@ -26,10 +26,10 @@ module.exports = function(router) {
         var latitude  = location.ll[0];
         var longitude = location.ll[1];
 
-        ll = [longitude, latitude];
+        coordinates = [longitude, latitude];
       } else {
         // If no location information was found, defaults to São Paulo, Brazil
-        ll = [-46.6333094, -23.5505199];
+        coordinates = [-46.6333094, -23.5505199];
       }
     }
 
@@ -50,7 +50,7 @@ module.exports = function(router) {
 
     // Get places info from providers
     function fromProviders(callback) {
-      places.find(ll, callback);
+      places.find(coordinates, callback);
     }
 
     // Get places info from database and providers asynchronously

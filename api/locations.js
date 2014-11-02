@@ -14,10 +14,9 @@ module.exports = function(router) {
   function post(req, res) {
     // [longitude, latitude] as defined in GeoJSON specification
     // http://geojson.org/geojson-spec.html#appendix-a-geometry-examples
-    var ll = req.body.ll || [];
-    console.log(ll);
+    var coordinates = req.body.coordinates || [];
 
-    if (lodash.isEmpty(lodash.compact(ll))) {
+    if (lodash.isEmpty(lodash.compact(coordinates))) {
 
       var location  = geoip.lookup(req.ip);
 
@@ -26,18 +25,18 @@ module.exports = function(router) {
         var latitude  = location.ll[0];
         var longitude = location.ll[1];
 
-        ll = [longitude, latitude];
+        coordinates = [longitude, latitude];
       } else {
         // If no location information was found, defaults to São Paulo, Brazil
-        ll = [-46.6333094, -23.5505199];
+        coordinates = [-46.6333094, -23.5505199];
       }
     }
 
     var url = 'http://nominatim.openstreetmap.org/reverse';
     var query = {
       format        : 'json',
-      lat           : ll[1],
-      lon           : ll[0],
+      lat           : coordinates[1],
+      lon           : coordinates[0],
       zoom          : 18, // Level of detail (0 = country, 18 = house/building)
       addressdetails: 1   // Include a breakdown of the address into elements
     };

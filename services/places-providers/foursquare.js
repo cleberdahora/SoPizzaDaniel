@@ -10,12 +10,12 @@ var pizzeriaCategoryId = '4bf58dd8d48988d1ca941735';
  * Denormalizes geographic coordinates from the [longitude, latitude] format
  * as defined in GeoJSON specification to the [latitude, longitude] format
  * accepted by Foursquare API
- * @param {array} ll - Geographic coordinates on [latitude, longitude] format
- * @returns {array} Geographic coordinates on [longitude, latitude] format
+ * @param {array} coordinates - Geographic coordinates on [lat, lng] format
+ * @returns {array} Geographic coordinates on [lng, lat] format
  */
-function denormalizeCoordinates(ll) {
-  var longitude  = ll[0];
-  var latitude = ll[1];
+function denormalizeCoordinates(coordinates) {
+  var longitude = coordinates[0];
+  var latitude  = coordinates[1];
 
   return [latitude, longitude];
 }
@@ -33,13 +33,13 @@ function getPhotos(venueId, callback) {
   });
 }
 
-function find(ll, callback) {
+function find(coordinates, callback) {
   var url = 'https://api.foursquare.com/v2/venues/search' +
-    '?ll=' + denormalizeCoordinates(ll) +
+    '?ll=' + denormalizeCoordinates(coordinates) +
     '&client_id=' + key +
     '&client_secret=' + secret +
     '&v=20141015' +
-    '&limit=10' +
+    '&limit=50' +
     '&categoryId=' + pizzeriaCategoryId;
 
   request.get({ uri: url, json: true }, function(err, res, body) {
@@ -48,7 +48,10 @@ function find(ll, callback) {
         id: venue.id,
         name: venue.name,
         description: venue.location.address,
-        phoneNumber: venue.contact.phone
+        phoneNumber: venue.contact.phone,
+        address: {
+          coordinates: [venue.location.lng, venue.location.lat]
+        }
       };
     });
 
