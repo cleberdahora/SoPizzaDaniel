@@ -10,7 +10,7 @@ var providers    = requireAll(providersDir);
 /**
  * Find places based on a search query near a geographic position
  * @param {string} query - Search query
- * @param {array} ll - Geographic position as [lat, lng] used for proximity
+ * @param {array} ll - Geographic coordinates as [lng, lat] used for proximity
  * @param {function} callback - Callback called on success
  */
 function find(ll, callback) {

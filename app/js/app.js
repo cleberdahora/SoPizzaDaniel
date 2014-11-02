@@ -6,6 +6,8 @@
     'angular-parallax',
     'restangular',
     'wu.masonry',
-    'scrollto'
+    'scrollto',
+    'geolocation',
+    'ngLodash'
   ]);
 })();
