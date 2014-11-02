@@ -14,12 +14,23 @@ module.exports = function(router) {
    * Get a list of pizzerias
    */
   function get(req, res) {
-    var ll = req.query.ll;
+    // [longitude, latitude] as defined in GeoJSON specification
+    // http://geojson.org/geojson-spec.html#appendix-a-geometry-examples
+    var ll = req.query.ll || [];
 
     if (lodash.isEmpty(lodash.compact(ll))) {
-      var location = geoip.lookup(req.ip);
+      var location  = geoip.lookup(req.ip);
 
-      ll = (({} || location).ll) || [-23.5505199,-46.6333094];
+      if (location) {
+        // node-geoip returns information on [latitude, longitude] format
+        var latitude  = location.ll[0];
+        var longitude = location.ll[1];
+
+        ll = [longitude, latitude];
+      } else {
+        // If no location information was found, defaults to São Paulo, Brazil
+        ll = [-46.6333094, -23.5505199];
+      }
     }
 
     // Get places info from database
@@ -60,7 +71,6 @@ module.exports = function(router) {
     var id = req.params.id;
 
     Pizzeria.findById(id, function(err, pizzeria) {
-
       if (err) {
         res.status(500).end(); // Internal Server Error
       }
