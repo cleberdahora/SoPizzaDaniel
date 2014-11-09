@@ -4,25 +4,36 @@
   function HomeCtrl($state, lodash, Restangular, geolocation) {
     let self = this;
 
-    function search(query) {
-      $state.go('search', { query: query });
+    function search(query, coordinates) {
+      var params = { query };
+
+      if (coordinates) {
+        params.ll = coordinates.join();
+      }
+
+      $state.go('search', params);
     }
 
+    // Get user location using HTML5 Geolocation feature
     function getLocation() {
       geolocation.getLocation()
-        .then(function(data) {
+        .then(data => {
           let { longitude, latitude } = data.coords;
           let coordinates = [longitude, latitude];
 
+          self.coordinates = coordinates;
+
           return Restangular.all('locations')
-            .post({ coordinates: coordinates });
+            .post({ coordinates });
         })
-        .then(function(location) {
+        .then(location => {
           self.query = lodash.compact([
             location.streetName,
             location.steetNumber,
             location.state
           ]).join(', ');
+
+          search(self.query, self.coordinates);
         });
     }
 

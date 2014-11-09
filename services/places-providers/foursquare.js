@@ -1,6 +1,7 @@
 'use strict';
 
 var async   = require('async');
+var moment  = require('moment');
 var request = require('request');
 var key     = 'LKEEQ0LFB0YDKXBXZLWXHDMZK1YZYHPKCGIJ3Q5WI2BEBIAU';
 var secret  = 'ERGCV1WDFX2DVCP030M5URJK24YQGWOFIM5PEDJRQ4G1SYIN';
@@ -34,15 +35,22 @@ function getPhotos(venueId, callback) {
 }
 
 function find(coordinates, callback) {
-  var url = 'https://api.foursquare.com/v2/venues/search' +
-    '?ll=' + denormalizeCoordinates(coordinates) +
-    '&client_id=' + key +
-    '&client_secret=' + secret +
-    '&v=20141015' +
-    '&limit=50' +
-    '&categoryId=' + pizzeriaCategoryId;
+  var url = 'https://api.foursquare.com/v2/venues/search';
 
-  request.get({ uri: url, json: true }, function(err, res, body) {
+  var qs = {
+    v            : moment().format('YYYYmmDD'),
+    client_id    : key,
+    client_secret: secret,
+    categoryId   : pizzeriaCategoryId,
+    ll           : denormalizeCoordinates(coordinates).join(),
+    limit        : 10
+  };
+
+  request.get({
+    uri : url,
+    qs  : qs,
+    json: true
+  }, function(err, res, body) {
     var venues = body.response.venues.map(function (venue) {
       return {
         id: venue.id,

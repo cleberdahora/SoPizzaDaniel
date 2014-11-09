@@ -1,35 +1,29 @@
 (function() {
   'use strict';
 
-  function SearchCtrl($scope, Restangular) {
+  function SearchCtrl($scope, Restangular, $stateParams, coordinates) {
     let self = this;
+    let [longitude, latitude] = coordinates;
 
-    self.defaults = {
-      scrollWheelZoom: false
-    };
-
-    self.osloCenter = {
-      lat: -23.6051241,
-      lng: -46.475982699999996,
+    self.center = {
+      lat : latitude,
+      lng : longitude,
       zoom: 16
     };
 
     Restangular.all('pizzerias')
-      .getList()
+      .getList({ coordinates: coordinates.join() })
       .then(function (pizzerias) {
-        let places = pizzerias.map(pizzeria => {
-          let [lng, lat] = pizzeria.address.coordinates;
+        self.pizzerias = pizzerias.map(pizzeria => {
+          let [longitude, latitude] = pizzeria.address.coordinates;
 
           return {
-            lat: lat,
-            lng: lng,
-            message: pizzeria.name,
-            focus: true,
+            lat      : latitude,
+            lng      : longitude,
+            message  : pizzeria.name,
             draggable: false
           };
         });
-
-        self.places = places;
       });
   }
 

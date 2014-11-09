@@ -16,7 +16,7 @@ module.exports = function(router) {
   function get(req, res) {
     // [longitude, latitude] as defined in GeoJSON specification
     // http://geojson.org/geojson-spec.html#appendix-a-geometry-examples
-    var coordinates = req.query.coordinates || [];
+    var coordinates = (req.query.coordinates || '').split(',');
 
     if (lodash.isEmpty(lodash.compact(coordinates))) {
       var location  = geoip.lookup(req.ip);

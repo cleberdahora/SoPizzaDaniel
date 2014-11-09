@@ -2,26 +2,39 @@
   'use strict';
 
   function routerConfig($locationProvider, $urlRouterProvider, $stateProvider) {
-    let states = [];
-
     $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/404');
 
-    states.push({
+    $stateProvider.state({
       name       : 'home',
       url        : '/',
       templateUrl: templatePath('home/index.html'),
       controller : 'HomeCtrl as home'
     });
 
-    states.push({
+    $stateProvider.state({
       name       : 'search',
-      url        : '/search',
+      url        : '/search/:query?ll',
       templateUrl: templatePath('search/index.html'),
-      controller : 'SearchCtrl as search'
-    });
+      controller : 'SearchCtrl as search',
+      resolve    : {
+        coordinates: function(Restangular, $stateParams, lodash) {
+          if ($stateParams.ll) {
+            return $stateParams.ll
+              .split(',')
+              .map(parseFloat);
+          } else {
+            let query = $stateParams.query;
 
-    states.forEach(state => $stateProvider.state(state));
+            return Restangular.all('locations')
+              .getList({ query })
+              .then(lodash.first)
+              .then(lodash.property('coordinates'))
+              .then(lodash.partialRight(lodash.map, parseFloat));
+          }
+        }
+      }
+    });
   }
 
   function templatePath(relativePath) {
