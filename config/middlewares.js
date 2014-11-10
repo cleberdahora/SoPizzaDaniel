@@ -27,7 +27,7 @@ function registerMiddlewares(app) {
   app.use(compression());
   app.use(bodyParser.json());
   app.use(morgan('dev')); // logger
-  app.use('/resources', express.static(mapPath('app/dist')));
+  app.use('/resources', express.static(mapPath('public/dist')));
 
   // API
   app.use('/api', enrouten({
@@ -38,7 +38,7 @@ function registerMiddlewares(app) {
   app.get(regex, function(req, res, next) {
     if (req.accepts('html')) {
       res.set('Content-Type', 'text/html');
-      res.send(fs.readFileSync(mapPath('app/dist/html/index.html')));
+      res.send(fs.readFileSync(mapPath('public/dist/html/index.html')));
     } else {
       next();
     }

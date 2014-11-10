@@ -1,6 +1,7 @@
 'use strict';
 
 var async   = require('async');
+var moment  = require('moment');
 var request = require('request');
 var key     = 'LKEEQ0LFB0YDKXBXZLWXHDMZK1YZYHPKCGIJ3Q5WI2BEBIAU';
 var secret  = 'ERGCV1WDFX2DVCP030M5URJK24YQGWOFIM5PEDJRQ4G1SYIN';
@@ -10,12 +11,12 @@ var pizzeriaCategoryId = '4bf58dd8d48988d1ca941735';
  * Denormalizes geographic coordinates from the [longitude, latitude] format
  * as defined in GeoJSON specification to the [latitude, longitude] format
  * accepted by Foursquare API
- * @param {array} ll - Geographic coordinates on [latitude, longitude] format
- * @returns {array} Geographic coordinates on [longitude, latitude] format
+ * @param {array} coordinates - Geographic coordinates on [lat, lng] format
+ * @returns {array} Geographic coordinates on [lng, lat] format
  */
-function denormalizeCoordinates(ll) {
-  var longitude  = ll[0];
-  var latitude = ll[1];
+function denormalizeCoordinates(coordinates) {
+  var longitude = coordinates[0];
+  var latitude  = coordinates[1];
 
   return [latitude, longitude];
 }
@@ -33,22 +34,32 @@ function getPhotos(venueId, callback) {
   });
 }
 
-function find(ll, callback) {
-  var url = 'https://api.foursquare.com/v2/venues/search' +
-    '?ll=' + denormalizeCoordinates(ll) +
-    '&client_id=' + key +
-    '&client_secret=' + secret +
-    '&v=20141015' +
-    '&limit=10' +
-    '&categoryId=' + pizzeriaCategoryId;
+function find(coordinates, callback) {
+  var url = 'https://api.foursquare.com/v2/venues/search';
 
-  request.get({ uri: url, json: true }, function(err, res, body) {
+  var qs = {
+    v            : moment().format('YYYYmmDD'),
+    client_id    : key,
+    client_secret: secret,
+    categoryId   : pizzeriaCategoryId,
+    ll           : denormalizeCoordinates(coordinates).join(),
+    limit        : 10
+  };
+
+  request.get({
+    uri : url,
+    qs  : qs,
+    json: true
+  }, function(err, res, body) {
     var venues = body.response.venues.map(function (venue) {
       return {
         id: venue.id,
         name: venue.name,
         description: venue.location.address,
-        phoneNumber: venue.contact.phone
+        phoneNumber: venue.contact.phone,
+        address: {
+          coordinates: [venue.location.lng, venue.location.lat]
+        }
       };
     });
 
