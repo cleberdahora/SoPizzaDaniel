@@ -21,15 +21,102 @@
   .search-form {
     display: inline-block;
     vertical-align: middle;
+  }
+
+  .search-input {
+    #elements > .textbox();
+
+    width: 30rem;
+  }
+
+  .search-button {
+    #elements > .button();
+  }
+
+  &.aerial {
+    @animation-duration: 0.5s;
+    @normal-input-height: 3rem;
+    @focus-input-height: 4rem;
+    position: absolute;
+    top: 0;
+    padding: 1rem;
+    left: 0;
+    right: 0;
+    //height: 100%;
+    margin: auto;
+    z-index: 1;
 
     .search-input {
-      #elements > .textbox();
+      transition: transform, height, box-shadow;
+      transition-duration: @animation-duration;
+      height: @normal-input-height;
+      vertical-align: middle;
+      padding-right: 3rem;
 
-      width: 30rem;
+      &:focus {
+        @translate-y: 7rem;
+        box-shadow: 0 0.125rem 0.75rem black;
+        margin: auto;
+        height: @focus-input-height;
+        transform: translateY(@translate-y);
+        padding-right: 4rem;
+
+        ~ .location-button {
+          border-radius: @focus-input-height;
+          transform: translate(-12.5%, @translate-y) scale(1.25);
+        }
+
+        ~ .search-button {
+          border-radius: @focus-input-height;
+          transform: translate(1rem, @translate-y) scale(1.375);
+        }
+      }
+    }
+
+    .location-button {
+      transition: opacity 0.5s, transform @animation-duration;
+      margin-left: -@normal-input-height;
+      border: 0;
+      padding: 0;
+      vertical-align: middle;
+      background: none;
+      height: @normal-input-height;
+      width: @normal-input-height;
+      opacity: 0.5;
+      outline: none;
+
+      .compass-icon {
+        transition: transform 0.5s;
+        display: block;
+        height: 80%;
+        width: 80%;
+      }
+
+      &:hover, &:focus {
+        opacity: 1;
+
+        .compass-icon {
+          transform: rotate(45deg);
+        }
+      }
     }
 
     .search-button {
       #elements > .button();
+
+      padding: 0;
+      transition-property: border-radius, transform;
+      transition-duration: @animation-duration;
+      vertical-align: middle;
+      border-radius: @normal-input-height;
+      height: @normal-input-height;
+      width: @normal-input-height;
+      box-shadow: 0 0.125rem 0.25rem black;
+
+      .search-icon {
+        height: @normal-input-height * 0.8;
+        width: @normal-input-height * 0.8;
+      }
     }
   }
 }

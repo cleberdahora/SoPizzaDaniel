@@ -12,9 +12,13 @@
       controller : 'HomeCtrl as home'
     });
 
+    // FIXME: 'query' parameter is being escaped completely, using %20 instead
+    // of + signs allowed on RFC 3986. It will be nice if it could be separated
+    // by + signs for a more friendly URL. Currently the bug is here:
+    // https://github.com/angular/angular.js/blob/master/src/Angular.js#L1090
     $stateProvider.state({
       name       : 'search',
-      url        : '/search/:query?ll',
+      url        : '/search?query&ll',
       templateUrl: templatePath('search/index.html'),
       controller : 'SearchCtrl as search',
       resolve    : {
