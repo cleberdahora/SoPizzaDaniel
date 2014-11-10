@@ -52,10 +52,7 @@ module.exports = function(router) {
           };
         });
 
-        return res
-          .status(201) // Created
-          .json(results);
-
+        return res.json(results);
       } else {
         return res.status(201).end(); // Created
       }
