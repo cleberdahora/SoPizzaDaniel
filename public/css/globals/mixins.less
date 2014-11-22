@@ -1,7 +1,12 @@
 #elements {
-  .button() {
-    border: none;
+  .shadow() {
     box-shadow: 0 0.125rem 0.5rem black;
+  }
+
+  .button() {
+    .shadow();
+
+    border: none;
     background-color: red;
     padding: 0.5rem 1rem;
     color: white;
@@ -9,15 +14,13 @@
   }
 
   .textbox() {
+    .shadow();
+
     border: none;
     box-shadow: 0 0.125rem 0.5rem black;
     padding: 0.5rem 1rem;
     color: black;
     background: white;
     outline: none;
-  }
-
-  .shadow() {
-    box-shadow: 0 0.125rem 0.5rem black;
   }
 }
