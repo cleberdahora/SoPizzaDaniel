@@ -24,7 +24,7 @@ function denormalizeCoordinates(coordinates) {
 }
 
 function parseTimeframes(timeframes) {
-  return timeframes.map(function(timeframe) {
+  return (timeframes || []).map(function(timeframe) {
     var days = timeframe.days
       .map(function(dayNumber) {
         return moment(dayNumber - 1, 'day') // Parse the arcane number as a day
@@ -66,7 +66,11 @@ function getWorkingTime(venueId, callback) {
     qs  : qs,
     json: true
   }, function(err, res, body) {
-    var timeframes = parseTimeframes(body.response.hours.timeframes);
+    var response = body.response;
+    var common   = response.hours;
+    var popular  = response.popular;
+    var timeframes = parseTimeframes(common.timeframes || popular.timeframes);
+
     callback(null, timeframes);
   });
 }
@@ -100,7 +104,7 @@ function find(coordinates, callback) {
     client_secret: secret,
     categoryId   : pizzeriaCategoryId,
     ll           : denormalizeCoordinates(coordinates).join(),
-    limit        : 1
+    limit        : 10
   };
 
   request.get({
