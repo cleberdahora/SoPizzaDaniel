@@ -7,7 +7,7 @@
     let [longitude, latitude] = coordinates;
 
     function search(query, coordinates) {
-      var params = { query };
+      let params = { query };
 
       if (coordinates) {
         params.ll = coordinates.join();
@@ -41,7 +41,6 @@
         });
     }
 
-
     Restangular.all('pizzerias')
       .getList({ coordinates: coordinates.join() })
       .then(function (pizzerias) {
@@ -65,7 +64,6 @@
       lng : longitude,
       zoom: 15
     };
-
   }
 
   angular.module('app')

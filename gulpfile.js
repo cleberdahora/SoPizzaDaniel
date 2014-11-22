@@ -143,7 +143,7 @@ gulp.task('server', function(cb) {
     script: 'server.js',
     nodeArgs: ['--harmony'],
     ext: 'js',
-    watch: 'api',
+    watch: ['api', 'services', 'config', 'server.js'],
     env: {
       IP: '127.0.0.1',
       PORT: 8888,
