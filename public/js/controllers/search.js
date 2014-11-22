@@ -47,12 +47,14 @@
         self.pizzerias = pizzerias.map(pizzeria => {
           let [longitude, latitude] = pizzeria.address.coordinates;
 
-          return {
+          lodash.merge(pizzeria, {
             lat      : latitude,
             lng      : longitude,
             message  : pizzeria.name,
             draggable: false
-          };
+          });
+
+          return pizzeria;
         });
       });
 
