@@ -1,4 +1,5 @@
 <form class="search-bar aerial" ng-submit="search.search(search.query); dropshadow = false">
+
   <input class="search-input" type="text" name="q" ng-model="search.query" ng-focus="showDropshadow = true" ng-blur="showDropshadow = false">
   <button type="button" class="location-button" ng-click="search.getLocation()" title="Usar localização atual">
     <img class="compass-icon" src="/resources/images/icons/compass.svg" alt="location">
@@ -8,5 +9,6 @@
     <img class="search-icon" src="/resources/images/icons/search.svg" alt="search">
   </button>
 </form>
+
 <leaflet class="map fullscreen" markers="search.pizzerias" center="search.center"></leaflet>
 <div class="dropshadow" ng-class="{ enabled: showDropshadow }" ng-click="showDropshadow = false"></div>

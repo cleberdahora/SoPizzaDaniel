@@ -13,7 +13,8 @@
     "angularjs-geolocation": "~0.1.1",
     "ng-lodash": "~0.0.2",
     "angular-leaflet-directive": "~0.7.9",
-    "leaflet": "~0.7.3"
+    "leaflet": "~0.7.3",
+    "angular-moment": "~0.8.2"
   },
   "devDependencies": {
     "lesshat": "~3.0.2"

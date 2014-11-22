@@ -9,6 +9,7 @@
     'scrollto',
     'geolocation',
     'ngLodash',
-    'leaflet-directive'
+    'leaflet-directive',
+    'angularMoment'
   ]);
 })();
