@@ -27,8 +27,8 @@ function parseTimeframes(timeframes) {
   return timeframes.map(function(timeframe) {
     var days = timeframe.days
       .map(function(dayNumber) {
-        return moment(dayNumber, 'day') // Parse the arcane number as a day
-          .format('dddd')               // Get day name
+        return moment(dayNumber - 1, 'day') // Parse the arcane number as a day
+          .format('dddd')                   // Get day name
           .toLowerCase();
       });
 
@@ -47,7 +47,7 @@ function parseTimeframes(timeframes) {
 
     return {
       days: days,
-      workingTimes: workingTimes
+      times: workingTimes
     };
   });
 }
