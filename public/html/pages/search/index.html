@@ -16,9 +16,9 @@
   <button class="more" ng-click="search.showPlaces = !search.showPlaces">
     {{search.showPlaces ? 'Fechar' : 'Ver mais'}}
   </button>
-  <masonry class="place-list">
+  <div class="place-list">
     <my-place place="place" ng-repeat="place in search.places | limitTo:10"></my-place>
-  </masonry>
+  </div>
 </section>
 
 <div class="dropshadow" ng-class="{ enabled: showDropshadow }" ng-click="showDropshadow = false"></div>
