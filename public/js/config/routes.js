@@ -39,6 +39,22 @@
         }
       }
     });
+
+    $stateProvider.state({
+      name       : 'place',
+      url        : '/place/{placeId}',
+      templateUrl: pagePath('place.html'),
+      controller : 'PlaceCtrl as placeCtrl',
+      resolve    : {
+        place: function(Restangular, $stateParams) {
+          let placeId = $stateParams.placeId;
+
+          return Restangular
+            .one('places', placeId)
+            .get();
+        }
+      }
+    });
   }
 
   function pagePath(relativePath) {

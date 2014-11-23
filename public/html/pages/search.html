@@ -17,7 +17,7 @@
     {{search.showPlaces ? 'Fechar' : 'Ver mais'}}
   </button>
   <div perfect-scrollbar class="place-list">
-    <my-place place="place" ng-repeat="place in search.places | limitTo:50"></my-place>
+    <my-place-box place="place" ng-repeat="place in search.places | limitTo:50"></my-place>
   </div>
 </section>
 
