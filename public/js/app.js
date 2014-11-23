@@ -11,6 +11,7 @@
     'ngLodash',
     'leaflet-directive',
     'angularMoment',
-    'offClick'
+    'offClick',
+    'perfect_scrollbar'
   ]);
 })();
