@@ -1,0 +1,65 @@
+@import (reference) "lesshat";
+@import (reference) "mixins";
+
+.places {
+  text-align: center;
+  margin-top: 0.5rem;
+
+  > .title {
+    background-color: #741e1e;
+    width: 75%;
+    color: white;
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+
+  .place-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  &.aerial {
+    @animation-duration: 0.5s;
+    @normal-input-height: 3rem;
+    @focus-input-height: 4rem;
+
+    #elements > .shadow();
+
+    transition: height, padding;
+    transition-duration: 0.5s;
+    position: absolute;
+    padding: 0.5rem;
+    left: 0rem;
+    right: 0rem;
+    bottom: 0rem;
+    margin: auto;
+    z-index: 1;
+    height: 9.5rem;
+    background: rgba(0, 0, 0, 0.75);
+    overflow: hidden;
+
+    &.fullscreen {
+      padding: 10rem 0.5rem;
+      height: 100%;
+
+      .more {
+        transform: rotateZ(360deg);
+        top: calc(~"100% - 3rem");
+      }
+    }
+
+    .more {
+      #elements > .button();
+
+      transition: top, transform;
+      transition-duration: 0.5s;
+      width: 7.5rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      display: inline-block;
+    }
+  }
+}

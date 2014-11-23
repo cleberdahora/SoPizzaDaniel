@@ -39,8 +39,8 @@
 
     Restangular.all('pizzerias')
       .getList()
-      .then(function (pizzerias) {
-        self.suggestions = pizzerias;
+      .then(places => {
+        self.places = places;
       });
 
     self.search      = search;

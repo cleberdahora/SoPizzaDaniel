@@ -43,18 +43,18 @@
 
     Restangular.all('pizzerias')
       .getList({ coordinates: coordinates.join() })
-      .then(function (pizzerias) {
-        self.pizzerias = pizzerias.map(pizzeria => {
-          let [longitude, latitude] = pizzeria.address.coordinates;
+      .then(places => {
+        self.places = places.map(place => {
+          let [longitude, latitude] = place.address.coordinates;
 
-          lodash.merge(pizzeria, {
+          lodash.merge(place, {
             lat      : latitude,
             lng      : longitude,
-            message  : pizzeria.name,
+            message  : place.name,
             draggable: false
           });
 
-          return pizzeria;
+          return place;
         });
       });
 

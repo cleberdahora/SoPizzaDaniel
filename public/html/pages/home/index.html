@@ -42,20 +42,10 @@
     Ver mais
   </a>
 </section>
-<section id="suggestions" class="suggestions">
+<section id="suggestions" class="places">
   <h2 class="title">Sugestões da região</h2>
-  <masonry class="suggestion-list">
-    <div masonry-brick class="suggestion" ng-repeat="suggestion in home.suggestions | limitTo:8">
-      <img class="background" ng-src="{{suggestion.photo}}" ng-alt="{{suggestion.name}}">
-      <div class="title">
-        <span class="title-text" ng-class="{big: suggestion.name.length > 12}">{{suggestion.name}}</span>
-      </div>
-      <div class="description">{{suggestion.description}}</div>
-      <div class="actions">
-        <a class="call" ng-href="tel:{{suggestion.phoneNumber}}">Ligar</a>
-        <a class="menu" href="#">Cardápio</a>
-      </div>
-    </div>
+  <masonry class="place-list">
+    <my-place place="place" ng-repeat="place in home.places | limitTo:10"></my-place>
   </masonry>
 </section>
 
