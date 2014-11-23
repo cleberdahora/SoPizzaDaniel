@@ -16,7 +16,7 @@
   <button class="more" ng-click="search.showPlaces = !search.showPlaces">
     {{search.showPlaces ? 'Fechar' : 'Ver mais'}}
   </button>
-  <div class="place-list">
+  <div perfect-scrollbar class="place-list">
     <my-place place="place" ng-repeat="place in search.places | limitTo:10"></my-place>
   </div>
 </section>

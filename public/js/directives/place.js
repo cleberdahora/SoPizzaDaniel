@@ -9,6 +9,7 @@
       restrict: 'E',
       link: link,
       templateUrl: '/resources/html/directives/place.html',
+      replace: true,
       scope: {
         place: '='
       }
