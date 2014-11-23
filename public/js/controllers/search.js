@@ -56,18 +56,23 @@
 
           return place;
         });
+
+        self.loading = false;
       });
 
-    self.search = search;
+    // State
+    self.loading     = true;
+    self.query       = $stateParams.query;
+
+    // Functions
+    self.search      = search;
     self.getLocation = getLocation;
-    self.query = $stateParams.query;
+
+    // Settings
     self.center = {
       lat : latitude,
       lng : longitude,
       zoom: 15
-    };
-    self.aoeu = function() {
-      console.log(arguments);
     };
   }
 

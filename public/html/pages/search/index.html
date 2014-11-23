@@ -17,8 +17,13 @@
     {{search.showPlaces ? 'Fechar' : 'Ver mais'}}
   </button>
   <div perfect-scrollbar class="place-list">
-    <my-place place="place" ng-repeat="place in search.places | limitTo:10"></my-place>
+    <my-place place="place" ng-repeat="place in search.places | limitTo:50"></my-place>
   </div>
 </section>
 
-<div class="dropshadow" ng-class="{ enabled: showDropshadow }" ng-click="showDropshadow = false"></div>
+<div class="dropshadow" ng-class="{ enabled: search.showDropshadow }" ng-click="showDropshadow = false"></div>
+<div class="dropshadow" ng-class="{ enabled: search.loading }">
+  <div class="animation-wrapper">
+    <img class="icon" height="100" width="100" src="/resources/images/icons/navigation.png" alt="loading">
+  </div>
+</div>
