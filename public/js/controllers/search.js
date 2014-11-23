@@ -7,7 +7,7 @@
     let [longitude, latitude] = coordinates;
 
     function search(query, coordinates) {
-      let params = { query };
+      let params = { q: query };
 
       if (coordinates) {
         params.ll = coordinates.join();
@@ -62,7 +62,7 @@
 
     // State
     self.loading     = true;
-    self.query       = $stateParams.query;
+    self.query       = $stateParams.q;
 
     // Functions
     self.search      = search;

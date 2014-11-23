@@ -5,7 +5,7 @@
     let self = this;
 
     function search(query, coordinates) {
-      var params = { query };
+      var params = { q: query };
 
       if (coordinates) {
         params.ll = coordinates.join();
