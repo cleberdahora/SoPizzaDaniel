@@ -17,7 +17,7 @@
     {{search.showPizzeriasList ? 'Fechar' : 'Ver mais'}}
   </button>
   <masonry class="suggestion-list">
-    <div masonry-brick class="suggestion" ng-class="{compact: false && !search.showPizzeriasList}" ng-repeat="suggestion in search.pizzerias | limitTo:10">
+    <div masonry-brick class="suggestion" ng-repeat="suggestion in search.pizzerias | limitTo:10">
       <img class="background" ng-src="{{suggestion.photo}}" ng-alt="{{suggestion.name}}">
       <div class="title">
         <span class="title-text" ng-class="{big: suggestion.name.length > 12}">{{suggestion.name}}</span>

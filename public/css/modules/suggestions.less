@@ -34,7 +34,7 @@
     height: @suggestion-height;
     vertical-align: top;
 
-    &:not(.compact):hover {
+    &:hover {
       .title, .title-text, .description, .actions, .call, .menu {
         transition: margin 0.5s 0.25s, opacity 0.5s 0.25s, transform 0.5s 0.25s, background-color 0.5s, padding 0.5s;
         transform: translate(0);
@@ -149,17 +149,6 @@
 
     .menu {
       transform: translateX(1rem);
-    }
-
-    &.compact {
-      width: @suggestion-width / 2;
-      height: @suggestion-height / 2;
-
-      .title {
-        transform: translateY(0.75rem) scale(1.5);
-        font-size: 1rem;
-        padding: 0.25rem;
-      }
     }
   }
 
