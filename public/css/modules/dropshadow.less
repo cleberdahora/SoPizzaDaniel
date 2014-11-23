@@ -2,7 +2,8 @@
 @import (reference) "mixins";
 
 .dropshadow {
-  transition: height 0 0.5s, background-color 0.5s;
+  transition: height 0 1.5s, background-color 1.5s;
+  z-index: 1;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -10,10 +11,56 @@
   right: 0;
   height: 0;
   background: rgba(0, 0, 0, 0);
+  overflow: hidden;
 
   &.enabled {
-    transition: height 0 0, background-color 0.5s;
+    transition: height 0 0, background-color 1.5s;
     background: rgba(0, 0, 0, 0.5);
     height: 100%;
+  }
+
+  &:not(.enabled) {
+    .animation-wrapper {
+      opacity: 0;
+    }
+    .icon {
+      transform: scale(2) translateY(-2rem);
+    }
+  }
+
+  .animation-wrapper {
+    transition: opacity 0.5s;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: inline-block;
+    margin: auto;
+  }
+
+  .icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: inline-block;
+    margin: auto;
+    transition: transform 0.5s;
+    transform: scale(1);
+    opacity: 0.5;
+    animation: dropshadow-icon 0.75s infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+  }
+}
+
+@keyframes dropshadow-icon {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
   }
 }

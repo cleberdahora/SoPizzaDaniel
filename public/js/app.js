@@ -10,6 +10,9 @@
     'geolocation',
     'ngLodash',
     'leaflet-directive',
-    'angularMoment'
+    'angularMoment',
+    'offClick',
+    'perfect_scrollbar',
+    'ngAnimate'
   ]);
 })();
