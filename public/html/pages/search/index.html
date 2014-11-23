@@ -1,3 +1,5 @@
+<leaflet class="map fullscreen" markers="search.pizzerias" center="search.center"></leaflet>
+
 <form class="search-bar aerial" ng-submit="search.search(search.query); dropshadow = false">
 
   <input class="search-input" type="text" name="q" ng-model="search.query" ng-focus="showDropshadow = true" ng-blur="showDropshadow = false">
@@ -10,5 +12,23 @@
   </button>
 </form>
 
-<leaflet class="map fullscreen" markers="search.pizzerias" center="search.center"></leaflet>
+<section class="suggestions aerial" ng-class="{fullscreen: search.showPizzeriasList}" my-escape="search.showPizzeriasList = false">
+  <button class="more" ng-click="search.showPizzeriasList = !search.showPizzeriasList">
+    {{search.showPizzeriasList ? 'Fechar' : 'Ver mais'}}
+  </button>
+  <masonry class="suggestion-list">
+    <div masonry-brick class="suggestion" ng-class="{compact: false && !search.showPizzeriasList}" ng-repeat="suggestion in search.pizzerias | limitTo:10">
+      <img class="background" ng-src="{{suggestion.photo}}" ng-alt="{{suggestion.name}}">
+      <div class="title">
+        <span class="title-text" ng-class="{big: suggestion.name.length > 12}">{{suggestion.name}}</span>
+      </div>
+      <div class="description">{{suggestion.description}} anoeth ahosne uhaoent husth </div>
+      <div class="actions">
+        <a class="call" ng-href="tel:{{suggestion.phoneNumber}}">Ligar</a>
+        <a class="menu" href="#">Cardápio</a>
+      </div>
+    </div>
+  </masonry>
+</section>
+
 <div class="dropshadow" ng-class="{ enabled: showDropshadow }" ng-click="showDropshadow = false"></div>

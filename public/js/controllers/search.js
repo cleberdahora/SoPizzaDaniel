@@ -66,6 +66,9 @@
       lng : longitude,
       zoom: 15
     };
+    self.aoeu = function() {
+      console.log(arguments);
+    };
   }
 
   angular.module('app')

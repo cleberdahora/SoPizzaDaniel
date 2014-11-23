@@ -19,23 +19,24 @@
   }
 
   .suggestion {
-    @suggestion-height: 10rem;
+    @suggestion-height: 7.5rem;
+    @suggestion-width: 15rem;
 
+    #elements > .shadow();
+
+    transition: width 0.5s, height 0.5s;
     box-sizing: border-box;
 
     position: relative;
     display: inline-block;
     margin: 0.5rem;
-    padding: 1rem;
-    border: 0.0625rem solid #741e1e;
-    width: 20rem;
+    width: @suggestion-width;
     height: @suggestion-height;
     vertical-align: top;
-    overflow: hidden;
 
-    &:hover {
-      .title, .description, .actions, .call, .menu {
-        transition: opacity 0.5s 0.25s, transform 0.5s 0.25s, background-color 0.5s, padding 0.5s;
+    &:not(.compact):hover {
+      .title, .title-text, .description, .actions, .call, .menu {
+        transition: margin 0.5s 0.25s, opacity 0.5s 0.25s, transform 0.5s 0.25s, background-color 0.5s, padding 0.5s;
         transform: translate(0);
 
         opacity: 1;
@@ -43,6 +44,11 @@
 
       .title {
         background-color: rgba(0, 0, 0, 0);
+        margin-top: 0.75rem;
+
+        .title-text {
+          margin: 0rem;
+        }
       }
 
       &::before {
@@ -76,35 +82,47 @@
     }
 
     .title, .description {
-      transition: opacity 0.5s, transform 0.5s, background-color 0.5s;
+      transition: margin, opacity, transform, background-color, font-size;
+      transition-duration: 0.5s;
       transform: translateY(-1rem);
 
       color: white;
-      opacity: 0;
       font-size: 1.5rem;
     }
 
     .title {
-      transform: translateY(3rem) scale(1.5);
+      transform: translateY(2rem);
       text-shadow: 0 0 0.125rem black;
+      padding: 0.25rem 2.5rem;
+      font-weight: bold;
       background-color: rgba(0, 0, 0, 0.5);
-      opacity: 1;
-      padding: 0.5rem;
+
+      .title-text {
+        display: inline-block;
+        transition: font-size, margin, transform;
+        transition-duration: 0.5s;
+        transform: scale(1.5);
+        margin: 0.75rem;
+
+        &.big {
+          font-size: 1rem;
+        }
+      }
     }
 
     .description {
       transform: translateY(-1.5rem);
 
       color: lightgray;
+      opacity: 0;
       font-size: 1rem;
     }
 
     .actions {
-      transition: opacity 0.5s, transform 0.5s;
-      transform: translateY(1rem);
+      transition: opacity 0.5s;
 
       position: absolute;
-      bottom: 1rem;
+      bottom: -1rem;
       left: 0;
       right: 0;
       margin: auto;
@@ -119,7 +137,7 @@
       display: inline-block;
       padding: 0.5rem;
       width: 6rem;
-      margin: 0.5rem;
+      margin: 0.25rem;
       font-size: 1.25rem;
       background: green;
       color: white;
@@ -131,6 +149,62 @@
 
     .menu {
       transform: translateX(1rem);
+    }
+
+    &.compact {
+      width: @suggestion-width / 2;
+      height: @suggestion-height / 2;
+
+      .title {
+        transform: translateY(0.75rem) scale(1.5);
+        font-size: 1rem;
+        padding: 0.25rem;
+      }
+    }
+  }
+
+  &.aerial {
+    @animation-duration: 0.5s;
+    @normal-input-height: 3rem;
+    @focus-input-height: 4rem;
+
+    #elements > .shadow();
+
+    transition: height, padding;
+    transition-duration: 0.5s;
+    position: absolute;
+    padding: 0.5rem;
+    left: 0rem;
+    right: 0rem;
+    bottom: 0rem;
+    margin: auto;
+    z-index: 1;
+    height: 9rem;
+    background: rgba(0, 0, 0, 0.75);
+    overflow: hidden;
+
+    &.fullscreen {
+      padding: 10rem 0.5rem;
+      height: 100%;
+
+      .more {
+        transform: rotateZ(360deg);
+        top: calc(~"100% - 3rem");
+      }
+    }
+
+    .more {
+      #elements > .button();
+
+      transition: top, transform;
+      transition-duration: 0.5s;
+      width: 7.5rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      display: inline-block;
     }
   }
 }

@@ -47,7 +47,9 @@
   <masonry class="suggestion-list">
     <div masonry-brick class="suggestion" ng-repeat="suggestion in home.suggestions | limitTo:8">
       <img class="background" ng-src="{{suggestion.photo}}" ng-alt="{{suggestion.name}}">
-      <div class="title">{{suggestion.name}}</div>
+      <div class="title">
+        <span class="title-text" ng-class="{big: suggestion.name.length > 12}">{{suggestion.name}}</span>
+      </div>
       <div class="description">{{suggestion.description}}</div>
       <div class="actions">
         <a class="call" ng-href="tel:{{suggestion.phoneNumber}}">Ligar</a>
