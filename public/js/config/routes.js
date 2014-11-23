@@ -8,7 +8,7 @@
     $stateProvider.state({
       name       : 'home',
       url        : '/',
-      templateUrl: templatePath('home/index.html'),
+      templateUrl: pagePath('home.html'),
       controller : 'HomeCtrl as home'
     });
 
@@ -19,7 +19,7 @@
     $stateProvider.state({
       name       : 'search',
       url        : '/search?query&ll',
-      templateUrl: templatePath('search/index.html'),
+      templateUrl: pagePath('search.html'),
       controller : 'SearchCtrl as search',
       resolve    : {
         coordinates: function(Restangular, $stateParams, lodash) {
@@ -41,7 +41,7 @@
     });
   }
 
-  function templatePath(relativePath) {
+  function pagePath(relativePath) {
     return '/resources/html/pages/' + relativePath;
   }
 
