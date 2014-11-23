@@ -16,7 +16,8 @@
     "leaflet": "~0.7.3",
     "angular-moment": "~0.8.2",
     "angular-off-click": "~0.0.2",
-    "angular-perfect-scrollbar": "*"
+    "angular-perfect-scrollbar": "*",
+    "ngAnimate": "*"
   },
   "devDependencies": {
     "lesshat": "~3.0.2"

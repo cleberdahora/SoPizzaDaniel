@@ -12,6 +12,7 @@
     'leaflet-directive',
     'angularMoment',
     'offClick',
-    'perfect_scrollbar'
+    'perfect_scrollbar',
+    'ngAnimate'
   ]);
 })();
