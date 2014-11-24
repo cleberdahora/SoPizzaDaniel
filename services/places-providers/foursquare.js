@@ -119,8 +119,10 @@ function find(coordinates, callback) {
   }, function(err, res, body) {
     var venues = body.response.venues.map(function (venue) {
       return {
-        origin: 'foursquare',
-        providerId: venue.id,
+        origin: {
+          id: venue.id,
+          provider:'foursquare',
+        },
         name: venue.name,
         description: venue.location.address,
         phoneNumber: venue.contact.phone,
@@ -135,8 +137,8 @@ function find(coordinates, callback) {
     async.parallel(venues.map(function(venue) {
       return function(callback) {
         async.parallel({
-          workingTimes: lodash.wrap(venue.providerId, getWorkingTime),
-          photos      : lodash.wrap(venue.providerId, getPhotos)
+          workingTimes: lodash.wrap(venue.origin.id, getWorkingTime),
+          photos      : lodash.wrap(venue.origin.id, getPhotos)
         }, function(err, venueInfo) {
           // TODO: Handle err properly
           venue.workingTimes = venueInfo.workingTimes;
@@ -157,7 +159,7 @@ function find(coordinates, callback) {
             .toDate();
 
           Place.findOne({
-            providerId: venue.providerId
+            origin: venue.origin
           }, function(err, dbPlace) {
             if (dbPlace) {
               callback(null, dbPlace);
