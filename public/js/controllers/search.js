@@ -41,7 +41,7 @@
         });
     }
 
-    Restangular.all('pizzerias')
+    Restangular.all('places')
       .getList({ coordinates: coordinates.join() })
       .then(places => {
         self.places = places.map(place => {

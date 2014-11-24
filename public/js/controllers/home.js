@@ -37,7 +37,7 @@
         });
     }
 
-    Restangular.all('pizzerias')
+    Restangular.all('places')
       .getList()
       .then(places => {
         self.places = places;

@@ -11,7 +11,7 @@ var weekdays = lodash.range(0, 6).map(function(dayNumber) {
     .toLowerCase();
 });
 
-var pizzeriaSchema = new Schema({
+var placeSchema = new Schema({
   name: String,
   description: String,
   providerId: String,
@@ -28,8 +28,8 @@ var pizzeriaSchema = new Schema({
 });
 
 // TODO: Change to 2D spherical index
-pizzeriaSchema.index({
+placeSchema.index({
   'address.coordinates': '2dsphere'
 });
 
-mongoose.model('Pizzeria', pizzeriaSchema);
+mongoose.model('Place', placeSchema);

@@ -6,7 +6,7 @@ var lodash   = require('lodash');
 var request  = require('request');
 var mongoose = require('mongoose');
 
-var Place = mongoose.model('Pizzeria');
+var Place = mongoose.model('Place');
 
 var key     = 'LKEEQ0LFB0YDKXBXZLWXHDMZK1YZYHPKCGIJ3Q5WI2BEBIAU';
 var secret  = 'ERGCV1WDFX2DVCP030M5URJK24YQGWOFIM5PEDJRQ4G1SYIN';

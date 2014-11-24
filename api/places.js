@@ -6,12 +6,12 @@ var lodash   = require('lodash');
 var geoip    = require('geoip-lite');
 var places   = require(path.join(global.root, '/services/places'));
 var mongoose = require('mongoose');
-var Pizzeria = mongoose.model('Pizzeria');
+var Place    = mongoose.model('Place');
 
 module.exports = function(router) {
   /**
    * GET /
-   * Get a list of pizzerias
+   * Get a list of places
    */
   function get(req, res) {
     // [longitude, latitude] as defined in GeoJSON specification
@@ -35,8 +35,8 @@ module.exports = function(router) {
 
     // Get places info from database
     function fromDB(callback) {
-      Pizzeria.find(function(err, pizzerias) {
-        callback(null, pizzerias.map(function(val) {
+      Place.find(function(err, places) {
+        callback(null, places.map(function(val) {
           return {
             id           : val._id,
             name         : val.name,
@@ -65,26 +65,26 @@ module.exports = function(router) {
 
   /**
    * GET /:id
-   * Find a pizzeria by id
+   * Find a place by id
    */
   function getSingle(req, res) {
     var id = req.params.id;
 
-    Pizzeria.findById(id, function(err, pizzeria) {
+    Place.findById(id, function(err, place) {
       if (err) {
         res.status(500).end(); // Internal Server Error
       }
 
-      if (!pizzeria) {
+      if (!place) {
         return res.status(404).end(); // Not Found
       }
 
       return res.json({
-        id         : pizzeria._id,
-        name       : pizzeria.name,
-        description: pizzeria.description,
+        id         : place._id,
+        name       : place.name,
+        description: place.description,
         address    : {
-          ll: pizzeria.ll
+          ll: place.ll
         }
       });
     });
@@ -92,28 +92,28 @@ module.exports = function(router) {
 
   /**
    * GET /:id/picture
-   * Get the main picture of a pizzeria
+   * Get the main picture of a place
    */
   function getPicture(req, res) {
     var id = req.params.id;
 
-    Pizzeria.findById(id, function(err, pizzeria) {
+    Place.findById(id, function(err, place) {
       if (err) {
         return res.status(500).end(); // Internal Server Error
       }
 
-      if (!pizzeria) {
+      if (!place) {
         return res.status(404).end(); // Not Found
       }
 
       res.contentType('image/jpg');
-      return res.send(pizzeria.picture);
+      return res.send(place.picture);
     });
   }
 
   /**
    * POST /
-   * Create a pizzeria
+   * Create a place
    */
   function post(req, res) {
     var name = req.body.name;
@@ -125,14 +125,14 @@ module.exports = function(router) {
       return res.status(422).end(); // Unprocessable Entity
     }
 
-    var pizzeria = new Pizzeria({
+    var place = new Place({
       name: req.body.name,
       description: req.body.description,
       address: {
       }
     });
 
-    pizzeria.save(function(err) {
+    place.save(function(err) {
       if (err) {
         return res.status(500).end(); // Internal Server Error
       }
