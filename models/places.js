@@ -14,6 +14,7 @@ var weekdays = lodash.range(0, 6).map(function(dayNumber) {
 var placeSchema = new Schema({
   name: String,
   description: String,
+  origin: String,
   providerId: String,
   //picture: { type: Schema.Buffer },
 
