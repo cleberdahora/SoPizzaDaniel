@@ -24,12 +24,17 @@ var placeSchema = new Schema({
   workingTimes: [{
     days: [{ type: String, enum: weekdays }],
     times: [{ start: Number, end: Number }]
-  }]
+  }],
+  expiresOn: Date
 });
 
-// TODO: Change to 2D spherical index
-placeSchema.index({
-  'address.coordinates': '2dsphere'
-});
+// Indexes
+placeSchema
+  .path('address.coordinates')
+  .index({ type: '2dsphere' });
+
+placeSchema
+  .path('expiresOn')
+  .index({ 'expireAfterSeconds': 0 });
 
 mongoose.model('Place', placeSchema);
