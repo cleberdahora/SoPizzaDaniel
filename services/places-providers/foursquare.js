@@ -1,13 +1,18 @@
 'use strict';
 
-var async   = require('async');
-var moment  = require('moment');
-var lodash  = require('lodash');
-var request = require('request');
+var async    = require('async');
+var moment   = require('moment');
+var lodash   = require('lodash');
+var request  = require('request');
+var mongoose = require('mongoose');
+
+var Place = mongoose.model('Pizzeria');
+
 var key     = 'LKEEQ0LFB0YDKXBXZLWXHDMZK1YZYHPKCGIJ3Q5WI2BEBIAU';
 var secret  = 'ERGCV1WDFX2DVCP030M5URJK24YQGWOFIM5PEDJRQ4G1SYIN';
-var pizzeriaCategoryId = '4bf58dd8d48988d1ca941735';
 var baseURL = 'https://api.foursquare.com/v2/venues/';
+
+var pizzeriaCategoryId = '4bf58dd8d48988d1ca941735';
 
 /**
  * Denormalizes geographic coordinates from the [longitude, latitude] format
@@ -114,11 +119,13 @@ function find(coordinates, callback) {
   }, function(err, res, body) {
     var venues = body.response.venues.map(function (venue) {
       return {
-        id: venue.id,
+        origin: 'foursquare',
+        providerId: venue.id,
         name: venue.name,
         description: venue.location.address,
         phoneNumber: venue.contact.phone,
         address: {
+          formatted: venue.location.address,
           coordinates: [venue.location.lng, venue.location.lat]
         }
       };
@@ -128,8 +135,8 @@ function find(coordinates, callback) {
     async.parallel(venues.map(function(venue) {
       return function(callback) {
         async.parallel({
-          workingTimes: lodash.wrap(venue.id, getWorkingTime),
-          photos      : lodash.wrap(venue.id, getPhotos)
+          workingTimes: lodash.wrap(venue.providerId, getWorkingTime),
+          photos      : lodash.wrap(venue.providerId, getPhotos)
         }, function(err, venueInfo) {
           // TODO: Handle err properly
           venue.workingTimes = venueInfo.workingTimes;
@@ -140,7 +147,28 @@ function find(coordinates, callback) {
         });
       };
     }), function(err, venues) {
-      callback(null, venues);
+      // Sync local db as a cache storage
+      async.parallel(venues.map(function(venue) {
+        return function(callback) {
+          var place = new Place(venue);
+
+          place.expiresOn = moment()
+            .add(30, 'days')
+            .toDate();
+
+          Place.findOne({
+            providerId: venue.providerId
+          }, function(err, dbPlace) {
+            if (dbPlace) {
+              callback(null, dbPlace);
+            } else {
+              place.save(function(err, place) {
+                callback(err, place);
+              });
+            }
+          });
+        };
+      }), callback);
     });
   });
 }
