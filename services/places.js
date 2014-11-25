@@ -15,9 +15,9 @@ var providers    = requireAll(providersDir);
  */
 function find(coordinates, callback) {
   // Wrap a provider to be called by async library
-  function wrap(provider) {
-    return function(asyncCallback) {
-      provider(coordinates, asyncCallback);
+  function wrap(fn) {
+    return function(callback) {
+      fn(coordinates, callback);
     };
   }
 
