@@ -14,7 +14,6 @@ var weekdays = lodash.range(0, 6).map(function(dayNumber) {
 var placeSchema = new Schema({
   name: String,
   description: String,
-  updatedAt: Date,
   origin: {
     provider: String,
     id: String
@@ -30,6 +29,7 @@ var placeSchema = new Schema({
     days: [{ type: String, enum: weekdays }],
     times: [{ start: Number, end: Number }]
   }],
+  expiresOn: Date
 });
 
 // Indexes

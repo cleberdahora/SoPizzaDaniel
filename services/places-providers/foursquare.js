@@ -28,6 +28,13 @@ function denormalizeCoordinates(coordinates) {
   return [latitude, longitude];
 }
 
+function getCachedPlace(origin, callback) {
+  Place.findOne({
+    origin: origin,
+    expiresOn: { $gt: moment().toDate() }
+  }, callback);
+}
+
 function parseTimeframes(timeframes) {
   return (timeframes || []).map(function(timeframe) {
     var days = timeframe.days
@@ -120,8 +127,8 @@ function find(coordinates, callback) {
     var venues = body.response.venues.map(function (venue) {
       return {
         origin: {
-          id: venue.id,
           provider:'foursquare',
+          id: venue.id
         },
         name: venue.name,
         description: venue.location.address,
@@ -133,45 +140,40 @@ function find(coordinates, callback) {
       };
     });
 
-    // Get photos for each venue
+    // Get additional information (e.g. photos, working time) for each venue
     async.parallel(venues.map(function(venue) {
       return function(callback) {
-        async.parallel({
-          workingTimes: lodash.wrap(venue.origin.id, getWorkingTime),
-          photos      : lodash.wrap(venue.origin.id, getPhotos)
-        }, function(err, venueInfo) {
-          // TODO: Handle err properly
-          venue.workingTimes = venueInfo.workingTimes;
-          venue.photo        = venueInfo.photos[0];
-          venue.photos       = venueInfo.photos;
+        // Try to use cached information to avoid unnecessary requests
+        getCachedPlace(venue.origin, function(err, cachedVenue) {
+          if (cachedVenue) {
+            // Return cached information
+            callback(null, cachedVenue);
+          } else {
+            // Get the most recent informations and update database
+            async.parallel({
+              workingTimes: lodash.wrap(venue.origin.id, getWorkingTime),
+              photos      : lodash.wrap(venue.origin.id, getPhotos)
+            }, function(err, venueInfo) {
+              // TODO: Handle err properly
+              let place = new Place(venue);
 
-          callback(null, venue);
+              place.workingTimes = venueInfo.workingTimes;
+              place.photo        = venueInfo.photos[0];
+              place.photos       = venueInfo.photos;
+              place.expiresOn    = moment()
+                .add(30, 'days')
+                .toDate();
+
+
+              place.save(function(err, place) {
+                // TODO: Handle err properly
+                callback(null, place);
+              });
+            });
+          }
         });
       };
-    }), function(err, venues) {
-      // Sync local db as a cache storage
-      async.parallel(venues.map(function(venue) {
-        return function(callback) {
-          var place = new Place(venue);
-
-          place.expiresOn = moment()
-            .add(30, 'days')
-            .toDate();
-
-          Place.findOne({
-            origin: venue.origin
-          }, function(err, dbPlace) {
-            if (dbPlace) {
-              callback(null, dbPlace);
-            } else {
-              place.save(function(err, place) {
-                callback(err, place);
-              });
-            }
-          });
-        };
-      }), callback);
-    });
+    }), callback);
   });
 }
 
