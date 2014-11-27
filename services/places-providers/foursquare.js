@@ -109,46 +109,59 @@ function getPictures(venueId, callback) {
 
 function updatePlace(place, callback) {
   function getPlace(callback) {
-    if (place instanceof Place) {
+    function assignDbPlace(err, dbPlace) {
+      // TODO: Handle err properly
+      place = lodash.merge(dbPlace, place);
       callback(null, place);
-    } else {
-      var providerInfo = place;
+    }
 
+    if (place instanceof Place) {
+      // TODO: Handle err properly
+      callback(null, place);
+
+    } else if (place.id) {
+      Place.findById(place.id, assignDbPlace);
+
+    } else if (place.providerInfo) {
       Place.findOne({
-        providerInfo: providerInfo,
-      }, function(err, place) {
-        console.log(err, place);
-        // TODO: Handle err properly
-        callback(null, place);
-      });
+        providerInfo: place.providerInfo
+      }, assignDbPlace);
+
+    } else {
+      // TODO: Handle err properly
+      place = new Place(place);
+      callback(null, place);
     }
   }
 
-  function update(place, callback) {
-    // Get the most recent informations and update database
+  function getVenueInfo(callback) {
     async.parallel({
       workingTimes: lodash.wrap(place.providerInfo.id, getWorkingTime),
       pictures    : lodash.wrap(place.providerInfo.id, getPictures)
-    }, function(err, venueInfo) {
-      // TODO: Handle err properly
-      place.workingTimes = venueInfo.workingTimes;
-      place.picture      = venueInfo.pictures[0];
-      place.pictures     = venueInfo.pictures;
-      place.expiresOn    = moment()
-        .add(30, 'days')
-        .toDate();
-
-
-      place.save(function(err, place) {
-        // TODO: Handle err properly
-        callback(null, place);
-      });
-    });
+    }, callback);
   }
 
-  async.waterfall([getPlace, update], function(err, place) {
+  // Get the most recent informations and update database
+  async.parallel({
+    place    : getPlace,
+    venueInfo: getVenueInfo
+  }, function(err, placeInfo) {
+    var place = placeInfo.place;
+    var venueInfo = placeInfo.venueInfo;
+
     // TODO: Handle err properly
-    callback(null, place);
+    place.workingTimes = venueInfo.workingTimes;
+    place.picture      = venueInfo.pictures[0];
+    place.pictures     = venueInfo.pictures;
+    place.expiresOn    = moment()
+      .add(1, 'hour')
+      .toDate();
+
+
+    place.save(function(err, place) {
+      // TODO: Handle err properly
+      callback(null, place);
+    });
   });
 }
 
@@ -169,7 +182,7 @@ function find(coordinates, callback) {
     qs  : qs,
     json: true
   }, function(err, res, body) {
-    var venues = body.response.venues.map(function (venue) {
+    var places = body.response.venues.map(function (venue) {
       return {
         providerInfo: {
           provider:'foursquare',
@@ -186,16 +199,16 @@ function find(coordinates, callback) {
     });
 
     // Get additional information (e.g. pictures, working time) for each venue
-    async.parallel(venues.map(function(venue) {
+    async.parallel(places.map(function(place) {
       return function(callback) {
         // Try to use cached information to avoid unnecessary requests
-        getCachedPlace(venue.providerInfo, function(err, cachedVenue) {
-          if (cachedVenue) {
+        getCachedPlace(place.providerInfo, function(err, cachedPlace) {
+          if (cachedPlace) {
             // Return cached information
-            callback(null, cachedVenue);
+            callback(null, cachedPlace);
           } else {
             // Get the most recent informations and update database
-            updatePlace(venue.providerInfo, callback);
+            updatePlace(place, callback);
           }
         });
       };
