@@ -121,7 +121,7 @@ module.exports = function(router) {
       id           : place.id,
       name         : place.name,
       description  : place.description,
-      photo        : place.photo,
+      picture      : place.picture,
       //externalLinks: place.externalLinks,
       address      : place.address,
       workingTimes : place.workingTimes.map(function(workingTime) {

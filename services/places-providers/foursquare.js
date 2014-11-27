@@ -87,7 +87,7 @@ function getWorkingTime(venueId, callback) {
   });
 }
 
-function getPhotos(venueId, callback) {
+function getPictures(venueId, callback) {
   var url = baseURL + venueId + '/photos';
 
   var qs = {
@@ -117,6 +117,7 @@ function updatePlace(place, callback) {
       Place.findOne({
         providerInfo: providerInfo,
       }, function(err, place) {
+        console.log(err, place);
         // TODO: Handle err properly
         callback(null, place);
       });
@@ -127,12 +128,12 @@ function updatePlace(place, callback) {
     // Get the most recent informations and update database
     async.parallel({
       workingTimes: lodash.wrap(place.providerInfo.id, getWorkingTime),
-      photos      : lodash.wrap(place.providerInfo.id, getPhotos)
+      pictures    : lodash.wrap(place.providerInfo.id, getPictures)
     }, function(err, venueInfo) {
       // TODO: Handle err properly
       place.workingTimes = venueInfo.workingTimes;
-      place.photo        = venueInfo.photos[0];
-      place.photos       = venueInfo.photos;
+      place.picture      = venueInfo.pictures[0];
+      place.pictures     = venueInfo.pictures;
       place.expiresOn    = moment()
         .add(30, 'days')
         .toDate();
@@ -184,7 +185,7 @@ function find(coordinates, callback) {
       };
     });
 
-    // Get additional information (e.g. photos, working time) for each venue
+    // Get additional information (e.g. pictures, working time) for each venue
     async.parallel(venues.map(function(venue) {
       return function(callback) {
         // Try to use cached information to avoid unnecessary requests
@@ -194,26 +195,7 @@ function find(coordinates, callback) {
             callback(null, cachedVenue);
           } else {
             // Get the most recent informations and update database
-            async.parallel({
-              workingTimes: lodash.wrap(venue.providerInfo.id, getWorkingTime),
-              photos      : lodash.wrap(venue.providerInfo.id, getPhotos)
-            }, function(err, venueInfo) {
-              // TODO: Handle err properly
-              let place = new Place(venue);
-
-              place.workingTimes = venueInfo.workingTimes;
-              place.photo        = venueInfo.photos[0];
-              place.photos       = venueInfo.photos;
-              place.expiresOn    = moment()
-                .add(30, 'days')
-                .toDate();
-
-
-              place.save(function(err, place) {
-                // TODO: Handle err properly
-                callback(null, place);
-              });
-            });
+            updatePlace(venue.providerInfo, callback);
           }
         });
       };
