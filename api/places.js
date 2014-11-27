@@ -3,9 +3,10 @@
 var path     = require('path');
 var lodash   = require('lodash');
 var geoip    = require('geoip-lite');
-var places   = require(path.join(global.root, '/services/places'));
 var mongoose = require('mongoose');
-var Place    = mongoose.model('Place');
+var places   = require(path.resolve('./services/places'));
+
+var Place = mongoose.model('Place');
 
 module.exports = function(router) {
   /**
@@ -120,6 +121,7 @@ module.exports = function(router) {
       id           : place.id,
       name         : place.name,
       description  : place.description,
+      photo        : place.photo,
       //externalLinks: place.externalLinks,
       address      : place.address,
       workingTimes : place.workingTimes.map(function(workingTime) {

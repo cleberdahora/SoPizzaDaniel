@@ -19,6 +19,7 @@ var placeSchema = new Schema({
     id: String
   },
   //picture: { type: Schema.Buffer },
+  photo: String,
 
   address: {
     formatted: String,
