@@ -41,7 +41,14 @@ function find(coordinates, callback) {
  */
 function findOne(id, callback) {
   Place.findById(id, function(err, place) {
-    // TODO: Handle err properly
+    if (err) {
+      return callback(err, null);
+    }
+
+    if (!place) {
+      return callback(null, null);
+    }
+
     if (place.expiresOn > moment().toDate()) {
       callback(null, place);
     } else {
