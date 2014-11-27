@@ -1,7 +1,6 @@
 'use strict';
 
 var path     = require('path');
-var async    = require('async');
 var lodash   = require('lodash');
 var geoip    = require('geoip-lite');
 var places   = require(path.join(global.root, '/services/places'));
@@ -33,33 +32,15 @@ module.exports = function(router) {
       }
     }
 
-    // Get places info from database
-    function fromDB(callback) {
-      Place.find(function(err, places) {
-        callback(null, places.map(function(val) {
-          return {
-            id           : val._id,
-            name         : val.name,
-            description  : val.description,
-            externalLinks: val.externalLinks,
-            address      : val.address
-          };
-        }));
-      });
-    }
-
-    // Get places info from providers
-    function fromProviders(callback) {
-      places.find(coordinates, callback);
-    }
-
-    // Get places info from database and providers asynchronously
-    async.parallel([fromDB, fromProviders], function(err, results) {
+    // Get places info from all sources
+    places.find(coordinates, function(err, results) {
       if (err) {
         return res.status(500).end();
       }
 
-      return res.json(lodash.flatten(results));
+      results = lodash.flatten(results).map(filterPlace);
+
+      return res.json(results);
     });
   }
 
@@ -70,7 +51,7 @@ module.exports = function(router) {
   function getSingle(req, res) {
     var id = req.params.id;
 
-    Place.findById(id, function(err, place) {
+    places.findOne(id, function(err, place) {
       if (err) {
         res.status(500).end(); // Internal Server Error
       }
@@ -79,14 +60,7 @@ module.exports = function(router) {
         return res.status(404).end(); // Not Found
       }
 
-      return res.json({
-        id         : place._id,
-        name       : place.name,
-        description: place.description,
-        address    : {
-          ll: place.ll
-        }
-      });
+      return res.json(filterPlace(place));
     });
   }
 
@@ -139,6 +113,24 @@ module.exports = function(router) {
 
       return res.status(201).end(); // Created
     });
+  }
+
+  function filterPlace(place) {
+    return {
+      id           : place.id,
+      name         : place.name,
+      description  : place.description,
+      //externalLinks: place.externalLinks,
+      address      : place.address,
+      workingTimes : place.workingTimes.map(function(workingTime) {
+        return {
+          days : workingTime.days,
+          times: workingTime.times.map(function(time) {
+            return lodash.pick(time, ['start', 'end']);
+          })
+        };
+      })
+    };
   }
 
   router.get('/', get);
