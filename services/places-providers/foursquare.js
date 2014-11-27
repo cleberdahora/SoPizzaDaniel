@@ -28,9 +28,9 @@ function denormalizeCoordinates(coordinates) {
   return [latitude, longitude];
 }
 
-function getCachedPlace(origin, callback) {
+function getCachedPlace(providerInfo, callback) {
   Place.findOne({
-    origin: origin,
+    providerInfo: providerInfo,
     expiresOn: { $gt: moment().toDate() }
   }, callback);
 }
@@ -107,6 +107,51 @@ function getPhotos(venueId, callback) {
   });
 }
 
+function updatePlace(place, callback) {
+  function getPlace(callback) {
+    if (!place instanceof Place) {
+      callback(null, place);
+    } else {
+      var providerInfo = place;
+
+      Place.findOne({
+        providerInfo: providerInfo,
+      }, function(err, place) {
+        // TODO: Handle err properly
+        callback(null, place);
+      });
+    }
+  }
+
+  function update(place, callback) {
+    // Get the most recent informations and update database
+    async.parallel({
+      workingTimes: lodash.wrap(place.providerInfo.id, getWorkingTime),
+      photos      : lodash.wrap(place.providerInfo.id, getPhotos)
+    }, function(err, venueInfo) {
+      // TODO: Handle err properly
+      place.workingTimes = venueInfo.workingTimes;
+      place.photo        = venueInfo.photos[0];
+      place.photos       = venueInfo.photos;
+      place.expiresOn    = moment()
+        .add(30, 'days')
+        .toDate();
+
+
+      place.save(function(err, place) {
+        // TODO: Handle err properly
+        callback(null, place);
+      });
+    });
+  }
+
+
+  async.series([getPlace, update], function(err, place) {
+    // TODO: Handle err properly
+    callback(null, place);
+  });
+}
+
 function find(coordinates, callback) {
   var url = baseURL + 'search';
 
@@ -126,7 +171,7 @@ function find(coordinates, callback) {
   }, function(err, res, body) {
     var venues = body.response.venues.map(function (venue) {
       return {
-        origin: {
+        providerInfo: {
           provider:'foursquare',
           id: venue.id
         },
@@ -144,15 +189,15 @@ function find(coordinates, callback) {
     async.parallel(venues.map(function(venue) {
       return function(callback) {
         // Try to use cached information to avoid unnecessary requests
-        getCachedPlace(venue.origin, function(err, cachedVenue) {
+        getCachedPlace(venue.providerInfo, function(err, cachedVenue) {
           if (cachedVenue) {
             // Return cached information
             callback(null, cachedVenue);
           } else {
             // Get the most recent informations and update database
             async.parallel({
-              workingTimes: lodash.wrap(venue.origin.id, getWorkingTime),
-              photos      : lodash.wrap(venue.origin.id, getPhotos)
+              workingTimes: lodash.wrap(venue.providerInfo.id, getWorkingTime),
+              photos      : lodash.wrap(venue.providerInfo.id, getPhotos)
             }, function(err, venueInfo) {
               // TODO: Handle err properly
               let place = new Place(venue);
@@ -178,7 +223,8 @@ function find(coordinates, callback) {
 }
 
 var foursquare = {
-  find: find
+  find: find,
+  updatePlace: updatePlace
 };
 
 module.exports = foursquare;

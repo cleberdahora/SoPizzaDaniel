@@ -14,7 +14,7 @@ var weekdays = lodash.range(0, 6).map(function(dayNumber) {
 var placeSchema = new Schema({
   name: String,
   description: String,
-  origin: {
+  providerInfo: {
     provider: String,
     id: String
   },
@@ -37,7 +37,7 @@ placeSchema.index({ 'address.coordinates': 1 }, {
   type: '2dsphere'
 });
 
-placeSchema.index({ 'origin.provider': 1, 'origin.id': 1 }, {
+placeSchema.index({ 'providerInfo.provider': 1, 'providerInfo.id': 1 }, {
   unique: true
 });
 
