@@ -160,7 +160,7 @@ function find(coordinates, callback) {
     client_secret: secret,
     categoryId   : pizzeriaCategoryId,
     ll           : denormalizeCoordinates(coordinates).join(),
-    limit        : 10
+    limit        : 50
   };
 
   request.get({
