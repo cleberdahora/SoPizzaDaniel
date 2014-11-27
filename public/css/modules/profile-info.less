@@ -1,0 +1,37 @@
+@import (reference) "lesshat";
+@import (reference) "mixins";
+
+.profile-info {
+  #elements > .shadow();
+
+  margin: auto;
+  width: 100%;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1rem 0;
+
+  .picture {
+    #elements > .shadow();
+
+    @size: 10rem;
+    border: 0.5rem solid white;
+    display: inline;
+    height: @size;
+    width: @size;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .info {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 1rem;
+  }
+
+  .name {
+    //display: inline-block;
+    vertical-align: middle;
+    font-size: 3rem;
+    margin: 1rem 0;
+  }
+}

@@ -1,2 +1,23 @@
 <section class="jumbotron">
+  <my-video-slider class="background" parallax parallax-ratio="0.5">
+    <img ng-src="{{placeCtrl.place.picture}}">
+    <!--<video loop autoload muted>-->
+      <!--<source src="/resources/videos/jumbotron.webm" type="video/webm">-->
+      <!--<source src=http://techslides.com/demos/sample-videos/small.webm type=video/webm>-->
+      <!--<source src=http://techslides.com/demos/sample-videos/small.ogv type=video/ogg>-->
+      <!--<source src=http://techslides.com/demos/sample-videos/small.mp4 type=video/mp4>-->
+      <!--<source src=http://techslides.com/demos/sample-videos/small.3gp type=video/3gp>-->
+    <!--</video>-->
+  </my-video-slider>
+  <div class="profile-info">
+    <img class="picture" alt="profile image" ng-src="{{placeCtrl.place.picture}}">
+
+    <div class="info">
+      <h1 class="name">{{placeCtrl.place.name}}</h1>
+      <span class="address">{{placeCtrl.place.address.formatted}}</span>
+    </div>
+  </div>
+
 </section>
+
+<div class="menu"></div>
