@@ -109,8 +109,13 @@ function getPictures(venueId, callback) {
 
 function updatePlace(place, callback) {
   function getPlace(callback) {
-    function assignDbPlace(err, dbPlace) {
+    // Merge place information with database place information
+    function mergePlace(err, dbPlace) {
       // TODO: Handle err properly
+      if (!dbPlace) {
+        dbPlace = new Place(place);
+      }
+
       place = lodash.merge(dbPlace, place);
       callback(null, place);
     }
@@ -120,12 +125,12 @@ function updatePlace(place, callback) {
       callback(null, place);
 
     } else if (place.id) {
-      Place.findById(place.id, assignDbPlace);
+      Place.findById(place.id, mergePlace);
 
     } else if (place.providerInfo) {
       Place.findOne({
         providerInfo: place.providerInfo
-      }, assignDbPlace);
+      }, mergePlace);
 
     } else {
       // TODO: Handle err properly
