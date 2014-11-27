@@ -40,9 +40,9 @@ function find(coordinates, callback) {
  * @param {function} callback - Callback called on success
  */
 function findOne(id, callback) {
-  Place.findOne({ id: id, }, function(err, place) {
+  Place.findById(id, function(err, place) {
     // TODO: Handle err properly
-    if (place.expiresOn <= moment().toDate()) {
+    if (place.expiresOn > moment().toDate()) {
       callback(null, place);
     } else {
       var providerName = place.providerInfo.provider;

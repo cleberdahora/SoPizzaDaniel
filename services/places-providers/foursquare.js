@@ -145,8 +145,7 @@ function updatePlace(place, callback) {
     });
   }
 
-
-  async.series([getPlace, update], function(err, place) {
+  async.waterfall([getPlace, update], function(err, place) {
     // TODO: Handle err properly
     callback(null, place);
   });
