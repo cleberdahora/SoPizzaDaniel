@@ -109,7 +109,7 @@ function getPhotos(venueId, callback) {
 
 function updatePlace(place, callback) {
   function getPlace(callback) {
-    if (!place instanceof Place) {
+    if (place instanceof Place) {
       callback(null, place);
     } else {
       var providerInfo = place;
