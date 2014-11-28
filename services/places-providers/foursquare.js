@@ -195,7 +195,7 @@ function find(coordinates, callback) {
         },
         name: venue.name,
         description: venue.location.address,
-        phoneNumber: venue.contact.phone,
+        phone: venue.contact.phone,
         address: {
           formatted: venue.location.address,
           coordinates: [venue.location.lng, venue.location.lat]
