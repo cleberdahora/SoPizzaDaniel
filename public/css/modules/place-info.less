@@ -2,7 +2,7 @@
 @import (reference) "mixins";
 @import (reference) "variables";
 
-.image-slider {
+.place-info {
   #elements > .shadow();
 
   margin: 1rem auto;
@@ -17,7 +17,18 @@
     color: white;
   }
 
-  .flexslider {
-    margin: 0;
+  .info {
+    padding: 1rem;
+  }
+
+  .call {
+    #elements > .button();
+
+    display: block;
+    margin: 1rem auto 0;
+    padding: 0.5rem 2rem;
+    font-size: 1.5rem;
+    width: 10rem;
+    background: @theme-green;
   }
 }
