@@ -13,4 +13,37 @@
 
 </section>
 
-<div class="menu"></div>
+<section id="content">
+  <div class="dish-menu">
+    <h2 class="title">Sabores de Pizza</h2>
+
+    <div class="empty" ng-if="!placeCtrl.place.dishes.length">
+      Nenhum sabor encontrado!
+    </div>
+    <ul class="dish-list" ng-if="placeCtrl.place.dishes.length">
+      <li class="dish" ng-repeat="dish in placeCtrl.place.dishes">
+        <img class="picture" alt="dish picture" ng-src="{{dish.picture}}">
+
+        <div class="informations">
+          <div class="name">{{dish.name}}</div>
+          <ul class="ingredients">
+            <li class="ingredient" ng-repeat="ingredient in dish.ingredients">
+              <a class="ingredient-filter" href="aoeu">{{ingredient}}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pricing">
+          <div class="price">
+            <span class="currency">R$</span>
+            {{dish.price | currency:''}}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+<aside id="sidebar"> </aside>
+
+
+<footer id="page-footer">© 2014 Só Pizza</footer>

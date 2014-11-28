@@ -159,7 +159,7 @@ function updatePlace(place, callback) {
     place.picture      = venueInfo.pictures[0];
     place.pictures     = venueInfo.pictures;
     place.expiresOn    = moment()
-      .add(1, 'hour')
+      .add(30, 'days')
       .toDate();
 
 
