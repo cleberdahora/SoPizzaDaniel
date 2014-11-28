@@ -2,11 +2,15 @@
 @import (reference) "mixins";
 
 .scroll-down {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   margin: auto;
-  width: 3rem;
   font-size: 1.5rem;
   text-decoration: none;
   color: white;
+  text-shadow: 0 0 0.5rem black;
 
   &::after {
     .scale(5, 1.5);
