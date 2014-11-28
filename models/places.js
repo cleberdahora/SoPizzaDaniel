@@ -19,6 +19,7 @@ var placeSchema = new Schema({
   name: String,
   description: String,
   picture: String,
+  pictures: [String],
   phone: String,
 
   address: {

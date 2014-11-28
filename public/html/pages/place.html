@@ -50,7 +50,11 @@
     </ul>
   </div>
 </section>
-<aside id="sidebar"> </aside>
+<aside id="sidebar">
+  <section class="image-slider">
+    <img ng-src="{{picture}}" ng-repeat="picture in placeCtrl.place.pictures">
+  </section>
+</aside>
 
 
 <footer id="page-footer">© 2014 Só Pizza</footer>
