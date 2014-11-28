@@ -78,6 +78,7 @@ function getWorkingTime(venueId, callback) {
     qs  : qs,
     json: true
   }, function(err, res, body) {
+    // TODO: Handle err properly
     var response = body.response;
     var common   = response.hours;
     var popular  = response.popular;
@@ -101,9 +102,29 @@ function getPictures(venueId, callback) {
     qs  : qs,
     json: true
   }, function(err, res, body) {
+    // TODO: Handle err properly
     callback(null, body.response.photos.items.map(function(photo) {
       return photo.prefix + '320x160' + photo.suffix;
     }));
+  });
+}
+
+function getVenueInfo(venueId, callback) {
+  var url = baseURL + venueId;
+
+  var qs = {
+    v            : moment().format('YYYYmmDD'),
+    client_id    : key,
+    client_secret: secret
+  };
+
+  request.get({
+    uri : url,
+    qs  : qs,
+    json: true
+  }, function(err, res, body) {
+    // TODO: Handle err properly
+    callback(null, body.response.venue);
   });
 }
 
@@ -121,43 +142,43 @@ function updatePlace(place, callback) {
     }
 
     if (place instanceof Place) {
-      // TODO: Handle err properly
+      // Already a db place
       callback(null, place);
 
     } else if (place.id) {
+      // Merge the place by id
       Place.findById(place.id, mergePlace);
 
     } else if (place.providerInfo) {
+      // Merge the place by provider information
       Place.findOne({
         providerInfo: place.providerInfo
       }, mergePlace);
 
     } else {
-      // TODO: Handle err properly
+      // Create a new place
       place = new Place(place);
       callback(null, place);
     }
   }
 
-  function getVenueInfo(callback) {
-    async.parallel({
-      workingTimes: lodash.wrap(place.providerInfo.id, getWorkingTime),
-      pictures    : lodash.wrap(place.providerInfo.id, getPictures)
-    }, callback);
-  }
-
   // Get the most recent informations and update database
   async.parallel({
-    place    : getPlace,
-    venueInfo: getVenueInfo
+    place       : getPlace,
+    venueInfo   : lodash.wrap(place.providerInfo.id, getVenueInfo),
+    workingTimes: lodash.wrap(place.providerInfo.id, getWorkingTime),
+    pictures    : lodash.wrap(place.providerInfo.id, getPictures)
   }, function(err, placeInfo) {
-    var place = placeInfo.place;
-    var venueInfo = placeInfo.venueInfo;
+    var place        = placeInfo.place;
+    var venueInfo    = placeInfo.venueInfo;
+    var workingTimes = placeInfo.workingTimes;
+    var pictures     = placeInfo.pictures;
 
     // TODO: Handle err properly
-    place.workingTimes = venueInfo.workingTimes;
-    place.picture      = venueInfo.pictures[0];
-    place.pictures     = venueInfo.pictures;
+    place.workingTimes = workingTimes;
+    place.description  = venueInfo.description;
+    place.picture      = pictures[0];
+    place.pictures     = pictures;
     place.expiresOn    = moment()
       .add(30, 'days')
       .toDate();
