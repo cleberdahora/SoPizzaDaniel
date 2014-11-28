@@ -8,6 +8,7 @@
     <div class="info">
       <h1 class="name">{{placeCtrl.place.name}}</h1>
       <span class="address">{{placeCtrl.place.address.formatted}}</span>
+      <a class="call" ng-href="tel:{{place.phoneNumber}}">Ligar</a>
     </div>
   </div>
 
@@ -34,6 +35,12 @@
         </div>
 
         <div class="pricing">
+          <div class="type">Pizza Pequena</div>
+          <div class="price">
+            <span class="currency">R$</span>
+            {{dish.price | currency:''}}
+          </div>
+          <div class="type">Pizza Grande</div>
           <div class="price">
             <span class="currency">R$</span>
             {{dish.price | currency:''}}

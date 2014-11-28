@@ -1,5 +1,6 @@
 @import (reference) "lesshat";
 @import (reference) "mixins";
+@import (reference) "variables";
 
 .profile-info {
   #elements > .shadow();
@@ -31,9 +32,19 @@
   }
 
   .name {
-    //display: inline-block;
     vertical-align: middle;
     font-size: 3rem;
     margin: 1rem 0;
+  }
+
+  .call {
+    #elements > .button();
+
+    display: block;
+    margin: 1rem auto 0;
+    padding: 0.5rem 2rem;
+    font-size: 1.5rem;
+    width: 10rem;
+    background: @theme-green;
   }
 }
