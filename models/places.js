@@ -11,23 +11,36 @@ var weekdays = lodash.range(0, 6).map(function(dayNumber) {
     .toLowerCase();
 });
 
-var pizzeriaSchema = new Schema({
+var placeSchema = new Schema({
+  providerInfo: {
+    provider: String,
+    id: String
+  },
   name: String,
   description: String,
-  //picture: { type: Schema.Buffer },
+  picture: String,
+  pictures: [String],
+  phone: String,
 
   address: {
+    formatted: String,
+    // TODO: Convert to GeoJSON format
     coordinates: [Number] // [longitude, latitude]
   },
   workingTimes: [{
     days: [{ type: String, enum: weekdays }],
     times: [{ start: Number, end: Number }]
-  }]
+  }],
+  expiresOn: Date
 });
 
-// TODO: Change to 2D spherical index
-pizzeriaSchema.index({
-  'address.coordinates': '2d'
+// Indexes
+placeSchema.index({ 'address.coordinates': 1 }, {
+  type: '2dsphere'
 });
 
-mongoose.model('Pizzeria', pizzeriaSchema);
+placeSchema.index({ 'providerInfo.provider': 1, 'providerInfo.id': 1 }, {
+  unique: true
+});
+
+mongoose.model('Place', placeSchema);

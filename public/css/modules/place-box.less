@@ -1,7 +1,8 @@
 @import (reference) "lesshat";
 @import (reference) "mixins";
+@import (reference) "variables";
 
-.place {
+.place-box {
   @place-height: 7.5rem;
   @place-width: 15rem;
 
@@ -86,7 +87,7 @@
     display: inline-block;
     transition-duration: 0.5s;
     transform: scale(1.5);
-    margin: 0.75rem;
+    margin: 0.75rem 0;
 
     &.big {
       font-size: 1rem;
@@ -122,7 +123,7 @@
     width: 6rem;
     margin: 0.25rem;
     font-size: 1.25rem;
-    background: green;
+    background: @theme-green;
     color: white;
   }
 

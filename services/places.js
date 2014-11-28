@@ -1,23 +1,26 @@
 'use strict';
 
+var moment       = require('moment');
 var async        = require('async');
 var path         = require('path');
 var lodash       = require('lodash');
 var requireAll   = require('require-all');
+var mongoose     = require('mongoose');
 var providersDir = path.resolve('./services/places-providers');
 var providers    = requireAll(providersDir);
 
+var Place = mongoose.model('Place');
+
 /**
  * Find places based on a search query near a geographic position
- * @param {string} query - Search query
  * @param {array} coordinates - Geographic coordinates as [lng, lat]
  * @param {function} callback - Callback called on success
  */
 function find(coordinates, callback) {
   // Wrap a provider to be called by async library
-  function wrap(provider) {
-    return function(asyncCallback) {
-      provider(coordinates, asyncCallback);
+  function wrap(fn) {
+    return function(callback) {
+      fn(coordinates, callback);
     };
   }
 
@@ -31,8 +34,35 @@ function find(coordinates, callback) {
   });
 }
 
+/**
+ * Find a single place based on ID
+ * @param {string} id - place ID
+ * @param {function} callback - Callback called on success
+ */
+function findOne(id, callback) {
+  Place.findById(id, function(err, place) {
+    if (err) {
+      return callback(err, null);
+    }
+
+    if (!place) {
+      return callback(null, null);
+    }
+
+    if (place.expiresOn > moment().toDate()) {
+      callback(null, place);
+    } else {
+      var providerName = place.providerInfo.provider;
+      var provider     = providers[providerName];
+
+      provider.updatePlace(place, callback);
+    }
+  });
+}
+
 var places = {
-  find: find
+  find   : find,
+  findOne: findOne
 };
 
 module.exports = places;

@@ -1,17 +1,17 @@
 'use strict';
 
 var path     = require('path');
-var async    = require('async');
 var lodash   = require('lodash');
 var geoip    = require('geoip-lite');
-var places   = require(path.join(global.root, '/services/places'));
 var mongoose = require('mongoose');
-var Pizzeria = mongoose.model('Pizzeria');
+var places   = require(path.resolve('./services/places'));
+
+var Place = mongoose.model('Place');
 
 module.exports = function(router) {
   /**
    * GET /
-   * Get a list of pizzerias
+   * Get a list of places
    */
   function get(req, res) {
     // [longitude, latitude] as defined in GeoJSON specification
@@ -33,87 +33,62 @@ module.exports = function(router) {
       }
     }
 
-    // Get places info from database
-    function fromDB(callback) {
-      Pizzeria.find(function(err, pizzerias) {
-        callback(null, pizzerias.map(function(val) {
-          return {
-            id           : val._id,
-            name         : val.name,
-            description  : val.description,
-            externalLinks: val.externalLinks,
-            address      : val.address
-          };
-        }));
-      });
-    }
-
-    // Get places info from providers
-    function fromProviders(callback) {
-      places.find(coordinates, callback);
-    }
-
-    // Get places info from database and providers asynchronously
-    async.parallel([fromDB, fromProviders], function(err, results) {
+    // Get places info from all sources
+    places.find(coordinates, function(err, results) {
       if (err) {
         return res.status(500).end();
       }
 
-      return res.json(lodash.flatten(results));
+      results = lodash.flatten(results).map(filterPlace);
+
+      return res.json(results);
     });
   }
 
   /**
    * GET /:id
-   * Find a pizzeria by id
+   * Find a place by id
    */
   function getSingle(req, res) {
     var id = req.params.id;
 
-    Pizzeria.findById(id, function(err, pizzeria) {
+    places.findOne(id, function(err, place) {
       if (err) {
         res.status(500).end(); // Internal Server Error
       }
 
-      if (!pizzeria) {
+      if (!place) {
         return res.status(404).end(); // Not Found
       }
 
-      return res.json({
-        id         : pizzeria._id,
-        name       : pizzeria.name,
-        description: pizzeria.description,
-        address    : {
-          ll: pizzeria.ll
-        }
-      });
+      return res.json(filterPlace(place));
     });
   }
 
   /**
    * GET /:id/picture
-   * Get the main picture of a pizzeria
+   * Get the main picture of a place
    */
   function getPicture(req, res) {
     var id = req.params.id;
 
-    Pizzeria.findById(id, function(err, pizzeria) {
+    Place.findById(id, function(err, place) {
       if (err) {
         return res.status(500).end(); // Internal Server Error
       }
 
-      if (!pizzeria) {
+      if (!place) {
         return res.status(404).end(); // Not Found
       }
 
       res.contentType('image/jpg');
-      return res.send(pizzeria.picture);
+      return res.send(place.picture);
     });
   }
 
   /**
    * POST /
-   * Create a pizzeria
+   * Create a place
    */
   function post(req, res) {
     var name = req.body.name;
@@ -125,20 +100,41 @@ module.exports = function(router) {
       return res.status(422).end(); // Unprocessable Entity
     }
 
-    var pizzeria = new Pizzeria({
+    var place = new Place({
       name: req.body.name,
       description: req.body.description,
       address: {
       }
     });
 
-    pizzeria.save(function(err) {
+    place.save(function(err) {
       if (err) {
         return res.status(500).end(); // Internal Server Error
       }
 
       return res.status(201).end(); // Created
     });
+  }
+
+  function filterPlace(place) {
+    return {
+      id           : place.id,
+      name         : place.name,
+      description  : place.description,
+      picture      : place.picture,
+      pictures     : place.pictures,
+      phone        : place.phone,
+      //externalLinks: place.externalLinks,
+      address      : place.address,
+      workingTimes : place.workingTimes.map(function(workingTime) {
+        return {
+          days : workingTime.days,
+          times: workingTime.times.map(function(time) {
+            return lodash.pick(time, ['start', 'end']);
+          })
+        };
+      })
+    };
   }
 
   router.get('/', get);

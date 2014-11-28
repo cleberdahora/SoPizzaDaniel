@@ -1,0 +1,11 @@
+<div class="place-box">
+  <img class="background" ng-src="{{place.picture}}" ng-alt="{{place.name}}">
+  <div class="title">
+    <span class="title-text" ng-class="{big: place.name.length > 12}">{{place.name}}</span>
+  </div>
+  <div class="description">{{place.address.formatted}}</div>
+  <div class="actions">
+    <a class="call" ng-href="tel:{{place.phone}}">Ligar</a>
+    <a class="menu" ui-sref="place({ placeId: place.id })">Cardápio</a>
+  </div>
+</div>

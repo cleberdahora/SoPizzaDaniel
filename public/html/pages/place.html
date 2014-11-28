@@ -1,0 +1,104 @@
+<section class="jumbotron">
+  <my-video-slider class="background" parallax parallax-ratio="0.5">
+    <img ng-src="{{placeCtrl.place.picture}}">
+  </my-video-slider>
+  <div class="profile-info">
+    <img class="picture" alt="profile image" ng-src="{{placeCtrl.place.picture}}">
+
+    <div class="info">
+      <h1 class="name">{{placeCtrl.place.name}}</h1>
+      <span class="address">{{placeCtrl.place.address.formatted}}</span>
+      <a class="call" ng-href="tel:{{placeCtrl.place.phone}}">Ligar</a>
+    </div>
+  </div>
+
+</section>
+
+<section id="content">
+  <div class="dish-menu">
+    <h2 class="title">Cardápio</h2>
+
+    <div class="empty" ng-if="!placeCtrl.place.dishes.length">
+      Nenhum sabor encontrado!
+    </div>
+    <ul class="dish-list" ng-if="placeCtrl.place.dishes.length">
+      <li class="dish" ng-repeat="dish in placeCtrl.place.dishes">
+        <img class="picture" alt="dish picture" ng-src="{{dish.picture}}">
+
+        <div class="informations">
+          <div class="name">{{dish.name}}</div>
+          <ul class="ingredients">
+            <li class="ingredient" ng-repeat="ingredient in dish.ingredients">
+              <a class="ingredient-filter" href="aoeu">{{ingredient}}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pricing">
+          <div class="price" ng-if="isNumber(dish.pricing)">
+            <span class="currency">R$</span>
+            {{dish.pricing | currency:''}}
+          </div>
+
+          <div class="price" ng-if="isArray(dish.pricing)" ng-repeat="pricing in dish.pricing">
+            <div class="type">{{pricing.type}}</div>
+            <span class="currency">R$</span>
+            {{pricing.price | currency:''}}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+<aside id="sidebar">
+  <section class="image-slider">
+    <h2 class="title">Fotos do local</h2>
+    <flex-slider animation="slide" slide="picture in placeCtrl.place.pictures" control-nav="false" smooth-height="true">
+      <li><img ng-src="{{picture}}"></li>
+    </flex-slider>
+  </section>
+
+  <section class="place-info">
+    <h2 class="title">Informações</h2>
+
+    <div class="info">
+      <div class="description">{{placeCtrl.place.description}}</div>
+      <div class="address">
+        <div class="field-name">Endereço:</div>
+        <div class="field-value">
+          {{placeCtrl.place.address.formatted}}
+        </div>
+      </div>
+      <div class="phone">
+        <div class="field-name">Telefone:</div>
+        <div class="field-value">
+          {{placeCtrl.place.phone}}
+        </div>
+      </div>
+      <div class="delivery-time">
+        <div class="field-name">Tempo de entrega:</div>
+        <div class="field-value">
+          {{placeCtrl.place.deliveryTime || '(Indisponível)'}}
+        </div>
+      </div>
+      <div class="working-time">
+        <div class="field-name">Horário:</div>
+        <div class="field-value" ng-if="isEmpty(placeCtrl.place.workingTimes)">
+          (Indisponível)
+        </div>
+        <div class="field-value" ng-if="!isEmpty(placeCtrl.place.workingTimes)">
+          <div ng-repeat="workingTime in placeCtrl.place.workingTimes">
+            <span class="day">{{workingTime.days | day}}</span>:
+            <span class="time">{{workingTime.times | time}}</span>
+
+          </div>
+        </div>
+      </div>
+      <a class="call" ng-href="tel:{{placeCtrl.place.phone}}">Ligar</a>
+    </div>
+  </section>
+
+</aside>
+
+
+<footer id="page-footer">© 2014 Só Pizza</footer>

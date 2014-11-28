@@ -13,6 +13,8 @@
     'angularMoment',
     'offClick',
     'perfect_scrollbar',
-    'ngAnimate'
+    'ngAnimate',
+    'angular-lodash',
+    'angular-flexslider'
   ]);
 })();

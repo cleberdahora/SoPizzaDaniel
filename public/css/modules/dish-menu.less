@@ -1,0 +1,102 @@
+@import (reference) "lesshat";
+@import (reference) "mixins";
+@import (reference) "variables";
+
+.dish-menu {
+  margin: 1rem auto;
+  text-align: center;
+
+  .title {
+    padding: 1rem;
+    margin: 0 auto;
+    font-size: 2rem;
+    width: 75%;
+    background-color: @theme-dark-red;
+    color: white;
+  }
+
+  .dish-list {
+    padding: 0;
+    margin: 0;
+  }
+
+  .dish {
+    @picture-size: 7rem;
+    @pricing-size: 10rem;
+
+    #elements > .shadow();
+
+    margin: 1rem 0;
+    padding: 0.5rem;
+    background: white;
+    list-style: none;
+
+    .picture {
+      vertical-align: middle;
+      width: @picture-size;
+      height: @picture-size;
+    }
+
+    .informations {
+      display: inline-block;
+      padding: 0 1rem;
+      vertical-align: middle;
+      text-align: left;
+      width: calc(~"100% - @{picture-size} - @{pricing-size}");
+
+      .name {
+        font-size: 1.75rem;
+        font-weight: bold;
+        margin: 0.25rem 0;
+      }
+
+      .ingredients {
+        padding: 0;
+        margin: 0;
+
+        .ingredient {
+          display: inline-block;
+          list-style: none;
+          font-weight: bold;
+          margin: 0 0.0625rem;
+
+          &:not(:last-child) {
+            &::after {
+              content: ', ';
+            }
+          }
+        }
+
+        .ingredient-filter {
+          text-decoration: none;
+          color: @theme-dark-red;
+        }
+      }
+    }
+
+    .pricing {
+      display: inline-block;
+      vertical-align: middle;
+      text-align: right;
+      padding: 1rem;
+      width: @pricing-size;
+
+      .type {
+        margin: 0.25rem 0;
+        font-size: 1rem;
+        font-weight: normal;
+        color: black;
+      }
+
+      .price {
+        color: @theme-red;
+        font-size: 2rem;
+        font-weight: bold;
+
+        .currency {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}

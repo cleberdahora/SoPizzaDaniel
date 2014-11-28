@@ -5,7 +5,7 @@
     let self = this;
 
     function search(query, coordinates) {
-      var params = { query };
+      var params = { q: query };
 
       if (coordinates) {
         params.ll = coordinates.join();
@@ -37,7 +37,7 @@
         });
     }
 
-    Restangular.all('pizzerias')
+    Restangular.all('places')
       .getList()
       .then(places => {
         self.places = places;

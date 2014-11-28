@@ -8,18 +8,18 @@
     $stateProvider.state({
       name       : 'home',
       url        : '/',
-      templateUrl: templatePath('home/index.html'),
+      templateUrl: pagePath('home.html'),
       controller : 'HomeCtrl as home'
     });
 
-    // FIXME: 'query' parameter is being escaped completely, using %20 instead
+    // FIXME: 'q' parameter is being escaped completely, using %20 instead
     // of + signs allowed on RFC 3986. It will be nice if it could be separated
     // by + signs for a more friendly URL. Currently the bug is here:
     // https://github.com/angular/angular.js/blob/master/src/Angular.js#L1090
     $stateProvider.state({
       name       : 'search',
-      url        : '/search?query&ll',
-      templateUrl: templatePath('search/index.html'),
+      url        : '/search?q&ll',
+      templateUrl: pagePath('search.html'),
       controller : 'SearchCtrl as search',
       resolve    : {
         coordinates: function(Restangular, $stateParams, lodash) {
@@ -28,7 +28,7 @@
               .split(',')
               .map(parseFloat);
           } else {
-            let query = $stateParams.query;
+            let query = $stateParams.q;
 
             return Restangular.all('locations')
               .getList({ query })
@@ -39,9 +39,25 @@
         }
       }
     });
+
+    $stateProvider.state({
+      name       : 'place',
+      url        : '/place/{placeId}',
+      templateUrl: pagePath('place.html'),
+      controller : 'PlaceCtrl as placeCtrl',
+      resolve    : {
+        place: function(Restangular, $stateParams) {
+          let placeId = $stateParams.placeId;
+
+          return Restangular
+            .one('places', placeId)
+            .get();
+        }
+      }
+    });
   }
 
-  function templatePath(relativePath) {
+  function pagePath(relativePath) {
     return '/resources/html/pages/' + relativePath;
   }
 

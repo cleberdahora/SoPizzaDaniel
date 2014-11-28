@@ -1,13 +1,18 @@
 'use strict';
 
-var async   = require('async');
-var moment  = require('moment');
-var lodash  = require('lodash');
-var request = require('request');
+var async    = require('async');
+var moment   = require('moment');
+var lodash   = require('lodash');
+var request  = require('request');
+var mongoose = require('mongoose');
+
+var Place = mongoose.model('Place');
+
 var key     = 'LKEEQ0LFB0YDKXBXZLWXHDMZK1YZYHPKCGIJ3Q5WI2BEBIAU';
 var secret  = 'ERGCV1WDFX2DVCP030M5URJK24YQGWOFIM5PEDJRQ4G1SYIN';
-var pizzeriaCategoryId = '4bf58dd8d48988d1ca941735';
 var baseURL = 'https://api.foursquare.com/v2/venues/';
+
+var pizzeriaCategoryId = '4bf58dd8d48988d1ca941735';
 
 /**
  * Denormalizes geographic coordinates from the [longitude, latitude] format
@@ -21,6 +26,13 @@ function denormalizeCoordinates(coordinates) {
   var latitude  = coordinates[1];
 
   return [latitude, longitude];
+}
+
+function getCachedPlace(providerInfo, callback) {
+  Place.findOne({
+    providerInfo: providerInfo,
+    expiresOn: { $gt: moment().toDate() }
+  }, callback);
 }
 
 function parseTimeframes(timeframes) {
@@ -75,7 +87,7 @@ function getWorkingTime(venueId, callback) {
   });
 }
 
-function getPhotos(venueId, callback) {
+function getPictures(venueId, callback) {
   var url = baseURL + venueId + '/photos';
 
   var qs = {
@@ -95,6 +107,69 @@ function getPhotos(venueId, callback) {
   });
 }
 
+function updatePlace(place, callback) {
+  function getPlace(callback) {
+    // Merge place information with database place information
+    function mergePlace(err, dbPlace) {
+      // TODO: Handle err properly
+      if (!dbPlace) {
+        dbPlace = new Place(place);
+      }
+
+      place = lodash.merge(dbPlace, place);
+      callback(null, place);
+    }
+
+    if (place instanceof Place) {
+      // TODO: Handle err properly
+      callback(null, place);
+
+    } else if (place.id) {
+      Place.findById(place.id, mergePlace);
+
+    } else if (place.providerInfo) {
+      Place.findOne({
+        providerInfo: place.providerInfo
+      }, mergePlace);
+
+    } else {
+      // TODO: Handle err properly
+      place = new Place(place);
+      callback(null, place);
+    }
+  }
+
+  function getVenueInfo(callback) {
+    async.parallel({
+      workingTimes: lodash.wrap(place.providerInfo.id, getWorkingTime),
+      pictures    : lodash.wrap(place.providerInfo.id, getPictures)
+    }, callback);
+  }
+
+  // Get the most recent informations and update database
+  async.parallel({
+    place    : getPlace,
+    venueInfo: getVenueInfo
+  }, function(err, placeInfo) {
+    var place = placeInfo.place;
+    var venueInfo = placeInfo.venueInfo;
+
+    // TODO: Handle err properly
+    place.workingTimes = venueInfo.workingTimes;
+    place.picture      = venueInfo.pictures[0];
+    place.pictures     = venueInfo.pictures;
+    place.expiresOn    = moment()
+      .add(30, 'days')
+      .toDate();
+
+
+    place.save(function(err, place) {
+      // TODO: Handle err properly
+      callback(null, place);
+    });
+  });
+}
+
 function find(coordinates, callback) {
   var url = baseURL + 'search';
 
@@ -104,7 +179,7 @@ function find(coordinates, callback) {
     client_secret: secret,
     categoryId   : pizzeriaCategoryId,
     ll           : denormalizeCoordinates(coordinates).join(),
-    limit        : 10
+    limit        : 50
   };
 
   request.get({
@@ -112,41 +187,43 @@ function find(coordinates, callback) {
     qs  : qs,
     json: true
   }, function(err, res, body) {
-    var venues = body.response.venues.map(function (venue) {
+    var places = body.response.venues.map(function (venue) {
       return {
-        id: venue.id,
+        providerInfo: {
+          provider:'foursquare',
+          id: venue.id
+        },
         name: venue.name,
         description: venue.location.address,
-        phoneNumber: venue.contact.phone,
+        phone: venue.contact.phone,
         address: {
+          formatted: venue.location.address,
           coordinates: [venue.location.lng, venue.location.lat]
         }
       };
     });
 
-    // Get photos for each venue
-    async.parallel(venues.map(function(venue) {
+    // Get additional information (e.g. pictures, working time) for each venue
+    async.parallel(places.map(function(place) {
       return function(callback) {
-        async.parallel({
-          workingTimes: lodash.wrap(venue.id, getWorkingTime),
-          photos      : lodash.wrap(venue.id, getPhotos)
-        }, function(err, venueInfo) {
-          // TODO: Handle err properly
-          venue.workingTimes = venueInfo.workingTimes;
-          venue.photo        = venueInfo.photos[0];
-          venue.photos       = venueInfo.photos;
-
-          callback(null, venue);
+        // Try to use cached information to avoid unnecessary requests
+        getCachedPlace(place.providerInfo, function(err, cachedPlace) {
+          if (cachedPlace) {
+            // Return cached information
+            callback(null, cachedPlace);
+          } else {
+            // Get the most recent informations and update database
+            updatePlace(place, callback);
+          }
         });
       };
-    }), function(err, venues) {
-      callback(null, venues);
-    });
+    }), callback);
   });
 }
 
 var foursquare = {
-  find: find
+  find: find,
+  updatePlace: updatePlace
 };
 
 module.exports = foursquare;

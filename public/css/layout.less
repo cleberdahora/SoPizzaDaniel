@@ -12,3 +12,37 @@
 
   margin: 2rem auto 4rem;
 }
+
+#content {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 1rem;
+  width: 100%;
+
+  // TODO: Use variables for screen widths
+  @media screen and (min-width: 480px) {
+    width: calc(~"100% - 15rem");
+  }
+
+  // TODO: Use variables for screen widths
+  @media screen and (min-width: 768px) {
+    width: calc(~"100% - 30rem");
+  }
+}
+
+#sidebar {
+  display: none;
+  vertical-align: top;
+  padding: 0 1rem;
+
+  // TODO: Use variables for screen widths
+  @media screen and (min-width: 480px) {
+    display: inline-block;
+    width: 15rem;
+  }
+
+  // TODO: Use variables for screen widths
+  @media screen and (min-width: 768px) {
+    width: 30rem;
+  }
+}

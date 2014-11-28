@@ -1,6 +1,6 @@
 <img class="logo"></img>
 
-<section class="jumbotron">
+<section class="jumbotron fullscreen">
   <my-video-slider class="background" parallax parallax-ratio="0.5">
     <img src="http://farolshopping.com.br/uploads/noticias/4319/imagens_default/original_0c867caf135e39af561a1ae99f431b2b.jpg">
     <!--<video loop autoload muted>-->
@@ -45,7 +45,7 @@
 <section id="suggestions" class="places">
   <h2 class="title">Sugestões da região</h2>
   <div class="place-list">
-    <my-place place="place" ng-repeat="place in home.places | limitTo:10"></my-place>
+    <my-place-box place="place" ng-repeat="place in home.places | limitTo:10"></my-place>
   </div>
 </section>
 
