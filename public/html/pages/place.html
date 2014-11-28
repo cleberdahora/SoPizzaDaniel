@@ -16,7 +16,7 @@
 
 <section id="content">
   <div class="dish-menu">
-    <h2 class="title">Sabores de Pizza</h2>
+    <h2 class="title">Cardápio</h2>
 
     <div class="empty" ng-if="!placeCtrl.place.dishes.length">
       Nenhum sabor encontrado!
@@ -60,9 +60,40 @@
 
   <section class="place-info">
     <h2 class="title">Informações</h2>
-    aosenthua asnt hauos thaen taheon uhas
 
     <div class="info">
+      <div class="description">{{placeCtrl.place.description}}</div>
+      <div class="address">
+        <div class="field-name">Endereço:</div>
+        <div class="field-value">
+          {{placeCtrl.place.address.formatted}}
+        </div>
+      </div>
+      <div class="phone">
+        <div class="field-name">Telefone:</div>
+        <div class="field-value">
+          {{placeCtrl.place.phone}}
+        </div>
+      </div>
+      <div class="delivery-time">
+        <div class="field-name">Tempo de entrega:</div>
+        <div class="field-value">
+          {{placeCtrl.place.deliveryTime || '(Indisponível)'}}
+        </div>
+      </div>
+      <div class="working-time">
+        <div class="field-name">Horário:</div>
+        <div class="field-value" ng-if="isEmpty(placeCtrl.place.workingTimes)">
+          (Indisponível)
+        </div>
+        <div class="field-value" ng-if="!isEmpty(placeCtrl.place.workingTimes)">
+          <div ng-repeat="workingTime in placeCtrl.place.workingTimes">
+            <span class="day">{{workingTime.days | day}}</span>:
+            <span class="time">{{workingTime.times | time}}</span>
+
+          </div>
+        </div>
+      </div>
       <a class="call" ng-href="tel:{{placeCtrl.place.phone}}">Ligar</a>
     </div>
   </section>
