@@ -52,7 +52,11 @@
 </section>
 <aside id="sidebar">
   <section class="image-slider">
-    <img ng-src="{{picture}}" ng-repeat="picture in placeCtrl.place.pictures">
+    <h2 class="title">Fotos do local</h2>
+    <flex-slider animation="slide" slide="picture in placeCtrl.place.pictures" control-nav="false" smooth-height="true">
+      <li><img ng-src="{{picture}}"></li>
+    </flex-slider>
+
   </section>
 </aside>
 

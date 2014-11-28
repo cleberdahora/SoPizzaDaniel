@@ -14,6 +14,7 @@
     'offClick',
     'perfect_scrollbar',
     'ngAnimate',
-    'angular-lodash'
+    'angular-lodash',
+    'angular-flexslider'
   ]);
 })();
