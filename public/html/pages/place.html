@@ -8,7 +8,7 @@
     <div class="info">
       <h1 class="name">{{placeCtrl.place.name}}</h1>
       <span class="address">{{placeCtrl.place.address.formatted}}</span>
-      <a class="call" ng-href="tel:{{place.phoneNumber}}">Ligar</a>
+      <a class="call" ng-href="tel:{{placeCtrl.place.phoneNumber}}">Ligar</a>
     </div>
   </div>
 
@@ -35,15 +35,15 @@
         </div>
 
         <div class="pricing">
-          <div class="type">Pizza Pequena</div>
-          <div class="price">
+          <div class="price" ng-if="isNumber(dish.pricing)">
             <span class="currency">R$</span>
-            {{dish.price | currency:''}}
+            {{dish.pricing | currency:''}}
           </div>
-          <div class="type">Pizza Grande</div>
-          <div class="price">
+
+          <div class="price" ng-if="isArray(dish.pricing)" ng-repeat="pricing in dish.pricing">
+            <div class="type">{{pricing.type}}</div>
             <span class="currency">R$</span>
-            {{dish.price | currency:''}}
+            {{pricing.price | currency:''}}
           </div>
         </div>
       </li>
