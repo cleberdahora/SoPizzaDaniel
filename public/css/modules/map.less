@@ -1,4 +1,3 @@
-@import (reference) "lesshat";
 @import (reference) "mixins";
 
 .map {
@@ -8,5 +7,41 @@
     right: 0;
     bottom: 0;
     left: 0;
+  }
+
+  .leaflet-popup-content-wrapper {
+    #elements > .shadow();
+
+    border-radius: 0;
+    font-family: 'Josefin Sans', sans-serif;
+
+    .picture {
+      display: inline-block;
+      width: 10rem;
+    }
+
+    .info {
+      display: inline-block;
+    }
+
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+
+      .title-link {
+        color: @theme-dark-red;
+        text-decoration: none;
+      }
+    }
+
+    .address {
+      font-size: 1rem;
+    }
+
+    .go-link {
+      text-align: right;
+      display: inline-block;
+      width: 100%;
+    }
   }
 }

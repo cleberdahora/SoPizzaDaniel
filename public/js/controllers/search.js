@@ -6,6 +6,24 @@
     let self = this;
     let [longitude, latitude] = coordinates;
 
+    function gambiHTML(place) {
+      let {prefix, suffix} = place.logo;
+
+      return '' +
+        //'<img class="picture" src="' + prefix + '100x100' + suffix + '">' +
+        '<div class="info">' +
+          '<div class="title">' +
+            '<a class="title-link" href="/place/' + place.id + '">' +
+              place.name +
+            '</a>' +
+          '</div>' +
+          '<div class="address">' +
+            place.address.formatted +
+          '</div>' +
+          '<a class="go-link" href="/place/' + place.id + '">ver >></a>' +
+        '</div>';
+    }
+
     function search(query, coordinates) {
       let params = { q: query };
 
@@ -50,7 +68,7 @@
           lodash.merge(place, {
             lat      : latitude,
             lng      : longitude,
-            message  : place.name,
+            message  : gambiHTML(place),
             draggable: false
           });
 
