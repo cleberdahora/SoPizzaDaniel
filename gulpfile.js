@@ -147,7 +147,7 @@ gulp.task('server', function(cb) {
     env: {
       IP: '127.0.0.1',
       PORT: 8888,
-      DB_URI: 'mongodb://localhost:27017/so_pizza'
+      MONGOHQ_URL: 'mongodb://localhost:27017/so_pizza'
     }
   })
   .on('start', function() {
