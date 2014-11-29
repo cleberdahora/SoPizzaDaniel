@@ -1,5 +1,6 @@
 @import (reference) "lesshat";
 @import (reference) "mixins";
+@import (reference) "variables";
 
 #page-footer {
   line-height: 4rem;
@@ -19,14 +20,12 @@
   padding: 0 1rem;
   width: 100%;
 
-  // TODO: Use variables for screen widths
-  @media screen and (min-width: 480px) {
-    width: calc(~"100% - 15rem");
+  @media screen and (min-width: @device-medium) {
+    width: 55%;
   }
 
-  // TODO: Use variables for screen widths
-  @media screen and (min-width: 768px) {
-    width: calc(~"100% - 30rem");
+  @media screen and (min-width: @device-large) {
+    width: 60%;
   }
 }
 
@@ -35,14 +34,12 @@
   vertical-align: top;
   padding: 0 1rem;
 
-  // TODO: Use variables for screen widths
-  @media screen and (min-width: 480px) {
+  @media screen and (min-width: @device-medium) {
     display: inline-block;
-    width: 15rem;
+    width: 45%;
   }
 
-  // TODO: Use variables for screen widths
-  @media screen and (min-width: 768px) {
-    width: 30rem;
+  @media screen and (min-width: @device-large) {
+    width: 40%;
   }
 }
