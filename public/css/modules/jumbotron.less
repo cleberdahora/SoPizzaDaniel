@@ -1,5 +1,6 @@
 @import (reference) "lesshat";
 @import (reference) "mixins";
+@import (reference) "variables";
 
 .jumbotron {
   @height: 100vh;
@@ -12,6 +13,10 @@
   text-align: center;
   //box-shadow: inset 0 -@shadow-height @shadow-height -@shadow-height black;
   overflow: hidden;
+
+  @media screen and (min-width: @device-medium) {
+    padding: 0;
+  }
 
   &.fullscreen {
     height: @height;
@@ -29,16 +34,26 @@
     overflow: hidden;
 
     img, video {
+      height: 100vmax;
       width: 100%;
+      width: 160vmax;
     }
   }
 
   > .title {
-    font-size: 4rem;
+    font-size: 3rem;
     margin: (@height / 4) 0 0;
   }
 
   .subtitle {
     margin: 0.5rem;
+  }
+
+  .steps {
+    display: none;
+
+    @media screen and (min-width: @device-medium) {
+      display: flex;
+    }
   }
 }

@@ -4,9 +4,15 @@
 
 .search-bar {
   font-size: 1.125rem;
-  margin: 2.5rem 0;
+  margin: 1.5rem auto;
+  padding: 1rem;
   width: 100%;
   text-align: center;
+  max-width: @device-large;
+
+  @media screen and (min-width: @device-large) {
+    margin: 2.5rem auto;
+  }
 
   .geolocate {
     #elements > .button();
@@ -34,7 +40,11 @@
   .search-form {
     display: inline-block;
     vertical-align: middle;
-    width: calc(~"100% - 17.5rem");
+    width: 100%;
+
+    @media screen and (min-width: @device-medium) {
+      width: calc(~"100% - 16.5rem");
+    }
   }
 
   .search-input {
