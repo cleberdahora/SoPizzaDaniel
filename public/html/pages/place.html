@@ -19,7 +19,8 @@
     <h2 class="title">Cardápio</h2>
 
     <div class="empty" ng-if="!placeCtrl.place.dishes.length">
-      Nenhum sabor encontrado!
+      <div class="title">Ops! :(</div>
+      Este cardápio não está disponível no momento.
     </div>
     <ul class="dish-list" ng-if="placeCtrl.place.dishes.length">
       <li class="dish" ng-repeat="dish in placeCtrl.place.dishes">

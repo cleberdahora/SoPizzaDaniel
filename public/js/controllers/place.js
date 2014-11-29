@@ -39,6 +39,7 @@
         ]
       }
     ];
+    place.dishes = [];
 
     self.place = place;
   }
