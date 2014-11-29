@@ -1,5 +1,6 @@
 @import (reference) "lesshat";
 @import (reference) "mixins";
+@import (reference) "variables";
 
 .search-bar {
   font-size: 1.125rem;
@@ -10,27 +11,42 @@
   .geolocate {
     #elements > .button();
 
+    display: block;
+    margin: auto;
     vertical-align: middle;
+
+    @media screen and (min-width: @device-medium) {
+      display: inline-block;
+    }
   }
 
   .conjunction {
-    margin: 0 1rem;
+    display: block;
+    margin: 1rem auto;
     vertical-align: middle;
+
+    @media screen and (min-width: @device-medium) {
+      margin: 0 1rem;
+      display: inline-block;
+    }
   }
 
   .search-form {
     display: inline-block;
     vertical-align: middle;
+    width: calc(~"100% - 17.5rem");
   }
 
   .search-input {
     #elements > .textbox();
 
-    width: 30rem;
+    width: calc(~"100% - 7rem");
   }
 
   .search-button {
     #elements > .button();
+
+    width: 6rem;
   }
 
   &.aerial {
