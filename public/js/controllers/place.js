@@ -8,11 +8,11 @@
       {
         picture: 'https://irs2.4sqi.net/img/general/320x160/' +
           'fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg',
-        name: 'Parmegiana',
+        name: 'Americana',
         pricing: [
           {
             type: 'Pequena',
-            price: 100.00
+            price: 50.00
           },
           {
             type: 'Grande',
@@ -20,26 +20,70 @@
           }
         ],
         ingredients: [
-          'calabresa',
-          'parmesão',
-          'cebola',
-          'alho',
+          'molho',
+          'mussarela',
+          'bacon',
+          'milho',
+          'ovos',
+          'orégano',
         ]
       },
       {
         picture: 'https://irs2.4sqi.net/img/general/320x160/' +
           'fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg',
-        name: 'Parmegiana2',
+        name: 'Calabresa com Catupiry',
         pricing: 35.00,
         ingredients: [
+          'molho',
+          'mussarela',
           'calabresa',
+          'catupiry',
+          'orégano'
+        ]
+      },
+      {
+        picture: 'https://irs2.4sqi.net/img/general/320x160/' +
+          'fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg',
+        name: 'Frango com Catupiry',
+        pricing: 35.00,
+        ingredients: [
+          'molho',
+          'mussarela',
+          'frango',
+          'catupiry',
+          'orégano'
+        ]
+      },
+      {
+        picture: 'https://irs2.4sqi.net/img/general/320x160/' +
+          'fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg',
+        name: 'Quatro Queijos',
+        pricing: 35.00,
+        ingredients: [
+          'molho',
+          'mussarela',
+          'provolone',
           'parmesão',
-          'cebola',
-          'alho',
+          'catupiry',
+          'orégano'
+        ]
+      },
+      {
+        picture: 'https://irs2.4sqi.net/img/general/320x160/' +
+          'fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg',
+        name: 'Siciliana',
+        pricing: 35.00,
+        ingredients: [
+          'molho',
+          'mussarela',
+          'champignon',
+          'bacon',
+          'pimentão',
+          'azeiton',
+          'orégano'
         ]
       }
     ];
-    place.dishes = [];
 
     self.place = place;
   }

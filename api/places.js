@@ -127,6 +127,7 @@ module.exports = function(router) {
       phone        : place.phone,
       //externalLinks: place.externalLinks,
       address      : place.address,
+      dishes       : place.dishes,
       workingTimes : place.workingTimes.map(function(workingTime) {
         return {
           days : workingTime.days,
