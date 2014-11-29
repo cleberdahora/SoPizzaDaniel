@@ -1,6 +1,4 @@
-<a class="logo-link" ui-sref="search">
-  <img class="logo" src="/resources/images/logo.svg"></img>
-</a>
+<img class="logo" src="/resources/images/logo.svg"></img>
 
 <section class="jumbotron fullscreen">
   <my-video-slider class="background" parallax parallax-ratio="0.5">
@@ -47,7 +45,7 @@
 <section id="suggestions" class="places">
   <h2 class="title">Sugestões da região</h2>
   <div class="place-list">
-    <my-place-box place="place" ng-repeat="place in home.places | limitTo:10"></my-place>
+    <my-place-box place="place" ng-repeat="place in home.places | limitTo:30"></my-place>
   </div>
 </section>
 
