@@ -11,9 +11,6 @@ var providersDir = path.resolve('./services/places-providers');
 var providers    = requireAll({
   dirname: providersDir,
   filter : /^(?!base\.js)(.+)\.js?$/, // all except base.js/base.json
-  resolve: function (Provider) {
-    return new Provider();
-  }
 });
 
 var Place = mongoose.model('Place');
@@ -32,6 +29,9 @@ function find(coordinates, callback) {
   }
 
   var providersFind = lodash.values(providers)
+    .map(function(Provider) {
+      return new Provider();
+    })
     .map(lodash.property('find')) // Use find method of providers
     .map(wrap);                   // Wrap methods to be used by async
 

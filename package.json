@@ -15,7 +15,7 @@
     "mongoose": "^3.8.17",
     "morgan": "^1.3.2",
     "request": "^2.45.0",
-    "require-all": "file:../../../../../tmp/npm-17057-24cdb87f/1417220916626-0.5024949864018708/ddf0aa481fc62cdd8f909ae8fe1385d71783eff1"
+    "require-all": "0.0.8"
   },
   "devDependencies": {
     "bower": "^1.3.12",
