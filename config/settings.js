@@ -5,5 +5,5 @@ module.exports = function(app, server) {
   app.enable('trust proxy'); // Enable reverse proxy support
   app.set('ip'    , process.env.IP || '127.0.0.1');
   app.set('port'  , process.env.PORT);
-  app.set('db-uri', process.env.MONGOHQ_URL);
+  app.set('db-uri', process.env.DB_URI || process.env.MONGOHQ_URL);
 };
