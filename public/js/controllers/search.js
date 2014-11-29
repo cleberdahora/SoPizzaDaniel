@@ -7,7 +7,7 @@
     let [longitude, latitude] = coordinates;
 
     function gambiHTML(place) {
-      let {prefix, suffix} = place.logo;
+      //let {prefix, suffix} = place.logo;
 
       return '' +
         //'<img class="picture" src="' + prefix + '100x100' + suffix + '">' +
