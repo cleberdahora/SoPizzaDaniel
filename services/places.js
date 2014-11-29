@@ -7,7 +7,14 @@ var lodash       = require('lodash');
 var requireAll   = require('require-all');
 var mongoose     = require('mongoose');
 var providersDir = path.resolve('./services/places-providers');
-var providers    = requireAll(providersDir);
+
+var providers    = requireAll({
+  dirname: providersDir,
+  filter : /^(?!base\.js)(.+)\.js?$/, // all except base.js/base.json
+  resolve: function (Provider) {
+    return new Provider();
+  }
+});
 
 var Place = mongoose.model('Place');
 
