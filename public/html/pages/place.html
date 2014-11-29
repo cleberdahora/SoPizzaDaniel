@@ -1,9 +1,10 @@
 <section class="jumbotron">
   <my-video-slider class="background" parallax parallax-ratio="0.5">
-    <img ng-src="{{placeCtrl.place.picture}}">
+    <img ng-src="{{placeCtrl.place.picture | image:1300:300}}">
   </my-video-slider>
   <div class="profile-info">
-    <img class="picture" alt="profile image" ng-src="{{placeCtrl.place.picture}}">
+    <img class="picture" alt="profile image" ng-if="isEmpty(placeCtrl.place.logo)" src="/resources/images/profile-logo.svg">
+    <img class="picture" alt="profile image" ng-if="!isEmpty(placeCtrl.place.logo)" width="300" height="300" ng-src="{{placeCtrl.place.logo.prefix + '300x300' + placeCtrl.place.logo.suffix}}">
 
     <div class="info">
       <h1 class="name">{{placeCtrl.place.name}}</h1>
@@ -54,8 +55,8 @@
 <aside id="sidebar">
   <section class="image-slider">
     <h2 class="title">Fotos do local</h2>
-    <flex-slider animation="slide" slide="picture in placeCtrl.place.pictures" control-nav="false" smooth-height="true">
-      <li><img ng-src="{{picture}}"></li>
+    <flex-slider animation="slide" slide="picture in placeCtrl.place.pictures track by $index" control-nav="false" smooth-height="true">
+      <li><img ng-src="{{picture | image:300:200}}"></li>
     </flex-slider>
   </section>
 

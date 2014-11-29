@@ -105,9 +105,7 @@ function FoursquareProvider() {
       json: true
     }, function(err, res, body) {
       // TODO: Handle err properly
-      callback(null, body.response.photos.items.map(function(photo) {
-        return photo.prefix + '320x160' + photo.suffix;
-      }));
+      callback(null, body.response.photos.items);
     });
   }
 
@@ -185,6 +183,9 @@ function FoursquareProvider() {
         .add(30, 'days')
         .toDate();
 
+      if (venueInfo.page && venueInfo.page.user) {
+        place.logo = venueInfo.page.user.photo;
+      }
 
       place.save(function(err, place) {
         // TODO: Handle err properly

@@ -11,15 +11,27 @@ var weekdays = lodash.range(0, 6).map(function(dayNumber) {
     .toLowerCase();
 });
 
-var placeSchema = new Schema({
+var PictureSchema = new Schema({
+  prefix: String,
+  suffix: String
+});
+
+var PlaceSchema = new Schema({
   providerInfo: {
     provider: String,
     id: String
   },
   name: String,
   description: String,
-  picture: String,
-  pictures: [String],
+  logo: {
+    prefix: String,
+    suffix: String,
+  },
+  picture: {
+    prefix: String,
+    suffix: String,
+  },
+  pictures: [PictureSchema],
   phone: String,
 
   address: {
@@ -35,12 +47,12 @@ var placeSchema = new Schema({
 });
 
 // Indexes
-placeSchema.index({ 'address.coordinates': 1 }, {
+PlaceSchema.index({ 'address.coordinates': 1 }, {
   type: '2dsphere'
 });
 
-placeSchema.index({ 'providerInfo.provider': 1, 'providerInfo.id': 1 }, {
+PlaceSchema.index({ 'providerInfo.provider': 1, 'providerInfo.id': 1 }, {
   unique: true
 });
 
-mongoose.model('Place', placeSchema);
+mongoose.model('Place', PlaceSchema);

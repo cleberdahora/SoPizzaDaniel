@@ -1,5 +1,5 @@
 <div class="place-box">
-  <img class="background" ng-src="{{place.picture}}" ng-alt="{{place.name}}">
+  <img class="background" ng-src="{{place.picture | image:240:120}}" ng-alt="{{place.name}}">
   <div class="title">
     <span class="title-text" ng-class="{big: place.name.length > 12}">{{place.name}}</span>
   </div>
