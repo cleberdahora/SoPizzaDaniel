@@ -6,7 +6,7 @@ var path         = require('path');
 var lodash       = require('lodash');
 var requireAll   = require('require-all');
 var mongoose     = require('mongoose');
-var providersDir = path.resolve('./services/places-providers');
+var providersDir = path.resolve(__dirname, 'providers');
 
 var providers    = requireAll({
   dirname: providersDir,
