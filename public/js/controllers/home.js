@@ -1,11 +1,18 @@
 (function() {
   'use strict';
 
-  function HomeCtrl($state, lodash, Restangular, geolocation) {
+  function HomeCtrl($window, $state, lodash, Restangular, geolocation,
+      location) {
     let self = this;
 
+    function getSuggestions(query) {
+      location.getSuggestions(query)
+        .then(suggestions => console.log(suggestions))
+        .catch(error => console.log(error));
+    }
+
     function search(query, coordinates) {
-      var params = { q: query };
+      let params = { q: query };
 
       if (coordinates) {
         params.ll = coordinates.join();
@@ -19,7 +26,7 @@
       geolocation.getLocation()
         .then(data => {
           let { longitude, latitude } = data.coords;
-          let coordinates = [longitude, latitude];
+          let coordinates             = [longitude, latitude];
 
           self.coordinates = coordinates;
 
@@ -43,8 +50,9 @@
         self.places = places;
       });
 
-    self.search      = search;
-    self.getLocation = getLocation;
+    self.search         = search;
+    self.getLocation    = getLocation;
+    self.getSuggestions = getSuggestions;
   }
 
   angular.module('app')
