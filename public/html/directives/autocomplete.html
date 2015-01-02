@@ -1,7 +1,7 @@
 <ul class="my-autocomplete">
   <li class="suggestion" ng-repeat="suggestion in suggestions | limitTo:(limit || 6)" ng-mouseover="focus(suggestion)" ng-click="select(suggestion); click(suggestion[keyField || 'key'])">
     <span class="text" ng-bind-html="highlight(suggestion.text, suggestion.highlights, 'highlight')"></span>
-    <span class="description">{{suggestion[descriptionField || 'description']}}</span>
+    <span class="description">{{suggestion.description}}</span>
   </li>
   <li class="powered-by" ng-show="suggestions.length">
     <img src="/resources/images/powered-by-google.png" alt="Google logo">
