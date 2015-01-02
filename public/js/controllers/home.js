@@ -75,7 +75,9 @@
 
     self.search         = search;
     self.getLocation    = getLocation;
-    self.getSuggestions = getSuggestions;
+    self.getSuggestions = lodash.debounce(getSuggestions, 250, {
+      maxWait: 500
+    });
   }
 
   angular.module('app')
