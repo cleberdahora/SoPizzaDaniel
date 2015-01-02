@@ -30,7 +30,7 @@
         })
         .catch(error => {
           self.suggestions = [];
-          console.log(error);
+          console.error(error);
         });
     }
 
