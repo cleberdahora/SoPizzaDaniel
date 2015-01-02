@@ -15,12 +15,18 @@
       location.getSuggestions(query)
         .then(suggestions => {
           self.suggestions = suggestions.map(suggestion => {
+            let text        = lodash.first(suggestion.terms).value;
             let description = lodash.rest(suggestion.terms)
               .map(term => term.value)
               .join(', ');
 
+            let value = lodash([text, description])
+              .compact()
+              .join(', ');
+
             return {
-              text       : lodash.first(suggestion.terms).value,
+              value      : value,
+              text       : text,
               description: description,
               highlights : suggestion.matches
             };

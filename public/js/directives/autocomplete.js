@@ -141,20 +141,11 @@
         }
 
         if (suggestion) {
-          let textField        = scope.textField;
-          let descriptionField = scope.descriptionField;
-
-          let text           = suggestion[textField || 'text'];
-          let description    = suggestion[descriptionField || 'description'];
-          let suggestionText = lodash([text, description])
-            .compact()
-            .join(', ');
-
           if (scope.selectedItem) {
             scope.selectedItem.suggestion = suggestion;
           }
 
-          ngModel.$viewValue = suggestionText;
+          ngModel.$viewValue = suggestion.value;
         }
 
         ngModel.$render();
@@ -192,13 +183,7 @@
         click           : '=',
         limit           : '@',
         keyField        : '@',
-        textField       : '@',
-        descriptionField: '@',
-        highlightsField : '@',
-        offsetField     : '@',
-        lengthField     : '@',
-        selectedItem    : '=',
-        target          : '@'
+        selectedItem    : '='
       },
       link: link
     };
