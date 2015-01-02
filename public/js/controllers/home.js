@@ -20,12 +20,8 @@
               .map(term => term.value)
               .join(', ');
 
-            let value = lodash([text, description])
-              .compact()
-              .join(', ');
-
             return {
-              value      : value,
+              value      : suggestion.name,
               text       : text,
               description: description,
               highlights : suggestion.matches
