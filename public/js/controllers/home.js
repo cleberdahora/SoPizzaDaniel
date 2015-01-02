@@ -6,9 +6,30 @@
     let self = this;
 
     function getSuggestions(query) {
+      query = query.trim();
+      if (lodash.isEmpty(query)) {
+        self.suggestions = [];
+        return;
+      }
+
       location.getSuggestions(query)
-        .then(suggestions => console.log(suggestions))
-        .catch(error => console.log(error));
+        .then(suggestions => {
+          self.suggestions = suggestions.map(suggestion => {
+            let description = lodash.rest(suggestion.terms)
+              .map(term => term.value)
+              .join(', ');
+
+            return {
+              text       : lodash.first(suggestion.terms).value,
+              description: description,
+              highlights : suggestion.matches
+            };
+          });
+        })
+        .catch(error => {
+          self.suggestions = [];
+          console.log(error);
+        });
     }
 
     function search(query, coordinates) {

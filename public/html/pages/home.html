@@ -17,8 +17,9 @@
     <button class="geolocate" ng-click="home.getLocation()">Buscar nas proximidades</button>
     <span class="conjunction">ou</span>
     <form class="search-form" ng-submit="home.search(home.query, home.coordinates)">
-      <input class="search-input" name="q" placeholder="Digite um CEP ou endereço" ng-model="home.query" autofocus>
+      <input id="search-input" class="search-input" placeholder="Digite um CEP ou endereço" ng-model="home.query" autofocus ng-change="home.getSuggestions(home.query)" my-autocomplete suggestions="home.suggestions">
       <button class="search-button" type="submit">Buscar!</button>
+      <!--<my-autocomplete class="suggestion-list" ng-model="home.query" target="#search-input" ></my-autocomplete>-->
     </form>
   </div>
   <ul class="steps animated">

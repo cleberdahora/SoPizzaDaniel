@@ -1,0 +1,55 @@
+@import (reference) "mixins";
+
+.my-autocomplete {
+  #effects > .shadow();
+
+  position: absolute;
+  display: block;
+  padding: 0;
+  margin: 0;
+  background-color: white;
+  font-size: 1rem;
+  text-align: left;
+  color: black;
+
+  .suggestion {
+    //@include transition(background-color 0.5s, color 0.5s);
+    // @include icon(room, $size: 1.25rem);
+
+    text-shadow: none;
+    display: block;
+    list-style: none;
+    padding: 0 0.5125rem;
+    line-height: 1.8rem;
+    vertical-align: middle;
+    cursor: pointer;
+    height: 1.8125rem;
+    overflow: hidden;
+
+    &:not(:last-child) {
+      border-bottom: 0.0625rem solid lightgrey;
+    }
+
+    &.focused {
+      //background-color: $theme-easytown-blue;
+      color: white;
+    }
+
+    &:hover {
+      background-color: #00c2d3;
+      color: white;
+    }
+
+    .text {
+    }
+
+    .description {
+      font-size: 0.875rem;
+      color: dimgrey;
+    }
+
+    .highlight {
+      font-weight: bold;
+    }
+  }
+}

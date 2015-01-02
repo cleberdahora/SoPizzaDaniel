@@ -1,8 +1,10 @@
 'use strict';
 
-var lodash   = require('lodash');
-var geoip   = require('geoip-lite');
-var request = require('request');
+var lodash    = require('lodash');
+var geoip     = require('geoip-lite');
+var request   = require('request');
+var path      = require('path');
+var locations = require(path.resolve('./services/locations'));
 
 module.exports = function(router) {
 
@@ -12,50 +14,17 @@ module.exports = function(router) {
    * of matching locations
    */
   function get(req, res) {
-    var query = req.query.query;
+    var query   = req.query.query;
+    var options = {
+      languages: req.acceptsLanguages()
+    };
 
-    request({
-      url    : 'http://nominatim.openstreetmap.org/search',
-      qs     : {
-        q             : query,
-        format        : 'json',
-        addressdetails: 1 // Include a breakdown of the address into elements
-      },
-      json   : true,
-      headers: {
-        'accept-language': req.acceptsLanguages()
-      }
-    }, function(err, response, locations) {
+    locations.search(query, options, function(err, locations) {
       if (err) {
         return res.status(500).end(); // Internal Server Error
       }
 
-      if (response.statusCode === 200) {
-        // Parse results
-        var results = locations.map(function (location) {
-          var address   = location.address;
-          var longitude = location.lon;
-          var latitude  = location.lat;
-
-          return {
-            coordinates : [longitude, latitude],
-            country     : address.country,
-            state       : address.state,
-            city        : address.city,
-            town        : address.town,
-            village     : address.village,
-            district    : address.city_district,
-            building    : address.building,
-            zipcode     : address.postcode,
-            streetName  : address.road,
-            streetNumber: address.house
-          };
-        });
-
-        return res.json(results);
-      } else {
-        return res.status(201).end(); // Created
-      }
+      return res.json(locations);
     });
   }
 

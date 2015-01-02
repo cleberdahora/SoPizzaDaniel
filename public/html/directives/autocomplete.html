@@ -1,0 +1,6 @@
+<ul class="my-autocomplete">
+  <li class="suggestion" data-ng-repeat="suggestion in suggestions | limitTo:(limit || 6)" data-ng-click="select(suggestion); click(suggestion[keyField || 'key'])">
+    <span class="text" ng-bind-html="highlight(suggestion[textField || 'text'], suggestion[highlightsField || 'highlights'], 'highlight')"></span>
+    <span class="description">{{suggestion[descriptionField || 'description']}}</span>
+  </li>
+</ul>

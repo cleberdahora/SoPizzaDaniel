@@ -9,6 +9,9 @@ var providersDir = path.resolve(__dirname, 'providers');
 var providers    = requireAll({
   dirname: providersDir,
   filter : /^(?!base\.js)(.+)\.js?$/, // all except base.js/base.json
+  resolve: function(Provider) {
+    return new Provider();
+  }
 });
 
 /**
@@ -17,8 +20,13 @@ var providers    = requireAll({
  * @param {string} query - Query used to find all the related locations
  * @param {function} callback - Callback called on completion
  */
-function search(query, callback) {
-  var searchers = providers
+function search(query, options, callback) {
+  if (lodash.isFunction(options)) {
+    callback = options;
+    options = {};
+  }
+
+  var searchers = lodash.values(providers)
     .filter(function(provider) {
       // Filter only providers that can handle the query
       return provider.isKnown(query);
