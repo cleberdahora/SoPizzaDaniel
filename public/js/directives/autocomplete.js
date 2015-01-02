@@ -14,10 +14,10 @@
       directive.insertAfter(elem);
 
       // Move the directive below the input
-      var elemPosition = elem.position();
-      var top  = elemPosition.top + elem.outerHeight();
-      var left = elemPosition.left;
-      var width = elem.outerWidth();
+      let elemPos = elem.position();
+      let top     = elemPos.top + elem.outerHeight();
+      let left    = elemPos.left;
+      let width   = elem.outerWidth();
 
       directive.css({
         left    : left,
@@ -25,19 +25,16 @@
         minWidth: width
       });
 
-
-      elem.on('focus', function() {
-        directive.show();
-      });
+      elem.on('focus', () => directive.show());
 
       // HACK: no, MEGAHACK.
       // TODO: no description is needed. Just read the code.
-      elem.on('blur', function() {
-        $timeout(function() {
+      elem.on('blur', () => {
+        $timeout(() => {
           if (!elem.is(':focus')) {
             directive.hide();
           }
-        }, 500);
+        }, 100);
       });
 
       function highlight(text, sections, highlightClass) {
@@ -72,7 +69,6 @@
 
       // Keyboard navigation
       function goUp() {
-        let focusClass = 'focused';
         let curr = directive.find('.suggestion.focused');
         let currIdx = curr.index();
         let target;
@@ -91,14 +87,13 @@
           }
         }
 
-        curr.removeClass(focusClass);
-        target.addClass(focusClass);
+        curr.removeClass('focused');
+        target.addClass('focused');
 
         select(target);
       }
 
       function goDown() {
-        let focusClass = 'focused';
         let curr = directive.find('.suggestion.focused');
         let currIdx = curr.index();
         let target;
@@ -116,10 +111,24 @@
           }
         }
 
-        curr.removeClass(focusClass);
-        target.addClass(focusClass);
+        curr.removeClass('focused');
+        target.addClass('focused');
 
         select(target);
+      }
+
+      function focus(suggestion) {
+        let item = directive
+          .find('.suggestion')
+          .filter((idx, elem) => {
+            let scope = angular.element(elem).scope();
+            return scope.suggestion === suggestion;
+          });
+
+        directive.find('.suggestion')
+          .removeClass('focused');
+
+        item.addClass('focused');
       }
 
       function select(suggestion) {
@@ -132,15 +141,22 @@
         }
 
         if (suggestion) {
-          let textField = scope.textField;
-          suggestion = suggestion[textField || 'text'];
+          let textField        = scope.textField;
+          let descriptionField = scope.descriptionField;
+
+          let text           = suggestion[textField || 'text'];
+          let description    = suggestion[descriptionField || 'description'];
+          let suggestionText = lodash([text, description])
+            .compact()
+            .join(', ');
 
           if (scope.selectedItem) {
             scope.selectedItem.suggestion = suggestion;
           }
+
+          ngModel.$viewValue = suggestionText;
         }
 
-        ngModel.$viewValue = suggestion;
         ngModel.$render();
       }
 
@@ -150,20 +166,19 @@
         40: goDown
       };
 
-      elem.bind('keydown', function(event) {
+      elem.bind('keydown', (event) => {
         let code = event.keyCode;
         let handler = keyHandlers[code];
 
         if (handler) {
-          scope.$apply(function() {
-            handler();
-          });
+          scope.$apply(() => handler());
 
           event.preventDefault();
         }
       });
 
-      scope.select = select;
+      scope.focus     = focus;
+      scope.select    = select;
       scope.highlight = highlight;
     }
 
