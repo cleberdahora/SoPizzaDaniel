@@ -40,6 +40,7 @@
       function highlight(text, sections, highlightClass) {
         let wrapperTag = angular.element('<span>').addClass(highlightClass);
 
+        // Apply Array.splice function on a string
         function spliceString(str, offset, length) {
           let args = lodash(arguments)
             .toArray()
@@ -57,10 +58,16 @@
           .reduceRight((text, highlight) => {
             let { offset, length } = highlight;
 
+            if (offset > text.length) {
+              return text;
+            }
+
+            // wrap highlighted text on the wrapper tag
             let slice       = text.slice(offset, offset + length);
             let tag         = wrapperTag.clone();
             let wrappedText = tag.wrapInner(slice).prop('outerHTML');
 
+            // add the highlighted slice on the original text
             return spliceString(text, offset, length, wrappedText);
           }, text);
 
