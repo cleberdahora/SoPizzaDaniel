@@ -15,6 +15,11 @@
       Restangular.all('locations')
         .getList({ query })
         .then(suggestions => {
+          // Double-check to avoid delayed suggestions after erased query
+          if (!self.query && !self.query.trim()) {
+            return;
+          }
+
           self.suggestions = suggestions.map(suggestion => {
             let text        = lodash.first(suggestion.terms).value;
             let description = lodash.rest(suggestion.terms)
