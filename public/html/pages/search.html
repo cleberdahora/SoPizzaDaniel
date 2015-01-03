@@ -2,7 +2,7 @@
 
 <form class="search-bar aerial" ng-submit="search.search(search.query); search.showDropshadow = false">
 
-  <input class="search-input" type="text" name="q" ng-model="search.query" ng-focus="search.showDropshadow = true" ng-blur="search.showDropshadow = false">
+  <input class="search-input" type="text" name="q" ng-model="search.query" ng-focus="search.showDropshadow = true" ng-blur="search.showDropshadow = false" ng-change="search.getSuggestions(search.query)" my-autocomplete suggestions="search.suggestions">
   <button type="button" class="location-button" ng-click="search.getLocation()" title="Usar localização atual">
     <img class="compass-icon" src="/resources/images/icons/compass.svg" alt="location">
   </button>

@@ -4,6 +4,29 @@
   function HomeCtrl($scope, $window, $state, lodash, Restangular, geolocation) {
     let self = this;
 
+    function search(query, coordinates) {
+      Restangular.all('locations')
+        .getList({ query })
+        .then(suggestions => {
+          if (lodash.isEmpty(suggestions)) {
+            // TODO: Handle this, please
+            console.log('empty');
+          } else {
+            let suggestion = lodash.first(suggestions);
+            return Restangular.all('locations')
+              .get(suggestion.id);
+          }
+        })
+        .then(place => {
+          let params = {
+            q: query,
+            ll: place.location.coordinates.join()
+          };
+
+          $state.go('search', params);
+        });
+    }
+
     function getSuggestions(query) {
       query = query.trim();
 
@@ -37,29 +60,6 @@
         .catch(error => {
           self.suggestions = [];
           console.error(error);
-        });
-    }
-
-    function search(query, coordinates) {
-      Restangular.all('locations')
-        .getList({ query })
-        .then(suggestions => {
-          if (lodash.isEmpty(suggestions)) {
-            // TODO: Handle this, please
-            console.log('empty');
-          } else {
-            let suggestion = lodash.first(suggestions);
-            return Restangular.all('locations')
-              .get(suggestion.id);
-          }
-        })
-        .then(place => {
-          let params = {
-            q: query,
-            ll: place.location.coordinates.join()
-          };
-
-          $state.go('search', params);
         });
     }
 
