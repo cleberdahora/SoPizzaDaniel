@@ -14,14 +14,20 @@ module.exports = function(router) {
   function get(req, res) {
     var query     = req.query.query;
     var languages = req.acceptsLanguages();
+    var location  = geoip.lookup(req.ip);
 
     var url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
     var qs  = {
       input: query,
       types: 'geocode',
       language: lodash.first(languages),
+      radius: 100000,
       key: 'AIzaSyCZBZp2lxGVzFhkghHKOaSpUyBqWQeTpEQ',
     };
+
+    if (location) {
+      qs.location = location.ll.join();
+    }
 
     request({
       url: url,
