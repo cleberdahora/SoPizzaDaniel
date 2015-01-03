@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  function SearchCtrl($state, geolocation, lodash, Restangular, $stateParams,
+  function SearchCtrl($state, $stateParams, geolocation, lodash, Restangular,
       coordinates) {
     let self = this;
     let [longitude, latitude] = coordinates;
@@ -79,8 +79,8 @@
       });
 
     // State
-    self.loading     = true;
-    self.query       = $stateParams.q;
+    self.loading = true;
+    self.query   = $stateParams.q;
 
     // Functions
     self.search      = search;
