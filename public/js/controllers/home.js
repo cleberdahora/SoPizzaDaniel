@@ -79,7 +79,7 @@
           self.query = lodash.compact([
             location.streetName,
             location.steetNumber,
-            location.state
+            location.state || location.city
           ]).join(', ');
 
           search(self.query, self.coordinates);

@@ -6,4 +6,6 @@ module.exports = function(app, server) {
   app.set('ip'    , process.env.IP || '0.0.0.0');
   app.set('port'  , process.env.PORT);
   app.set('db-uri', process.env.DB_URI || process.env.MONGOHQ_URL);
+
+  app.set('key-google-places', process.env.KEY_GOOGLE_PLACES);
 };

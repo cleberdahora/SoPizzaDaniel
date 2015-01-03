@@ -3,6 +3,9 @@
 var lodash    = require('lodash');
 var geoip     = require('geoip-lite');
 var request   = require('request');
+var app       = global.app;
+
+const KEY_GOOGLE_PLACES = app.get('key-google-places');
 
 module.exports = function(router) {
 
@@ -22,7 +25,7 @@ module.exports = function(router) {
       types: 'geocode',
       language: lodash.first(languages),
       radius: 100000,
-      key: 'AIzaSyCZBZp2lxGVzFhkghHKOaSpUyBqWQeTpEQ',
+      key: KEY_GOOGLE_PLACES,
     };
 
     if (location) {
@@ -65,7 +68,7 @@ module.exports = function(router) {
 
     var url = 'https://maps.googleapis.com/maps/api/place/details/json';
     var qs  = {
-      key: 'AIzaSyCZBZp2lxGVzFhkghHKOaSpUyBqWQeTpEQ',
+      key: KEY_GOOGLE_PLACES,
       placeid: id,
       types: 'geocode',
       language: lodash.first(languages)
