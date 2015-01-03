@@ -4,7 +4,11 @@
   function HomeCtrl($scope, $window, $state, lodash, Restangular, geolocation) {
     let self = this;
 
-    function search(query, coordinates) {
+    function search(query) {
+      if (angular.isObject(query)) {
+        query = query.value;
+      }
+
       Restangular.all('locations')
         .getList({ query })
         .then(suggestions => {
