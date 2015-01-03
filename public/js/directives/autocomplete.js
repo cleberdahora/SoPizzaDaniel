@@ -75,7 +75,7 @@
       }
 
       // Keyboard navigation
-      function goUp() {
+      function goUp(event) {
         let curr = directive.find('.suggestion.focused');
         let currIdx = curr.index();
         let target;
@@ -98,9 +98,10 @@
         target.addClass('focused');
 
         select(target);
+        event.preventDefault();
       }
 
-      function goDown() {
+      function goDown(event) {
         let curr = directive.find('.suggestion.focused');
         let currIdx = curr.index();
         let target;
@@ -122,6 +123,7 @@
         target.addClass('focused');
 
         select(target);
+        event.preventDefault();
       }
 
       function focus(suggestion) {
@@ -158,10 +160,15 @@
         ngModel.$render();
       }
 
+      function loseFocus(event) {
+        scope.showSuggestions = false;
+      }
+
       // Keyboard navigation
       let keyHandlers = {
-        38: goUp,
-        40: goDown
+        38: goUp,     // Up arrow
+        40: goDown,   // Down arrow
+        13: loseFocus // Enter key
       };
 
       elem.bind('keydown', (event) => {
@@ -169,10 +176,10 @@
         let handler = keyHandlers[code];
 
         if (handler) {
-          scope.$apply(() => handler());
-
-          event.preventDefault();
+          scope.$apply(() => handler(event));
         }
+        // Make suggestions visible whenever a key is pressed
+        scope.showSuggestions = true;
       });
 
       scope.focus     = focus;

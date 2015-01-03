@@ -1,14 +1,15 @@
 (function() {
   'use strict';
 
-  function HomeCtrl($window, $state, lodash, Restangular, geolocation) {
+  function HomeCtrl($scope, $window, $state, lodash, Restangular, geolocation) {
     let self = this;
 
     function getSuggestions(query) {
       query = query.trim();
+
       if (lodash.isEmpty(query)) {
         self.suggestions = [];
-        return;
+        return $scope.$apply();
       }
 
       Restangular.all('locations')
