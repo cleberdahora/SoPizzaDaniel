@@ -175,11 +175,12 @@
         let code = event.keyCode;
         let handler = keyHandlers[code];
 
+        // Make suggestions visible whenever a key is pressed
+        scope.showSuggestions = true;
+
         if (handler) {
           scope.$apply(() => handler(event));
         }
-        // Make suggestions visible whenever a key is pressed
-        scope.showSuggestions = true;
       });
 
       scope.focus     = focus;
@@ -193,11 +194,10 @@
       templateUrl: '/resources/html/directives/autocomplete.html',
       transclude: 'true',
       scope: {
-        suggestions     : '=',
-        click           : '=',
-        limit           : '@',
-        keyField        : '@',
-        selectedItem    : '='
+        suggestions : '=',
+        click       : '=',
+        limit       : '@',
+        selectedItem: '='
       },
       link: link
     };
