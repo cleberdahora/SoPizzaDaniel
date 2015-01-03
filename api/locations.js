@@ -3,31 +3,99 @@
 var lodash    = require('lodash');
 var geoip     = require('geoip-lite');
 var request   = require('request');
-var path      = require('path');
-var locations = require(path.resolve('./services/locations'));
 
 module.exports = function(router) {
 
   /**
    * GET /?:query
-   * Search locations based on a query and receives back detailed information
-   * of matching locations
+   * Search locations based on a query and receives back informations of
+   * matching locations
    */
   function get(req, res) {
-    var query   = req.query.query;
-    var options = {
-      languages: req.acceptsLanguages()
+    var query     = req.query.query;
+    var languages = req.acceptsLanguages();
+
+    var url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
+    var qs  = {
+      input: query,
+      types: 'geocode',
+      language: lodash.first(languages),
+      key: 'AIzaSyCZBZp2lxGVzFhkghHKOaSpUyBqWQeTpEQ',
     };
 
-    locations.search(query, options, function(err, locations) {
+    request({
+      url: url,
+      qs: qs,
+      json: true
+    }, function(err, response, json) {
       if (err) {
         return res.status(500).end(); // Internal Server Error
       }
 
-      return res.json(locations);
+      if (json.status !== 'OK' && json.status !== 'ZERO_RESULTS') {
+        return res.status(500).end(); // Internal Server Error
+      }
+
+      var suggestions = json.predictions.map(function(prediction) {
+        return {
+          id: prediction.place_id,
+          name: prediction.description,
+          terms: prediction.terms,
+          matches: prediction.matched_substrings,
+        };
+      });
+
+      return res.json(suggestions);
     });
   }
 
+  /**
+   * GET /:id
+   * Get detailed information about a location
+   **/
+  function getSingle(req, res) {
+    var id        = req.params.id;
+    var languages = req.acceptsLanguages();
+
+    var url = 'https://maps.googleapis.com/maps/api/place/details/json';
+    var qs  = {
+      key: 'AIzaSyCZBZp2lxGVzFhkghHKOaSpUyBqWQeTpEQ',
+      placeid: id,
+      types: 'geocode',
+      language: lodash.first(languages)
+    };
+
+    request({
+      url: url,
+      qs: qs,
+      json: true
+    }, function(err, response, json) {
+      if (err) {
+        return res.status(500).end(); // Internal Server Error
+      }
+
+      if (json.status === 'ZERO_RESULTS') {
+        return res.status(404).end(); // Not Found
+      }
+
+      if (json.status !== 'OK') {
+        return res.status(500).end(); // Internal Server Error
+      }
+
+      var info = json.result;
+      var location = info.geometry.location;
+
+      var locationInfo = {
+          id: info.place_id,
+          location: {
+            type: 'Point',
+            coordinates: [location.lng, location.lat]
+          }
+        };
+
+      return res.json(locationInfo);
+    });
+  }
   /**
    * POST /
    * Add information about current geographic position and receives back
@@ -99,5 +167,6 @@ module.exports = function(router) {
   }
 
   router.get('/', get);
+  router.get('/:id', getSingle);
   router.post('/', post);
 };

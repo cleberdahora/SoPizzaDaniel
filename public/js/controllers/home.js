@@ -1,8 +1,7 @@
 (function() {
   'use strict';
 
-  function HomeCtrl($window, $state, lodash, Restangular, geolocation,
-      location) {
+  function HomeCtrl($window, $state, lodash, Restangular, geolocation) {
     let self = this;
 
     function getSuggestions(query) {
@@ -12,7 +11,8 @@
         return;
       }
 
-      location.getSuggestions(query)
+      Restangular.all('locations')
+        .getList({ query })
         .then(suggestions => {
           self.suggestions = suggestions.map(suggestion => {
             let text        = lodash.first(suggestion.terms).value;
@@ -35,13 +35,26 @@
     }
 
     function search(query, coordinates) {
-      let params = { q: query };
+      Restangular.all('locations')
+        .getList({ query })
+        .then(suggestions => {
+          if (lodash.isEmpty(suggestions)) {
+            // TODO: Handle this, please
+            console.log('empty');
+          } else {
+            let suggestion = lodash.first(suggestions);
+            return Restangular.all('locations')
+              .get(suggestion.id);
+          }
+        })
+        .then(place => {
+          let params = {
+            q: query,
+            ll: place.location.coordinates.join()
+          };
 
-      if (coordinates) {
-        params.ll = coordinates.join();
-      }
-
-      $state.go('search', params);
+          $state.go('search', params);
+        });
     }
 
     // Get user location using HTML5 Geolocation feature
