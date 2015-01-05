@@ -1,12 +1,8 @@
 @import (reference) "variables";
 
 #elements {
-  .shadow() {
-    box-shadow: 0 0.125rem 0.5rem black;
-  }
-
   .button() {
-    .shadow();
+    #effects > .shadow();
 
     border: none;
     background-color: @theme-red;
@@ -17,7 +13,7 @@
   }
 
   .textbox() {
-    .shadow();
+    #effects > .shadow();
 
     border: none;
     box-shadow: 0 0.125rem 0.5rem black;
@@ -25,5 +21,11 @@
     color: black;
     background: white;
     outline: none;
+  }
+}
+
+#effects {
+  .shadow() {
+    box-shadow: 0 0.125rem 0.5rem black;
   }
 }

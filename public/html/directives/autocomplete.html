@@ -1,0 +1,9 @@
+<ul class="my-autocomplete" ng-show="suggestions.length && showSuggestions" ng-animate-children>
+  <li class="suggestion" ng-repeat="suggestion in suggestions track by suggestion.id | limitTo:(limit || 6)" ng-mouseover="focus(suggestion)" ng-click="select(suggestion); click(suggestion)">
+    <span class="text" ng-bind-html="highlight(suggestion.text, suggestion.highlights, 'highlight')"></span>
+    <span class="description">{{suggestion.description}}</span>
+  </li>
+  <li class="powered-by">
+    <img src="/resources/images/powered-by-google.png" alt="Google logo">
+  </li>
+</ul>

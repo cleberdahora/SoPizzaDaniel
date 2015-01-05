@@ -1,0 +1,97 @@
+@import (reference) "mixins";
+@import (reference) "variables";
+
+.my-autocomplete {
+  @transition-duration: 0.25s;
+
+  #effects > .shadow();
+
+  position: absolute;
+  display: block;
+  padding: 0;
+  margin: 0;
+  background-color: white;
+  font-size: 1rem;
+  text-align: left;
+  z-index: -1;
+
+  &.ng-hide-add,
+  &.ng-hide-remove {
+    transition: transform, opacity;
+    transition-duration: @transition-duration;
+    transform-origin: top;
+  }
+
+  &.ng-hide {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  .suggestion {
+    @height: 1.75rem;
+
+    text-shadow: none;
+    display: block;
+    list-style: none;
+    padding: 0 0.5rem;
+    vertical-align: middle;
+    cursor: pointer;
+    height: @height;
+    line-height: @height;
+    overflow: hidden;
+
+    &:not(:last-child) {
+      border-bottom: 0.0625rem solid lightgrey;
+    }
+
+    &.focused {
+      background-color: @theme-red;
+
+      .text {
+        color: white;
+      }
+      .description {
+        color: white;
+      }
+    }
+
+    &.ng-enter,
+    &.ng-leave {
+      transition: transform, height, opacity;
+      transition-duration: @transition-duration;
+    }
+
+    &.ng-leave.ng-leave-active,
+    &.ng-enter {
+      transform: scaleY(0);
+      height: 0;
+      opacity: 0;
+    }
+
+    &.ng-enter.ng-enter-active,
+    &.ng-leave {
+      transform: scaleY(1);
+      height: @height;
+      opacity: 1;
+    }
+
+    .text {
+      color: black;
+    }
+
+    .description {
+      font-size: 0.875rem;
+      color: dimgrey;
+    }
+
+    .highlight {
+      font-weight: bold;
+    }
+  }
+
+  .powered-by {
+    text-align: right;
+    list-style: none;
+    height: 1rem;
+  }
+}

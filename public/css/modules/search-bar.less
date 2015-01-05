@@ -38,9 +38,11 @@
   }
 
   .search-form {
+    position: relative;
     display: inline-block;
     vertical-align: middle;
     width: 100%;
+    z-index: 10;
 
     @media screen and (min-width: @device-medium) {
       width: calc(~"100% - 16.5rem");
@@ -79,6 +81,13 @@
       padding-right: 3rem;
       font-size: 1.25rem;
 
+      ~ .my-autocomplete {
+        transition: transform, height, box-shadow;
+        transition-duration: @animation-duration;
+        transform: translateY(0);
+        z-index: -1;
+      }
+
       &:focus {
         @translate-y: 7rem;
         box-shadow: 0 0.125rem 0.75rem black;
@@ -95,6 +104,10 @@
         ~ .search-button {
           border-radius: @focus-input-height;
           transform: translate(1rem, @translate-y) scale(1.375);
+        }
+
+        ~ .my-autocomplete {
+          transform: translateY(@translate-y + @focus-input-height - @normal-input-height);
         }
       }
     }

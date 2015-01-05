@@ -1,8 +1,8 @@
 <leaflet class="map fullscreen" markers="search.places" center="search.center"></leaflet>
 
-<form class="search-bar aerial" ng-submit="search.search(search.query); dropshadow = false">
+<form class="search-bar aerial" ng-submit="search.search(search.query); search.showDropshadow = false">
 
-  <input class="search-input" type="text" name="q" ng-model="search.query" ng-focus="showDropshadow = true" ng-blur="showDropshadow = false">
+  <input class="search-input" type="text" name="q" ng-model="search.query" ng-focus="search.showDropshadow = true" ng-blur="search.showDropshadow = false" ng-change="search.getSuggestions(search.query)" my-autocomplete suggestions="search.suggestions">
   <button type="button" class="location-button" ng-click="search.getLocation()" title="Usar localização atual">
     <img class="compass-icon" src="/resources/images/icons/compass.svg" alt="location">
   </button>
@@ -21,7 +21,7 @@
   </div>
 </section>
 
-<div class="dropshadow" ng-class="{ enabled: search.showDropshadow }" ng-click="showDropshadow = false"></div>
+<div class="dropshadow" ng-class="{ enabled: search.showDropshadow }" ng-click="search.showDropshadow = false"></div>
 <div class="dropshadow" ng-class="{ enabled: search.loading }">
   <div class="animation-wrapper">
     <img class="icon" height="100" width="100" src="/resources/images/icons/navigation.png" alt="loading">
