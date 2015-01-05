@@ -24,7 +24,7 @@
         '</div>';
     }
 
-    function search(query, coordinates) {
+    function search(query) {
       Restangular.all('locations')
         .getList({ query })
         .then(suggestions => {
@@ -70,6 +70,7 @@
               .join(', ');
 
             return {
+              id         : suggestion.id,
               value      : suggestion.name,
               text       : text,
               description: description,
@@ -132,7 +133,9 @@
     // Functions
     self.search         = search;
     self.getLocation    = getLocation;
-    self.getSuggestions = getSuggestions;
+    self.getSuggestions = lodash.debounce(getSuggestions, 250, {
+      maxWait: 500
+    });
 
     // Settings
     self.center = {
