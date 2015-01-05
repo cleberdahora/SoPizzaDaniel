@@ -19,7 +19,6 @@
     <form class="search-form" ng-submit="home.search(home.query, home.coordinates)">
       <input id="search-input" class="search-input" placeholder="Digite um CEP ou endereço" ng-model="home.query" autofocus ng-change="home.getSuggestions(home.query)" my-autocomplete suggestions="home.suggestions" click="home.search">
       <button class="search-button" type="submit">Buscar!</button>
-      <!--<my-autocomplete class="suggestion-list" ng-model="home.query" target="#search-input" ></my-autocomplete>-->
     </form>
   </div>
   <ul class="steps animated">
