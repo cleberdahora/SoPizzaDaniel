@@ -80,12 +80,13 @@
 
         if (currIdx === -1) {
           // Get the last element by default
-          target = angular.element('.suggestion:last-child');
+          target = angular.element('.suggestion').last();
         } else {
+          let firstSuggestion = angular.element('.suggestion').first();
 
-          if (curr.is(':first-child')) {
+          if (curr.is(firstSuggestion)) {
             // Go to last element and start it all again
-            target = directive.find('.suggestion:last-child');
+            target = directive.find('.suggestion').last();
           } else {
             // Go to previous
             target = curr.prev('.suggestion');
@@ -106,11 +107,13 @@
 
         if (currIdx === -1) {
           // Get the first element by default
-          target = angular.element('.suggestion:first-child');
+          target = angular.element('.suggestion').first();
         } else {
-          if (curr.is(':last-child')) {
+          let lastSuggestion = angular.element('.suggestion').last();
+
+          if (curr.is(lastSuggestion)) {
             // Go to first element and start it all again
-            target = directive.find('.suggestion:first-child');
+            target = directive.find('.suggestion').first();
           } else {
             // Go to next
             target = curr.next('.suggestion');
