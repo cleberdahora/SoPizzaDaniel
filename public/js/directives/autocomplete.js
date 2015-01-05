@@ -25,16 +25,14 @@
         minWidth: width
       });
 
-      elem.on('focus', () => directive.show());
+      elem.on('focus', () => {
+        scope.showSuggestions = true;
+        scope.$apply();
+      });
 
-      // HACK: no, MEGAHACK.
-      // TODO: no description is needed. Just read the code.
       elem.on('blur', () => {
-        $timeout(() => {
-          if (!elem.is(':focus')) {
-            directive.hide();
-          }
-        }, 100);
+        scope.showSuggestions = false;
+        scope.$apply();
       });
 
       function highlight(text, sections, highlightClass) {
@@ -175,12 +173,16 @@
         let code = event.keyCode;
         let handler = keyHandlers[code];
 
-        // Make suggestions visible whenever a key is pressed
-        scope.showSuggestions = true;
-
         if (handler) {
           scope.$apply(() => handler(event));
         }
+      });
+
+      scope.$watch('suggestions', (suggestions) => {
+        let hasSuggestions = suggestions && suggestions.length;
+        let isFocused      = elem.is(':focus');
+
+        scope.showSuggestions = hasSuggestions && isFocused;
       });
 
       scope.focus     = focus;

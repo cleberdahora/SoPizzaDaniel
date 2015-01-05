@@ -54,6 +54,7 @@
               .join(', ');
 
             return {
+              id         : suggestion.id,
               value      : suggestion.name,
               text       : text,
               description: description,

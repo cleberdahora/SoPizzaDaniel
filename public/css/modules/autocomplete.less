@@ -2,6 +2,8 @@
 @import (reference) "variables";
 
 .my-autocomplete {
+  @transition-duration: 0.25s;
+
   #effects > .shadow();
 
   position: absolute;
@@ -11,20 +13,31 @@
   background-color: white;
   font-size: 1rem;
   text-align: left;
-  z-index: 100;
+  z-index: -1;
+
+  &.ng-hide-add,
+  &.ng-hide-remove {
+    transition: transform, opacity;
+    transition-duration: @transition-duration;
+    transform-origin: top;
+  }
+
+  &.ng-hide {
+    opacity: 0;
+    transform: scaleY(0);
+  }
 
   .suggestion {
-    //@include transition(background-color 0.5s, color 0.5s);
-    // @include icon(room, $size: 1.25rem);
+    @height: 1.75rem;
 
     text-shadow: none;
     display: block;
     list-style: none;
-    padding: 0 0.5125rem;
-    line-height: 1.8rem;
+    padding: 0 0.5rem;
     vertical-align: middle;
     cursor: pointer;
-    height: 1.8125rem;
+    height: @height;
+    line-height: @height;
     overflow: hidden;
 
     &:not(:last-child) {
@@ -40,6 +53,26 @@
       .description {
         color: white;
       }
+    }
+
+    &.ng-enter,
+    &.ng-leave {
+      transition: transform, height, opacity;
+      transition-duration: @transition-duration;
+    }
+
+    &.ng-leave.ng-leave-active,
+    &.ng-enter {
+      transform: scaleY(0);
+      height: 0;
+      opacity: 0;
+    }
+
+    &.ng-enter.ng-enter-active,
+    &.ng-leave {
+      transform: scaleY(1);
+      height: @height;
+      opacity: 1;
     }
 
     .text {

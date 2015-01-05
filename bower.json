@@ -3,8 +3,7 @@
   "private": true,
   "dependencies": {
     "angular-parallax": "*",
-    "angular": "~1.2.25",
-    "angular-animate": "~1.2.25",
+    "angular": "~1.3.8",
     "jquery": "~2.1.1",
     "angular-ui-router": "~0.2.11",
     "restangular": "~1.4.0",
@@ -17,10 +16,10 @@
     "angular-moment": "~0.8.2",
     "angular-off-click": "~0.0.2",
     "angular-perfect-scrollbar": "*",
-    "ngAnimate": "*",
     "angular-lodash": "~0.1.2",
     "angular-flexslider": "~1.3.0",
-    "angular-sanitize": "~1.3.8"
+    "angular-sanitize": "~1.3.8",
+    "angular-animate": "~1.3.8"
   },
   "devDependencies": {
     "lesshat": "~3.0.2"
