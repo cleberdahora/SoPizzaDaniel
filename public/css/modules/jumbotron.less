@@ -3,11 +3,10 @@
 @import (reference) "variables";
 
 .jumbotron {
-  @height: 100vh;
   @shadow-height: 10rem;
 
   position: relative;
-  height: @height * 2 / 3;
+  height: 60vh;
   color: white;
   text-shadow: 0 0 1rem black;
   text-align: center;
@@ -19,7 +18,7 @@
   }
 
   &.fullscreen {
-    height: @height;
+    height: 100vh;
   }
 
   .background {
@@ -42,7 +41,7 @@
 
   > .title {
     font-size: 3rem;
-    margin: (@height / 4) 0 0;
+    margin: 25vh 0 0;
   }
 
   .subtitle {
