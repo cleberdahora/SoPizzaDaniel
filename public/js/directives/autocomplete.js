@@ -13,17 +13,25 @@
       directive.remove(); // remove from input
       directive.insertAfter(elem);
 
-      // Move the directive below the input
-      let elemPos = elem.position();
-      let top     = elemPos.top + elem.outerHeight();
-      let left    = elemPos.left;
-      let width   = elem.outerWidth();
+      function getStyle() {
+        let elemPos = elem.position();
+        let top     = elemPos.top + elem.outerHeight();
+        let left    = elemPos.left;
+        let width   = elem.outerWidth();
 
-      directive.css({
-        left    : left,
-        top     : top,
-        minWidth: width
-      });
+        let toRem = px => (px / 16) + 'rem';
+
+        return {
+          left    : toRem(left),
+          top     : toRem(top),
+          minWidth: toRem(width)
+        };
+      }
+
+      // Move the directive below the input
+      scope.$watch(getStyle, style => {
+        directive.css(style);
+      }, true);
 
       elem.on('focus', () => {
         scope.showSuggestions = true;

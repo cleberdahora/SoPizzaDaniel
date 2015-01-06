@@ -52,12 +52,14 @@
   .search-input {
     #elements > .textbox();
 
+    vertical-align: middle;
     width: calc(~"100% - 7rem");
   }
 
   .search-button {
     #elements > .button();
 
+    vertical-align: middle;
     width: 6rem;
   }
 
@@ -65,6 +67,9 @@
     @animation-duration: 0.5s;
     @normal-input-height: 3rem;
     @focus-input-height: 4rem;
+
+    transition: transform, padding;
+    transition-duration: @animation-duration;
     position: absolute;
     top: 0;
     padding: 2rem;
@@ -72,48 +77,44 @@
     right: 0;
     margin: auto;
     z-index: 10;
+    height: @focus-input-height + 4rem;
+
+    &.focused {
+      @translate-y: 20vh;
+
+      transform: translateY(@translate-y);
+      // Reduce vertical padding to match increased .search-input height movement
+      padding: 1rem 2rem;
+    }
 
     .search-input {
-      transition: transform, height, box-shadow;
+      transition: transform, height, box-shadow, margin;
       transition-duration: @animation-duration;
       height: @normal-input-height;
       vertical-align: middle;
       padding-right: 3rem;
       font-size: 1.25rem;
 
-      ~ .my-autocomplete {
-        transition: transform, height, box-shadow;
-        transition-duration: @animation-duration;
-        transform: translateY(0);
-        z-index: -1;
-      }
-
       &:focus {
         @translate-y: 7rem;
+
         box-shadow: 0 0.125rem 0.75rem black;
-        margin: auto;
         height: @focus-input-height;
-        transform: translateY(@translate-y);
         padding-right: 4rem;
 
         ~ .location-button {
-          border-radius: @focus-input-height;
-          transform: translate(-12.5%, @translate-y) scale(1.25);
+          transform: scale(1.25);
         }
 
         ~ .search-button {
-          border-radius: @focus-input-height;
-          transform: translate(1rem, @translate-y) scale(1.375);
-        }
-
-        ~ .my-autocomplete {
-          transform: translateY(@translate-y + @focus-input-height - @normal-input-height);
+          transform: scale(1.375);
         }
       }
     }
 
     .location-button {
       transition: opacity 0.5s, transform @animation-duration;
+      transform-origin: right;
       margin-left: -@normal-input-height;
       border: 0;
       padding: 0;
@@ -146,6 +147,7 @@
       padding: 0;
       transition-property: border-radius, transform;
       transition-duration: @animation-duration;
+      transform-origin: left;
       vertical-align: middle;
       border-radius: @normal-input-height;
       height: @normal-input-height;
