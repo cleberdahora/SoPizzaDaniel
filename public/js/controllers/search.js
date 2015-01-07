@@ -139,9 +139,8 @@
 
     // Settings
     self.center = {
-      lat : latitude,
-      lng : longitude,
-      zoom: 15
+      latitude : latitude,
+      longitude: longitude,
     };
   }
 
