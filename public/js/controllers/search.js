@@ -2,27 +2,27 @@
   'use strict';
 
   function SearchCtrl($scope, $state, $stateParams, Restangular, lodash,
-      geolocation, coordinates) {
+      geolocation, coordinates, uiGmapGoogleMapApi) {
     let self = this;
-    let [longitude, latitude] = coordinates;
+    let [latitude, longitude] = coordinates;
 
-    function gambiHTML(place) {
-      //let {prefix, suffix} = place.logo;
+    //function gambiHTML(place) {
+    //  //let {prefix, suffix} = place.logo;
 
-      return '' +
-        //'<img class="picture" src="' + prefix + '100x100' + suffix + '">' +
-        '<div class="info">' +
-          '<div class="title">' +
-            '<a class="title-link" href="/place/' + place.id + '">' +
-              place.name +
-            '</a>' +
-          '</div>' +
-          '<div class="address">' +
-            place.address.formatted +
-          '</div>' +
-          '<a class="go-link" href="/place/' + place.id + '">ver >></a>' +
-        '</div>';
-    }
+    //  return '' +
+    //    //'<img class="picture" src="' + prefix + '100x100' + suffix + '">' +
+    //    '<div class="info">' +
+    //      '<div class="title">' +
+    //        '<a class="title-link" href="/place/' + place.id + '">' +
+    //          place.name +
+    //        '</a>' +
+    //      '</div>' +
+    //      '<div class="address">' +
+    //        place.address.formatted +
+    //      '</div>' +
+    //      '<a class="go-link" href="/place/' + place.id + '">ver >></a>' +
+    //    '</div>';
+    //}
 
     function search(query) {
       Restangular.all('locations')
@@ -38,9 +38,10 @@
           }
         })
         .then(place => {
+          let [longitude, latitude] = place.location.coordinates;
           let params = {
             q: query,
-            ll: place.location.coordinates.join()
+            ll: [latitude, longitude].join()
           };
 
           $state.go('search', params, { inherit: false });
@@ -110,14 +111,12 @@
     Restangular.all('places')
       .getList({ coordinates: coordinates.join() })
       .then(places => {
+        // FIXME: It looks like that coords parameter on markers directive
+        // (angular-google-maps) doesn't accept 2 or more levels of property
+        // nesting. Replicating location property on root objects by now.
         self.places = places.map(place => {
-          let [longitude, latitude] = place.address.coordinates;
-
           lodash.merge(place, {
-            lat      : latitude,
-            lng      : longitude,
-            message  : gambiHTML(place),
-            draggable: false
+            location: place.address.location
           });
 
           return place;
@@ -138,11 +137,18 @@
     });
 
     // Settings
-    self.center = {
-      lat : latitude,
-      lng : longitude,
-      zoom: 15
-    };
+    self.center = { latitude, longitude };
+
+    uiGmapGoogleMapApi.then(maps => {
+      self.location = {
+        latitude,
+        longitude,
+        icon: {
+          animation: maps.Animation.BOUNCE,
+          size: new maps.Size(48, 48)
+        }
+      };
+    });
   }
 
   angular.module('app')

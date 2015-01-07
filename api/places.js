@@ -14,27 +14,22 @@ module.exports = function(router) {
    * Get a list of places
    */
   function get(req, res) {
-    // [longitude, latitude] as defined in GeoJSON specification
-    // http://geojson.org/geojson-spec.html#appendix-a-geometry-examples
+    // Coordinates in latitude,longitude format
     var coordinates = (req.query.coordinates || '').split(',');
 
     if (lodash.isEmpty(lodash.compact(coordinates))) {
       var location  = geoip.lookup(req.ip);
 
       if (location) {
-        // node-geoip returns information on [latitude, longitude] format
-        var latitude  = location.ll[0];
-        var longitude = location.ll[1];
-
-        coordinates = [longitude, latitude];
+        coordinates = location.ll;
       } else {
         // If no location information was found, defaults to São Paulo, Brazil
-        coordinates = [-46.6333094, -23.5505199];
+        coordinates = [-23.5505199, -46.6333094];
       }
     }
 
     // Get places info from all sources
-    places.find(coordinates, function(err, results) {
+    places.find(toGeoJSON(coordinates), function(err, results) {
       if (err) {
         return res.status(500).end();
       }
@@ -136,6 +131,16 @@ module.exports = function(router) {
           })
         };
       })
+    };
+  }
+
+  function toGeoJSON(coordinates) {
+    var latitude  = coordinates[0];
+    var longitude = coordinates[1];
+
+    return {
+      type: 'Point',
+      coordinates: [longitude, latitude]
     };
   }
 
