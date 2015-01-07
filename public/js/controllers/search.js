@@ -128,6 +128,7 @@
     // State
     self.loading = true;
     self.query   = $stateParams.q;
+    self.searchLocation = { latitude, longitude };
 
     // Functions
     self.search         = search;
@@ -137,10 +138,7 @@
     });
 
     // Settings
-    self.center = {
-      latitude : latitude,
-      longitude: longitude,
-    };
+    self.center = { latitude, longitude };
   }
 
   angular.module('app')
