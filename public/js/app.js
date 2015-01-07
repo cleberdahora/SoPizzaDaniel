@@ -10,12 +10,12 @@
     'scrollto',
     'geolocation',
     'ngLodash',
-    'leaflet-directive',
     'angularMoment',
     'offClick',
     'perfect_scrollbar',
     'ngAnimate',
     'angular-lodash',
-    'angular-flexslider'
+    'angular-flexslider',
+    'uiGmapgoogle-maps'
   ]);
 })();
