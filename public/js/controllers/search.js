@@ -111,6 +111,9 @@
     Restangular.all('places')
       .getList({ coordinates: coordinates.join() })
       .then(places => {
+        // FIXME: It looks like that coords parameter on markers directive
+        // (angular-google-maps) doesn't accept 2 or more levels of property
+        // nesting. Replicating location property on root objects by now.
         self.places = places.map(place => {
           lodash.merge(place, {
             location: place.address.location
