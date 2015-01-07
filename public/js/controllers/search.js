@@ -4,25 +4,25 @@
   function SearchCtrl($scope, $state, $stateParams, Restangular, lodash,
       geolocation, coordinates) {
     let self = this;
-    let [longitude, latitude] = coordinates;
+    let [latitude, longitude] = coordinates;
 
-    function gambiHTML(place) {
-      //let {prefix, suffix} = place.logo;
+    //function gambiHTML(place) {
+    //  //let {prefix, suffix} = place.logo;
 
-      return '' +
-        //'<img class="picture" src="' + prefix + '100x100' + suffix + '">' +
-        '<div class="info">' +
-          '<div class="title">' +
-            '<a class="title-link" href="/place/' + place.id + '">' +
-              place.name +
-            '</a>' +
-          '</div>' +
-          '<div class="address">' +
-            place.address.formatted +
-          '</div>' +
-          '<a class="go-link" href="/place/' + place.id + '">ver >></a>' +
-        '</div>';
-    }
+    //  return '' +
+    //    //'<img class="picture" src="' + prefix + '100x100' + suffix + '">' +
+    //    '<div class="info">' +
+    //      '<div class="title">' +
+    //        '<a class="title-link" href="/place/' + place.id + '">' +
+    //          place.name +
+    //        '</a>' +
+    //      '</div>' +
+    //      '<div class="address">' +
+    //        place.address.formatted +
+    //      '</div>' +
+    //      '<a class="go-link" href="/place/' + place.id + '">ver >></a>' +
+    //    '</div>';
+    //}
 
     function search(query) {
       Restangular.all('locations')
@@ -38,9 +38,10 @@
           }
         })
         .then(place => {
+          let [longitude, latitude] = place.location.coordinates;
           let params = {
             q: query,
-            ll: place.location.coordinates.join()
+            ll: [latitude, longitude].join()
           };
 
           $state.go('search', params, { inherit: false });
@@ -111,13 +112,8 @@
       .getList({ coordinates: coordinates.join() })
       .then(places => {
         self.places = places.map(place => {
-          let [longitude, latitude] = place.address.coordinates;
-
           lodash.merge(place, {
-            lat      : latitude,
-            lng      : longitude,
-            message  : gambiHTML(place),
-            draggable: false
+            location: place.address.location
           });
 
           return place;

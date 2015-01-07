@@ -1,4 +1,7 @@
-<ui-gmap-google-map class="map fullscreen" center="search.center" zoom="15"></ui-gmap-google-map>
+<ui-gmap-google-map class="map fullscreen" center="search.center" zoom="15">
+  <ui-gmap-markers models="search.places" coords="'location'" icon="'icon'"></ui-gmap-markers>
+
+</ui-gmap-google-map>
 
 <form class="search-bar aerial" ng-class="{focused: search.searchFocus}" ng-submit="search.search(search.query); search.showDropshadow = false">
 

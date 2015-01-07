@@ -20,14 +20,15 @@ var Place = mongoose.model('Place');
 
 /**
  * Find places based on a search query near a geographic position
- * @param {array} coordinates - Geographic coordinates as [lng, lat]
+ * @param {array} location - Geographic coordinates as GeoJSON object of
+ * Point type
  * @param {function} callback - Callback called on success
  */
-function find(coordinates, callback) {
+function find(location, callback) {
   // Wrap a provider to be called by async library
   function wrap(fn) {
     return function(callback) {
-      fn(coordinates, callback);
+      fn(location, callback);
     };
   }
 

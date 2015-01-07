@@ -3,6 +3,7 @@
 var moment   = require('moment');
 var lodash   = require('lodash');
 var mongoose = require('mongoose');
+var GeoJSON  = require('mongoose-geojson-schema');
 var Schema   = mongoose.Schema;
 var Mixed    = Schema.Types.Mixed;
 
@@ -48,7 +49,7 @@ var PlaceSchema = new Schema({
   address: {
     formatted: String,
     // TODO: Convert to GeoJSON format
-    coordinates: [Number] // [longitude, latitude]
+    location: GeoJSON.Point
   },
   workingTimes: [{
     days: [{ type: String, enum: weekdays }],

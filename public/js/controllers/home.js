@@ -22,9 +22,10 @@
           }
         })
         .then(place => {
+          let [longitude, latitude] = place.location.coordinates;
           let params = {
             q: query,
-            ll: place.location.coordinates.join()
+            ll: [latitude, longitude].join()
           };
 
           $state.go('search', params);
