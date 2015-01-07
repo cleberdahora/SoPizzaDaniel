@@ -2,7 +2,7 @@
   'use strict';
 
   function SearchCtrl($scope, $state, $stateParams, Restangular, lodash,
-      geolocation, coordinates) {
+      geolocation, coordinates, uiGmapGoogleMapApi) {
     let self = this;
     let [latitude, longitude] = coordinates;
 
@@ -128,7 +128,6 @@
     // State
     self.loading = true;
     self.query   = $stateParams.q;
-    self.searchLocation = { latitude, longitude };
 
     // Functions
     self.search         = search;
@@ -139,6 +138,17 @@
 
     // Settings
     self.center = { latitude, longitude };
+
+    uiGmapGoogleMapApi.then(maps => {
+      self.location = {
+        latitude,
+        longitude,
+        icon: {
+          animation: maps.Animation.BOUNCE,
+          size: new maps.Size(48, 48)
+        }
+      };
+    });
   }
 
   angular.module('app')

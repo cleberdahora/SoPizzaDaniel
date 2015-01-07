@@ -1,6 +1,6 @@
 <ui-gmap-google-map class="map fullscreen" center="search.center" zoom="15">
   <ui-gmap-markers models="search.places" coords="'location'" fit="true"></ui-gmap-markers>
-  <ui-gmap-marker idKey="1" coords="search.searchLocation"></ui-gmap-markers>
+  <ui-gmap-marker idkey="1" coords="search.location" icon="{url:'/resources/images/icons/user.svg', scaledSize: search.location.icon.size}" options="{animation: search.location.icon.animation}"></ui-gmap-markers>
 
 </ui-gmap-google-map>
 
