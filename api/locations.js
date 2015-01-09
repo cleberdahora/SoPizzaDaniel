@@ -143,7 +143,7 @@ module.exports = function(router) {
         'accept-language': req.acceptsLanguages()
       }
     }, function(err, response, location) {
-      if (err) {
+      if (err || location.error) {
         return res.status(500).end(); // Internal Server Error
       }
 
