@@ -116,6 +116,7 @@ module.exports = function(router) {
       id           : place.id,
       name         : place.name,
       description  : place.description,
+      cover        : place.cover,
       logo         : place.logo,
       picture      : place.picture,
       pictures     : place.pictures,

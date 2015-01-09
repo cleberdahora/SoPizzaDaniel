@@ -35,13 +35,17 @@ var PlaceSchema = new Schema({
   },
   name: String,
   description: String,
+  cover: {
+    prefix: String,
+    suffix: String
+  },
   logo: {
     prefix: String,
-    suffix: String,
+    suffix: String
   },
   picture: {
     prefix: String,
-    suffix: String,
+    suffix: String
   },
   pictures: [PictureSchema],
   phone: String,
