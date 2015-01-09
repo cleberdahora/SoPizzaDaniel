@@ -90,7 +90,7 @@
       geolocation.getLocation()
         .then(data => {
           let { longitude, latitude } = data.coords;
-          let coordinates             = [longitude, latitude];
+          let coordinates             = [latitude, longitude];
 
           self.coordinates = coordinates;
 
