@@ -115,8 +115,13 @@
         // (angular-google-maps) doesn't accept 2 or more levels of property
         // nesting. Replicating location property on root objects by now.
         self.places = places.map(place => {
+          function showPopup() {
+            self.selectedPlace = place;
+          }
+
           lodash.merge(place, {
-            location: place.address.location
+            location: place.address.location,
+            onClick : showPopup
           });
 
           return place;
@@ -124,6 +129,9 @@
 
         self.loading = false;
       });
+
+    // Initialization
+    self.places = [];
 
     // State
     self.loading = true;

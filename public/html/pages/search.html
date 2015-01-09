@@ -1,5 +1,21 @@
 <ui-gmap-google-map class="map fullscreen" center="search.center" zoom="15">
-  <ui-gmap-markers models="search.places" coords="'location'" fit="true"></ui-gmap-markers>
+  <ui-gmap-markers models="search.places" coords="'location'" fit="true" click="'onClick'"></ui-gmap-markers>
+  <ui-gmap-window show="search.selectedPlace" coords="search.selectedPlace.address.location" templateParameter="search.selectedPlace">
+    <div class="popup-wrapper">
+      <img class="picture" alt="picture" ng-if="!isEmpty(search.selectedPlace.logo)" width="100" height="100" ng-src="{{search.selectedPlace.logo | image}}">
+      <div class="info">
+        <div class="title">
+          <a class="title-link" ng-href="place/{{search.selectedPlace.id}}">
+            {{search.selectedPlace.name}}
+          </a>
+        </div>
+        <div class="address">
+          {{search.selectedPlace.address.formatted}}
+        </div>
+        <a class="go-link" ng-href="/place/{{search.selectedPlace.id}}">ver >></a>
+      </div>
+    </div>
+  </ui-gmap-window>
   <ui-gmap-marker idkey="1" coords="search.location" icon="{url:'/resources/images/icons/user.svg', scaledSize: search.location.icon.size}" options="{title: 'Sua localização', animation: search.location.icon.animation}"></ui-gmap-markers>
 
 </ui-gmap-google-map>
