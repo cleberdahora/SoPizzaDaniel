@@ -3,7 +3,7 @@
     <img ng-src="{{placeCtrl.place.picture | image:1300:300}}">
   </my-video-slider>
   <div class="profile-info">
-    <img class="picture" alt="profile image" ng-if="isEmpty(placeCtrl.place.logo)" src="/resources/images/profile-logo.svg">
+    <img class="picture" alt="profile image" ng-if="isEmpty(placeCtrl.place.logo)" width="300" height="300" src="/resources/images/profile-logo.svg">
     <img class="picture" alt="profile image" ng-if="!isEmpty(placeCtrl.place.logo)" width="300" height="300" ng-src="{{placeCtrl.place.logo.prefix + '300x300' + placeCtrl.place.logo.suffix}}">
 
     <div class="info">
