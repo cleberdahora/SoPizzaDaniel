@@ -16,6 +16,7 @@
     'ngAnimate',
     'angular-lodash',
     'angular-flexslider',
-    'uiGmapgoogle-maps'
+    'uiGmapgoogle-maps',
+    'segmentio'
   ]);
 })();
