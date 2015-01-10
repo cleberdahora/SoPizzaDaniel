@@ -72,12 +72,12 @@
     transition-duration: @animation-duration;
     position: absolute;
     top: 0;
-    padding: 2rem;
     left: 0;
     right: 0;
     margin: auto;
+    padding: 2rem;
     z-index: 10;
-    height: @focus-input-height + 4rem;
+    pointer-events: none;
 
     &.focused {
       @translate-y: 20vh;
@@ -94,6 +94,7 @@
       vertical-align: middle;
       padding-right: 3rem;
       font-size: 1.25rem;
+      pointer-events: auto;
 
       &:focus {
         @translate-y: 7rem;
@@ -124,6 +125,7 @@
       width: @normal-input-height;
       opacity: 0.5;
       outline: none;
+      pointer-events: auto;
 
       .compass-icon {
         transition: transform 0.5s;
@@ -153,6 +155,7 @@
       height: @normal-input-height;
       width: @normal-input-height;
       box-shadow: 0 0.125rem 0.25rem black;
+      pointer-events: auto;
 
       .search-icon {
         height: @normal-input-height * 0.8;
