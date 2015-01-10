@@ -32,7 +32,10 @@
   </button>
 </form>
 
-<img class="logo side" src="/resources/images/logo.svg"></img>
+<a ui-sref="home">
+  <img class="logo side" src="/resources/images/logo.svg">
+</a>
+
 <section class="places aerial" ng-class="{fullscreen: search.showPlaces}" my-escape="search.showPlaces = false">
   <button class="more" ng-click="search.showPlaces = !search.showPlaces">
     {{search.showPlaces ? 'Fechar' : 'Ver mais'}}
