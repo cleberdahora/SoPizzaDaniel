@@ -5,7 +5,7 @@ var geoip     = require('geoip-lite');
 var request   = require('request');
 var app       = global.app;
 
-const KEY_GOOGLE_PLACES = app.get('key-google-places');
+var KEY_GOOGLE_PLACES = app.get('key-google-places');
 
 module.exports = function(router) {
 
