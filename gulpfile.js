@@ -148,7 +148,7 @@ gulp.task('server', function(cb) {
       IP: '127.0.0.1',
       PORT: 8888,
       DB_URI: 'mongodb://localhost:27017/so_pizza',
-      KEY_GOOGLE_PLACES: 'AIzaSyCZBZp2lxGVzFhkghHKOaSpUyBqWQeTpEQ'
+      KEY_GOOGLE_PLACES: 'AIzaSyDhGwh4566WwJSYJOL3uJ0Qj4Q5IXkzpto'
     }
   })
   .on('start', function() {
