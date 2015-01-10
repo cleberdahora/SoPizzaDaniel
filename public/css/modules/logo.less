@@ -10,6 +10,7 @@
   top: 1rem;
   margin: auto;
   height: 5rem;
+  z-index: 1000;
 
   &.small {
     top: 2rem;
@@ -23,5 +24,13 @@
   &.side {
     right: initial;
     left: 1rem;
+  }
+
+  &.responsive {
+    display: none;
+
+    @media screen and (min-width: @device-large) {
+      display: block;
+    }
   }
 }
