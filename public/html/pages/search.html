@@ -1,4 +1,4 @@
-<ui-gmap-google-map class="map fullscreen" center="search.center" zoom="15">
+<ui-gmap-google-map class="map fullscreen" center="search.center" zoom="15" options="{ mapTypeControl: false, overviewMapControl: false, rotateControl: false, streetViewControl: true, panControl: false, panControlOptions: { position: 4 }, zoomControlOptions: { position: 4 } }"> <!-- LEFT_CENTER = 4 -->
   <ui-gmap-markers models="search.places" coords="'location'" fit="true" click="'onClick'"></ui-gmap-markers>
   <ui-gmap-window show="search.selectedPlace" coords="search.selectedPlace.address.location" templateParameter="search.selectedPlace">
     <div class="popup-wrapper">
