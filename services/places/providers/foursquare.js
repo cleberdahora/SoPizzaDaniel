@@ -82,9 +82,12 @@ function FoursquareProvider() {
       json: true
     }, function(err, res, body) {
       // TODO: Handle err properly
-      var response = body.response;
-      var common   = response.hours;
-      var popular  = response.popular;
+      if (err) {
+        console.error(err);
+      }
+      var response = body.response    || {};
+      var common   = response.hours   || {};
+      var popular  = response.popular || {};
       var timeframes = parseTimeframes(common.timeframes || popular.timeframes);
 
       callback(null, timeframes);
@@ -106,6 +109,9 @@ function FoursquareProvider() {
       json: true
     }, function(err, res, body) {
       // TODO: Handle err properly
+      if (err) {
+        console.error(err);
+      }
       callback(null, body.response.photos.items);
     });
   }
@@ -125,6 +131,9 @@ function FoursquareProvider() {
       json: true
     }, function(err, res, body) {
       // TODO: Handle err properly
+      if (err) {
+        console.error(err);
+      }
       callback(null, body.response.venue);
     });
   }
@@ -212,6 +221,9 @@ function FoursquareProvider() {
       qs  : qs,
       json: true
     }, function(err, res, body) {
+      if (err) {
+        console.error(err);
+      }
       var places = body.response.venues.map(function (venue) {
         return {
           providerInfo: {
