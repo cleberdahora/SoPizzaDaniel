@@ -9,22 +9,11 @@
     //function gambiHTML(place) {
     //  //let {prefix, suffix} = place.logo;
 
-    //  return '' +
-    //    //'<img class="picture" src="' + prefix + '100x100' + suffix + '">' +
-    //    '<div class="info">' +
-    //      '<div class="title">' +
-    //        '<a class="title-link" href="/place/' + place.id + '">' +
-    //          place.name +
-    //        '</a>' +
-    //      '</div>' +
-    //      '<div class="address">' +
-    //        place.address.formatted +
-    //      '</div>' +
-    //      '<a class="go-link" href="/place/' + place.id + '">ver >></a>' +
-    //    '</div>';
-    //}
-
     function search(query) {
+      if (angular.isObject(query)) {
+        query = query.value;
+      }
+
       Restangular.all('locations')
         .getList({ query })
         .then(suggestions => {
