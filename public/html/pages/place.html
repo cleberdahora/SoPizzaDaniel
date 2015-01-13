@@ -29,7 +29,7 @@
     </div>
     <ul class="dish-list" ng-if="placeCtrl.place.dishes.length">
       <li class="dish" ng-repeat="dish in placeCtrl.place.dishes">
-        <img class="picture" alt="dish picture" ng-src="{{dish.picture}}">
+        <img class="picture" alt="dish picture" ng-src="{{dish.picture | image:100:100}}">
 
         <div class="informations">
           <div class="name">{{dish.name}}</div>
