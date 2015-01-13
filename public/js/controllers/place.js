@@ -6,8 +6,10 @@
 
     //place.dishes = [
       //{
-        //picture: 'https://irs2.4sqi.net/img/general/320x160/' +
-          //'fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg',
+        //picture: {
+          //prefix: 'https://irs2.4sqi.net/img/general/',
+          //suffix: '/fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg'
+        //},
         //name: 'Americana',
         //pricing: [
           //{
@@ -29,8 +31,10 @@
         //]
       //},
       //{
-        //picture: 'https://irs2.4sqi.net/img/general/320x160/' +
-          //'fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg',
+        //picture: {
+          //prefix: 'https://irs2.4sqi.net/img/general/',
+          //suffix: '/fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg'
+        //},
         //name: 'Calabresa com Catupiry',
         //pricing: 35.00,
         //ingredients: [
@@ -42,8 +46,10 @@
         //]
       //},
       //{
-        //picture: 'https://irs2.4sqi.net/img/general/320x160/' +
-          //'fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg',
+        //picture: {
+          //prefix: 'https://irs2.4sqi.net/img/general/',
+          //suffix: '/fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg'
+        //},
         //name: 'Frango com Catupiry',
         //pricing: 35.00,
         //ingredients: [
@@ -55,8 +61,10 @@
         //]
       //},
       //{
-        //picture: 'https://irs2.4sqi.net/img/general/320x160/' +
-          //'fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg',
+        //picture: {
+          //prefix: 'https://irs2.4sqi.net/img/general/',
+          //suffix: '/fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg'
+        //},
         //name: 'Quatro Queijos',
         //pricing: 35.00,
         //ingredients: [
@@ -69,8 +77,10 @@
         //]
       //},
       //{
-        //picture: 'https://irs2.4sqi.net/img/general/320x160/' +
-          //'fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg',
+        //picture: {
+          //prefix: 'https://irs2.4sqi.net/img/general/',
+          //suffix: '/fPdzDsa9qmcPd0EWrlkf2kT1rAawCA5py1A4uHLdqfQ.jpg'
+        //},
         //name: 'Siciliana',
         //pricing: 35.00,
         //ingredients: [
