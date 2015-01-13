@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  function PlaceCtrl($state, lodash, Restangular, place, geolocation) {
+  function PlaceCtrl($state, lodash, Restangular, place) {
     let self = this;
 
     //place.dishes = [
