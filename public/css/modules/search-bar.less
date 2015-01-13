@@ -53,7 +53,12 @@
     #elements > .textbox();
 
     vertical-align: middle;
-    width: calc(~"100% - 7rem");
+    width: calc(~"100% - 5rem");
+
+    @media screen and (min-width: @device-medium) {
+      // More space to allow the button to be scaled without leaving screen
+      width: calc(~"100% - 7rem");
+    }
   }
 
   .search-button {
@@ -75,16 +80,20 @@
     left: 0;
     right: 0;
     margin: auto;
-    padding: 2rem 0;
+    padding: 1rem 0;
     z-index: 10;
     pointer-events: none;
 
-    &.focused {
-      @translate-y: 20vh;
+    @media screen and (min-width: @device-medium) {
+      padding: 2rem 0;
 
-      transform: translateY(@translate-y);
-      // Reduce vertical padding to match increased .search-input height movement
-      padding: 1rem 0;
+      &.focused {
+        @translate-y: 20vh;
+
+        transform: translateY(@translate-y);
+        // Reduce vertical padding to match increased .search-input height movement
+        padding: 1rem 0;
+      }
     }
 
     .search-input {
@@ -96,19 +105,21 @@
       font-size: 1.25rem;
       pointer-events: auto;
 
-      &:focus {
-        @translate-y: 7rem;
+      @media screen and (min-width: @device-medium) {
+        &:focus {
+          @translate-y: 7rem;
 
-        box-shadow: 0 0.125rem 0.75rem black;
-        height: @focus-input-height;
-        padding-right: 4rem;
+          box-shadow: 0 0.125rem 0.75rem black;
+          height: @focus-input-height;
+          padding-right: 4rem;
 
-        ~ .location-button {
-          transform: scale(1.25);
-        }
+          ~ .location-button {
+            transform: scale(1.25);
+          }
 
-        ~ .search-button {
-          transform: scale(1.375);
+          ~ .search-button {
+            transform: scale(1.375);
+          }
         }
       }
     }
