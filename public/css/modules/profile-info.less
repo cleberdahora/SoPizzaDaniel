@@ -11,32 +11,51 @@
   width: 100%;
   color: white;
   background: rgba(0, 0, 0, 0.5);
-  padding: 1rem 0;
+  padding: 0.5rem;
 
   .picture {
     #effects > .shadow();
 
-    @size: 10rem;
-    border: 0.5rem solid white;
+    @size: 5rem;
+    border: solid white;
+    border-width: 0.25rem;
     display: inline;
     height: @size;
     width: @size;
     display: inline-block;
     vertical-align: middle;
     background: white;
+
+    @media screen and (min-width: @device-medium) {
+      border-width: 0.5rem;
+      @size: 10rem;
+
+      height: @size;
+      width: @size;
+    }
   }
 
   .info {
+    @whitespace-width: 0.25rem;
     display: inline-block;
     padding: 1rem;
     vertical-align: middle;
     text-align: left;
+    max-width: calc(~"100% - @{whitespace-width} - 5rem");
+
+    @media screen and (min-width: @device-medium) {
+      max-width: calc(~"100% - @{whitespace-width} - 10rem");
+    }
   }
 
   .name {
     vertical-align: middle;
-    font-size: 3rem;
-    margin: 1rem 0;
+    font-size: 2rem;
+    margin: 0 0 1rem;
+
+    @media screen and (min-width: @device-medium) {
+      font-size: 3rem;
+    }
   }
 
   .call {
