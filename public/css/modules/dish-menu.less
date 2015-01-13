@@ -19,11 +19,15 @@
     #effects > .shadow();
 
     margin: 1rem 0;
-    padding: 5rem;
-    font-size: 2rem;
+    padding: 2rem;
+    font-size: 1.5rem;
     color: gray;
     background: white;
 
+    @media screen and (min-width: @device-medium) {
+      font-size: 2rem;
+      padding: 5rem;
+    }
 
     @media screen and (min-width: @device-large) {
       padding: 7.5rem;
@@ -31,9 +35,14 @@
 
     .title {
       margin: 1rem auto;
+      padding: 0;
       color: gray;
       background: none;
-      font-size: 4rem;
+      font-size: 3rem;
+
+      @media screen and (min-width: @device-medium) {
+        font-size: 4rem;
+      }
     }
   }
 
@@ -43,7 +52,6 @@
   }
 
   .dish {
-    @picture-size: 7rem;
     @pricing-size: 10rem;
 
     #effects > .shadow();
@@ -54,17 +62,34 @@
     list-style: none;
 
     .picture {
+      @picture-size: 4rem;
+
       vertical-align: middle;
       width: @picture-size;
       height: @picture-size;
+
+      @media screen and (min-width: @device-medium) {
+        @picture-size: 7rem;
+
+        width: @picture-size;
+        height: @picture-size;
+      }
     }
 
     .informations {
+      @picture-size: 4rem;
+
       display: inline-block;
       padding: 0 1rem;
       vertical-align: middle;
       text-align: left;
-      width: calc(~"100% - @{picture-size} - @{pricing-size}");
+      width: calc(~"100% - @{picture-size}");
+
+      @media screen and (min-width: @device-medium) {
+        @picture-size: 7rem;
+
+        width: calc(~"100% - @{picture-size} - @{pricing-size}");
+      }
 
       .name {
         font-size: 1.75rem;
@@ -97,11 +122,17 @@
     }
 
     .pricing {
-      display: inline-block;
+      display: flex;
+      justify-content: space-around;
+
       vertical-align: middle;
       text-align: right;
       padding: 1rem;
-      width: @pricing-size;
+
+      @media screen and (min-width: @device-medium) {
+        width: @pricing-size;
+        display: inline-block;
+      }
 
       .type {
         margin: 0.25rem 0;
