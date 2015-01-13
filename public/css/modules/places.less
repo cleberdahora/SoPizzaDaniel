@@ -25,20 +25,25 @@
     @normal-input-height: 3rem;
     @focus-input-height: 4rem;
 
-    #effects > .shadow();
+    display: none;
 
-    transition: height, padding;
-    transition-duration: 0.5s;
-    position: absolute;
-    padding: 0.5rem;
-    left: 0rem;
-    right: 0rem;
-    bottom: 0rem;
-    margin: auto;
-    z-index: 1;
-    height: 9.5rem;
-    background: rgba(0, 0, 0, 0.75);
-    //overflow: hidden;
+    @media screen and (min-width: @device-medium) {
+      #effects > .shadow();
+
+      display: block;
+      transition: height, padding;
+      transition-duration: 0.5s;
+      position: absolute;
+      padding: 0.5rem;
+      left: 0rem;
+      right: 0rem;
+      bottom: 0rem;
+      margin: auto;
+      z-index: 1;
+      height: 9.5rem;
+      background: rgba(0, 0, 0, 0.75);
+    }
+
 
     &.fullscreen {
       padding: 7.5rem 0.5rem;
