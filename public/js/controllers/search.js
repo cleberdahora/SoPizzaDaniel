@@ -6,9 +6,6 @@
     let self = this;
     let [latitude, longitude] = coordinates;
 
-    //function gambiHTML(place) {
-    //  //let {prefix, suffix} = place.logo;
-
     function search(query) {
       if (angular.isObject(query)) {
         query = query.value;
