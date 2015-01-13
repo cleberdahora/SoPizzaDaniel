@@ -3,15 +3,19 @@
 @import (reference) "variables";
 
 #page-footer {
-  line-height: 4rem;
-
+  line-height: 2rem;
+  margin: 1rem auto 0rem;
   background-color: rgb(116, 30, 30);
   color: white;
-  font-size: 1.25rem;
   font-weight: bold;
   text-align: center;
+  font-size: 0.75rem;
 
-  margin: 2rem auto 4rem;
+  @media screen and (min-width: @device-medium) {
+    line-height: 4rem;
+    margin: 2rem auto 4rem;
+    font-size: 1.25rem;
+  }
 }
 
 #content {
