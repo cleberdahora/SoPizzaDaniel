@@ -28,6 +28,8 @@ function registerMiddlewares(app) {
   app.use(bodyParser.json());
   app.use(morgan('dev')); // logger
   app.use('/resources', express.static(mapPath('public/dist')));
+  app.use('/google2717ce23e37314d7.html',
+      express.static(mapPath('public/google2717ce23e37314d7.html')));
 
   // API
   app.use('/api', enrouten({
