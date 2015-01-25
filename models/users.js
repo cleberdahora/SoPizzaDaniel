@@ -9,47 +9,51 @@ var Schema   = mongoose.Schema;
 // Helper functions
 
 function makeHash(str, salt, callback) {
-  var encoding = 'hex';
   if (typeof salt === 'function') {
     callback = salt;
     salt = undefined;
   }
 
+  var encoding  = 'hex';
+
   function getSalt(callback) {
     if (salt) {
       // Use provided salt instead of generating a new one
-      return callback(null, salt);
+      return callback(null, new Buffer(salt, encoding));
     }
 
-    var saltLength = 32;
+    var saltLength = 64;
     crypto.randomBytes(saltLength, callback);
   }
 
-  function getHash(salt, callback) {
-    var iterations = 25000;
-    var keyLength  = 512;
-    crypto.pbkdf2(str, salt, iterations, keyLength, callback);
+  function getHash(saltBuffer, callback) {
+    var iter      = 25000;
+    var keyLength = 512;
+    crypto.pbkdf2(str, saltBuffer, iter, keyLength, function(err, hashBuffer) {
+      var hash = hashBuffer.toString(encoding);
+      var salt = saltBuffer.toString(encoding);
+      callback(err, hash, salt);
+    });
   }
 
-  async.waterfall([ getSalt, getHash ], function(err, hashRaw) {
+  async.waterfall([ getSalt, getHash ], function(err, hash, salt) {
     if (err) {
       return callback(err);
     }
 
-    var hash = hashRaw.toString(encoding);
-    callback(null, hash);
+    callback(null, { hash: hash, salt: salt });
   });
 }
 
 function validatePassword(password, callback) {
   var currSalt = this.password.salt;
   var currHash = this.password.hash;
-  makeHash(password, currSalt, function(err, hash) {
+  makeHash(password, currSalt, function(err, hashObj) {
     if (err) {
       return callback(err);
     }
 
-    var isValid = hash.hash === currHash;
+    var isValid = hashObj.hash === currHash;
     callback(null, isValid);
   });
 }
@@ -76,32 +80,34 @@ var UserSchema = new Schema({
 
 // Hooks
 
+function setPassword(password, callback) {
+  var self = this;
+
+  makeHash(password, function(err, hashObj) {
+    if (err) {
+      return callback(err);
+    }
+
+    self.password = hashObj;
+    callback();
+  });
+}
+
 UserSchema.pre('save', function(next) {
   if (this.email) {
     this.email = this.email.toLowerCase();
   }
 
-  if (this.password && typeof this.password === 'string') {
-    makeHash(this.password, function(err, hash) {
-      if (err) {
-        var msg = util.format('Could not create a password hash: %s', err);
-        var error = new Error(msg);
-        return next(error);
-      }
-
-      this.password = hash;
-      next();
-    });
-  } else {
-    // The current password should not be modified if not explicitly replacing
-    // it
-    delete this.password;
-    next();
-  }
+  next();
 });
 
 // Methods
 
+UserSchema.methods.setPassword = setPassword;
 UserSchema.methods.validatePassword = validatePassword;
+
+// Indexes
+UserSchema.path('email')
+  .index({ unique: true });
 
 mongoose.model('User', UserSchema);
