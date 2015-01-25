@@ -52,7 +52,6 @@ var PlaceSchema = new Schema({
 
   address: {
     formatted: String,
-    // TODO: Convert to GeoJSON format
     location: GeoJSON.Point
   },
   workingTimes: [{
