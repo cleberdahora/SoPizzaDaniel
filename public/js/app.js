@@ -17,6 +17,7 @@
     'angular-lodash',
     'angular-flexslider',
     'uiGmapgoogle-maps',
-    'segmentio'
+    'segmentio',
+    'ngStorage'
   ]);
 })();
