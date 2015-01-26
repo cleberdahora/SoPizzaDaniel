@@ -1,7 +1,9 @@
 'use strict';
 
 var mongoose = require('mongoose');
+var moment   = require('moment');
 var async    = require('async');
+var jwt      = require('jsonwebtoken');
 
 var User = mongoose.model('User');
 var Session = mongoose.model('Session');
@@ -53,7 +55,7 @@ module.exports = function(router) {
         userId: user.id
       });
 
-      var token = session.addToken(origin);
+      session.addToken(origin);
 
       // Create the new session and give back a token to the user
       session.save(function(err, session) {
@@ -61,15 +63,36 @@ module.exports = function(router) {
           return callback(err);
         }
 
-        return callback(null, session, token);
+        return callback(null, session);
       });
+    }
+
+    function sign(session, callback) {
+      var token = session.tokens[0]; // At this point, only one token will exist
+      var payload = {
+        sessionId: session.id,
+        userId   : session.userId,
+        origin   : token.origin,
+        token    : token.id
+      };
+
+      var expiration  = moment(token.expiresOn);
+      var minutesLeft = expiration.diff(Date.now(), 'minutes');
+
+      // TODO: Put the secret below fron application settings
+      var signedToken = jwt.sign(payload, 'secret CHANGE ME', {
+        expiresInMinutes: minutesLeft
+      });
+
+      callback(null, signedToken);
     }
 
     async.waterfall([
         getUser,       // Get user by e-mail
         checkPassword, // Verify if the password is correct
-        createSession  // Create a new session
-    ], function(err, session, token) {
+        createSession, // Create a new session
+        sign           // sign session and token information using JWT
+    ], function(err, token) {
       if (err && typeof err === 'number') {
         return res.status(err).end();
       }
@@ -80,10 +103,7 @@ module.exports = function(router) {
 
       return res
         .status(201) // Created
-        .json({
-          id: session.id,
-          token: token
-        });
+        .json(token);
     });
   }
 
