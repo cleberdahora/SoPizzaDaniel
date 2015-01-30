@@ -1,0 +1,21 @@
+@import (reference) "lesshat";
+@import (reference) "mixins";
+@import (reference) "variables";
+
+.panel {
+  #effects > .shadow();
+
+  display: inline-block;
+  background: white;
+
+  .header {
+    background: @theme-dark-red;
+    color: white;
+
+    .title {
+      padding: 1rem;
+      margin: 0;
+      text-align: center;
+    }
+  }
+}

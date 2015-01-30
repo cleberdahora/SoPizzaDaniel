@@ -1,0 +1,37 @@
+@import (reference) "lesshat";
+@import (reference) "mixins";
+@import (reference) "variables";
+@import (reference) "panel";
+
+.places-panel {
+  .panel();
+
+  width: 100%;
+  margin: auto;
+  display: block;
+  text-align: center;
+
+  @media screen and (min-width: @device-small) {
+    @margin: 1rem;
+    @width: calc(~"100% - @{margin} * 2");
+
+    width: @width;
+    margin: 1rem auto 0;
+  }
+
+  @media screen and (min-width: @device-medium) {
+    max-width: @device-medium;
+  }
+
+  .add {
+    #elements > .button();
+
+    background: @theme-green;
+    margin: 0.5rem;
+  }
+
+  .places-table {
+    text-align: left;
+    width: 100%;
+  }
+}
