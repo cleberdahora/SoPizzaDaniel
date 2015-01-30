@@ -24,20 +24,31 @@ var Place = mongoose.model('Place');
  * Point type
  * @param {function} callback - Callback called on success
  */
-function find(location, callback) {
+function find(options, callback) {
+  if (!options.location && !options.providerName) {
+    return callback('location or providerName parameters are required!');
+  }
+
   // Wrap a provider to be called by async library
   function wrap(fn) {
     return function(callback) {
-      fn(location, callback);
+      fn(options.location, callback);
     };
   }
 
   var providersFind = lodash.values(providers)
-    .map(lodash.property('find')) // Use find method of providers
-    .map(wrap);                   // Wrap methods to be used by async
+    .map(lodash.property('find')); // Use find method of providers
+
+  if (options.providerName) {
+    // NOTE: In theory, the provider names should be unique, so there is no
+    // chance of two providers passing the filter
+    providersFind = providersFind.filter(function(provider) {
+      return provider.providerName === options.providerName;
+    });
+  }
 
   // Search on all providers in parallel and then join all results
-  async.parallel(providersFind, function(err, results) {
+  async.parallel(providersFind.map(wrap), function(err, results) {
     callback(err, lodash.flatten(results));
   });
 }
