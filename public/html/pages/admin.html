@@ -1,5 +1,39 @@
-<form ng-submit="adminCtrl.authenticate(email, password)">
-  <input name="email" class="email" placeholder="E-mail" ng-model="email">
-  <input name="password" class="password" placeholder="Senha" ng-model="password">
-  <button>Entrar</button>
+<form class="sign-in-form" ng-if="!adminCtrl.isSignedIn()" ng-submit="adminCtrl.authenticate(email, password)">
+  <h1 class="title">Entrar</h1>
+
+  <input class="email" name="email" placeholder="E-mail" ng-model="email">
+  <input class="password" name="password" placeholder="Senha" ng-model="password">
+  <button class="sign-in">Entrar</button>
 </form>
+
+<section class="places-panel">
+  <header class="header">
+    <h1 class="title">Pizzarias</h1>
+  </header>
+
+  <button class="add">Adicionar pizzaria</button>
+
+
+  <table class="places-table" ng-if="adminCtrl.isSignedIn()">
+    <thead>
+      <tr>
+        <th>Pizzaria</th>
+        <th>Endereço</th>
+        <th>Desde</th>
+        <th>Fotos</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="place in adminCtrl.places">
+        <td>{{place.name}}</td>
+        <td>{{place.address.formattedAddress}}</td>
+        <td>{{place.address.formattedAddress}}</td>
+        <td>{{place.pictures.length}}</td>
+        <td>
+          <a href="www">Editar</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
