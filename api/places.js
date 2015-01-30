@@ -14,6 +14,21 @@ module.exports = function(router) {
    * Get a list of places
    */
   function get(req, res) {
+    if (!req.query.coordinates) {
+      // TODO: Verify if user is authenticated
+      return Place
+        .find({ providerInfo: { $ne: null }})
+        .exec(function(err, places) {
+          if (err) {
+            return res.status(500).end(); // Internal Server Error
+          }
+
+          places = places.map(filterPlace);
+          return res.json(places);
+        });
+    }
+
+    // TODO: Validate coordinates format with RegExp
     // Coordinates in latitude,longitude format
     var coordinates = (req.query.coordinates || '').split(',');
 
@@ -29,9 +44,11 @@ module.exports = function(router) {
     }
 
     // Get places info from all sources
-    places.find(toGeoJSON(coordinates), function(err, results) {
+    places.find({
+      location: toGeoJSON(coordinates)
+    }, function(err, results) {
       if (err) {
-        return res.status(500).end();
+        return res.status(500).end(); // Internal Server Error
       }
 
       results = lodash.flatten(results).map(filterPlace);
