@@ -1,0 +1,44 @@
+@import (reference) "lesshat";
+@import (reference) "mixins";
+@import (reference) "variables";
+
+.sign-in-form {
+  #effects > .shadow();
+
+  width: 20rem;
+  margin: auto;
+  top: 30%;
+  position: absolute;
+  left: 0; right: 0;
+  background-color: @theme-red;
+
+  .title {
+    color: white;
+    background-color: @theme-dark-red;
+    padding: 0.75rem;
+    text-align: center;
+    margin: 0;
+    baseline: outline;
+    margin-bottom: 1rem;
+  }
+
+  .email, .password {
+    @margin-vertical: 0.5rem;
+    @margin-horizontal: 1rem;
+
+    #elements > .textbox();
+
+    display: inline-block;
+    width: calc(~"100% - @{margin-horizontal} * 2");
+    margin: @margin-vertical @margin-horizontal;
+  }
+
+  .sign-in {
+    #elements > .button();
+
+    display: block;
+    background-color: @theme-green;
+    margin: 1rem auto;
+    font-weight: bold;
+  }
+}
