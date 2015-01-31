@@ -18,6 +18,7 @@
     'angular-flexslider',
     'uiGmapgoogle-maps',
     'segmentio',
-    'ngStorage'
+    'ngStorage',
+    'angularFileUpload'
   ]);
 })();

@@ -15,11 +15,23 @@
 
   <form class="place-form" ng-if="adminCtrl.showPlaceForm">
     <div class="field-group">
+
+      <button ng-if="!adminCtrl.logoPicture" class="logo-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files)" drag-over-class="drag" hide-on-drop-not-available="true">
+        <span >Logo</span>
+      </button>
+
+      <div ng-if="adminCtrl.logoPicture" class="logo-picture-preview">
+        <img class="preview-image" ng-src="{{adminCtrl.logoPicture}}" alt="logo-preview">
+        <button class="remove" ng-click="adminCtrl.logoPicture = undefined">Remover</button>
+      </div>
+    </div>
+
+    <div class="field-group">
       <input class="name" placeholder="Nome">
     </div>
 
     <div class="field-group">
-      <textarea class="description" placeholder="Descrição">
+      <textarea class="description" placeholder="Descrição"></textarea>
     </div>
 
     <div class="field-group">

@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  function AdminCtrl(Auth, Restangular) {
+  function AdminCtrl($scope, Auth, Restangular) {
     let self = this;
 
     function getPlaces() {
@@ -29,10 +29,22 @@
         });
     }
 
+    function generateThumb(files) {
+      let fileReader = new FileReader();
+      let [file] = files;
+
+      fileReader.readAsDataURL(file);
+      fileReader.onload = function(e) {
+        self.logoPicture = e.target.result;
+        $scope.$apply();
+      };
+    }
+
     if (Auth.isSignedIn) {
       getPlaces();
     }
 
+    self.generateThumb  = generateThumb;
     self.isSignedIn     = Auth.isSignedIn;
     self.authenticate   = authenticate;
     self.authenticating = false;
