@@ -15,14 +15,24 @@
 
   <form class="place-form" ng-if="adminCtrl.showPlaceForm">
     <div class="field-group">
-
-      <button ng-if="!adminCtrl.logoPicture" class="logo-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files)" drag-over-class="drag" hide-on-drop-not-available="true">
+      <button ng-if="!adminCtrl.logoPicture" class="logo-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'logoPicture')" drag-over-class="drag" hide-on-drop-not-available="true">
         <span >Logo</span>
       </button>
 
       <div ng-if="adminCtrl.logoPicture" class="logo-picture-preview">
         <img class="preview-image" ng-src="{{adminCtrl.logoPicture}}" alt="logo-preview">
         <button class="remove" ng-click="adminCtrl.logoPicture = undefined">Remover</button>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <button ng-if="!adminCtrl.coverPicture" class="cover-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'coverPicture')" drag-over-class="drag" hide-on-drop-not-available="true">
+        <span >Capa</span>
+      </button>
+
+      <div ng-if="adminCtrl.coverPicture" class="cover-picture-preview">
+        <img class="preview-image" ng-src="{{adminCtrl.coverPicture}}" alt="cover-preview">
+        <button class="remove" ng-click="adminCtrl.coverPicture = undefined">Remover</button>
       </div>
     </div>
 

@@ -29,13 +29,13 @@
         });
     }
 
-    function generateThumb(files) {
+    function generateThumb(files, property) {
       let fileReader = new FileReader();
       let [file] = files;
 
       fileReader.readAsDataURL(file);
       fileReader.onload = function(e) {
-        self.logoPicture = e.target.result;
+        self[property] = e.target.result;
         $scope.$apply();
       };
     }
