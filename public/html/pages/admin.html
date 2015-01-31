@@ -11,8 +11,36 @@
     <h1 class="title">Pizzarias</h1>
   </header>
 
-  <button class="add">Adicionar pizzaria</button>
+  <button class="add" ng-click="adminCtrl.showPlaceForm = true">Adicionar pizzaria</button>
 
+  <form class="place-form" ng-if="adminCtrl.showPlaceForm">
+    <div class="field-group">
+      <input class="name" placeholder="Nome">
+    </div>
+
+    <div class="field-group">
+      <textarea class="description" placeholder="Descrição">
+    </div>
+
+    <div class="field-group">
+      <input class="address" placeholder="Endereço">
+    </div>
+
+    <div class="field-group">
+      <input class="latitude" placeholder="Latitude">
+      <input class="longitude" placeholder="Longitude">
+    </div>
+
+    <div class="field-group">
+      <input class="latitude" placeholder="Latitude">
+      <input class="longitude" placeholder="Longitude">
+    </div>
+
+    <div class="field-group">
+      <button class="save">Salvar</button>
+      <button class="cancel" ng-click="adminCtrl.showPlaceForm = false">Cancelar</button>
+    </div>
+  </form>
 
   <table class="places-table" ng-if="adminCtrl.isSignedIn()">
     <thead>

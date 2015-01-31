@@ -30,6 +30,54 @@
     margin: 0.5rem;
   }
 
+  .place-form {
+    #effects > .shadow();
+
+    background: @theme-dark-red;
+    margin: 1rem;
+    padding: 1rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .field-group {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.5rem auto;
+      width: 100%;
+      max-width: 30rem;
+    }
+
+    .name, .address, .description {
+      #elements > .textbox();
+
+      width: 100%;
+    }
+
+    .latitude, .longitude {
+      @spacing: 1rem;
+
+      #elements > .textbox();
+
+      width: calc(~"100% / 2 - @{spacing}");
+    }
+
+    .save, .cancel {
+      #elements > .button();
+
+      background: @theme-green;
+      margin: auto;
+    }
+
+    .cancel {
+      &:extend(.save);
+
+      background: white;
+      color: black;
+    }
+  }
+
   .places-table {
     text-align: left;
     width: 100%;
