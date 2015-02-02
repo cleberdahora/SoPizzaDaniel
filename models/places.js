@@ -49,7 +49,7 @@ var PlaceSchema = new Schema({
   },
   pictures: [PictureSchema],
   phone: String,
-
+  email: String,
   address: {
     formatted: String,
     location: GeoJSON.Point
