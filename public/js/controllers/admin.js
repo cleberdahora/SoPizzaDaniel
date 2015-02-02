@@ -1,8 +1,26 @@
 (function() {
   'use strict';
 
-  function AdminCtrl($scope, Auth, Restangular) {
+  function AdminCtrl($scope, $window, Auth, Restangular, lodash, moment) {
     let self = this;
+
+    let weekdays = lodash(lodash.range(0, 6))
+      .map(dayNumber => {
+        //let languages = $window.navigator.languages;
+        let languages = ['pt-br'];
+
+        let day = moment(dayNumber, 'day')
+          .format('dddd')
+          .toLowerCase();
+
+        let localeDay = moment(dayNumber, 'day')
+          .locale(languages)
+          .format('dddd')
+          .toLowerCase();
+        return [day, localeDay];
+      })
+      .zipObject()
+      .value();
 
     function getPlaces() {
         // TODO: Handle errors here
@@ -29,13 +47,13 @@
         });
     }
 
-    function generateThumb(files, property) {
+    function generateThumb(files, property, object=self) {
       let fileReader = new FileReader();
       let [file] = files;
 
       fileReader.readAsDataURL(file);
       fileReader.onload = function(e) {
-        self[property] = e.target.result;
+        object[property] = e.target.result;
         $scope.$apply();
       };
     }
@@ -44,10 +62,43 @@
       getPlaces();
     }
 
-    self.generateThumb  = generateThumb;
-    self.isSignedIn     = Auth.isSignedIn;
-    self.authenticate   = authenticate;
-    self.authenticating = false;
+    function addWorkingTime() {
+      let currentPlace = self.currentPlace;
+      if (!currentPlace.workingTimes) {
+        currentPlace.workingTimes = [];
+      }
+
+      currentPlace.workingTimes.push({
+        //fromDay: Date(),
+        //toDay: Date(),
+        //fromTime: Date(),
+        //toTime: Date()
+      });
+    }
+
+    function removeWorkingTime(workingTime) {
+      let currentPlace = self.currentPlace;
+      lodash.pull(currentPlace.workingTimes, workingTime);
+    }
+
+    function addDish() {
+      let currentPlace = self.currentPlace;
+      if (!currentPlace.dishes) {
+        currentPlace.dishes = [];
+      }
+
+      currentPlace.dishes.push({});
+    }
+
+    self.currentPlace      = {};
+    self.weekdays          = weekdays;
+    self.addWorkingTime    = addWorkingTime;
+    self.addDish           = addDish;
+    self.removeWorkingTime = removeWorkingTime;
+    self.generateThumb     = generateThumb;
+    self.isSignedIn        = Auth.isSignedIn;
+    self.authenticate      = authenticate;
+    self.authenticating    = false;
   }
 
   angular.module('app')

@@ -33,7 +33,6 @@
   .place-form {
     #effects > .shadow();
 
-    background: @theme-dark-red;
     margin: 1rem;
     padding: 1rem;
     text-align: left;
@@ -46,10 +45,15 @@
       justify-content: space-between;
       margin: 0.5rem auto;
       width: 100%;
-      max-width: 30rem;
+
+      &.working-time-group, &.dishes-group {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
     }
 
-    .logo-picture, .cover-picture {
+    .logo-picture, .cover-picture, .dish-picture {
       #effects > .shadow();
 
       &.logo-picture {
@@ -63,6 +67,13 @@
         height: 8.75rem;
       }
 
+      &.dish-picture {
+        @size: 5rem;
+        width: @size;
+        height: @size;
+        font-size: 1rem;
+      }
+
       border: 0.25rem dashed grey;
       margin: auto;
       font-size: 1.5rem;
@@ -72,8 +83,7 @@
       }
     }
 
-    .logo-picture-preview, .cover-picture-preview {
-
+    .logo-picture-preview, .cover-picture-preview, .dish-picture-preview {
       #effects > .shadow();
 
       position: relative;
@@ -90,6 +100,16 @@
       &.cover-picture-preview {
         width: 100%;
         height: 8.75rem;
+      }
+
+      &.dish-picture-preview {
+        @size: 5rem;
+        width: @size;
+        height: @size;
+
+        .remove {
+          font-size: 1rem;
+        }
       }
 
       .remove {
@@ -118,19 +138,87 @@
       }
     }
 
-
     .name, .address, .description {
       #elements > .textbox();
 
       width: 100%;
     }
 
-    .latitude, .longitude {
+    .latitude, .longitude, .phone, .email {
       @spacing: 1rem;
 
       #elements > .textbox();
 
       width: calc(~"100% / 2 - @{spacing}");
+    }
+
+    .working-times-table {
+      width: 100%;
+    }
+
+    .working-time {
+      .from-day, .to-day,
+      .from-time, .to-time {
+        height: 1.75rem;
+      }
+
+      .remove {
+        #elements > .button();
+
+        padding: 0 0.5rem;
+        height: 1.75rem;
+      }
+    }
+
+    .dishes {
+      margin: 0;
+      padding: 0;
+    }
+
+    .dish {
+      @padding-left: 5.5rem;
+      list-style: none;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding-left: @padding-left;
+      padding: 0.5rem 0 0.5rem @padding-left;
+      border-bottom: 0.0625rem solid lightgrey;
+
+      .picture {
+        position: absolute;
+        left: 0.5rem;
+        top: 0.5rem;
+        bottom: 0.5rem;
+      }
+
+      .name, .ingredients, .pricing {
+        @margin: 0.5rem;
+
+        #elements > .textbox();
+
+        margin: @margin;
+
+        &.name {
+          width: calc(~"100% - @{margin} * 2");
+        }
+
+        &.ingredients {
+          width: calc(~"75% - @{margin} * 2");
+        }
+
+        &.pricing {
+          width: calc(~"25% - @{margin} * 2");
+        }
+      }
+    }
+
+    .add-working-time, .add-dish {
+      #elements > .button();
+
+      background: @theme-green;
+      margin: 0.75rem auto;
     }
 
     .save, .cancel {
