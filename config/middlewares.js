@@ -25,7 +25,7 @@ function registerMiddlewares(app) {
 
   // General
   app.use(compression());
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({ limit: '10mb' }));
   app.use(morgan('dev')); // logger
   app.use('/resources', express.static(mapPath('public/dist')));
 
