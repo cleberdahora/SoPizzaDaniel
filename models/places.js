@@ -49,10 +49,9 @@ var PlaceSchema = new Schema({
   },
   pictures: [PictureSchema],
   phone: String,
-
+  email: String,
   address: {
     formatted: String,
-    // TODO: Convert to GeoJSON format
     location: GeoJSON.Point
   },
   workingTimes: [{
@@ -69,7 +68,8 @@ PlaceSchema.index({ 'address.coordinates': 1 }, {
 });
 
 PlaceSchema.index({ 'providerInfo.provider': 1, 'providerInfo.id': 1 }, {
-  unique: true
+  unique: true,
+  sparse: true
 });
 
 mongoose.model('Place', PlaceSchema);

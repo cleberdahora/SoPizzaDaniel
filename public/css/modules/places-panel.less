@@ -1,0 +1,243 @@
+@import (reference) "lesshat";
+@import (reference) "mixins";
+@import (reference) "variables";
+@import (reference) "panel";
+
+.places-panel {
+  .panel();
+
+  width: 100%;
+  margin: auto;
+  display: block;
+  text-align: center;
+
+  @media screen and (min-width: @device-small) {
+    @margin: 1rem;
+    @width: calc(~"100% - @{margin} * 2");
+
+    width: @width;
+    margin: 1rem auto 0;
+  }
+
+  @media screen and (min-width: @device-medium) {
+    max-width: @device-medium;
+  }
+
+  .add {
+    #elements > .button();
+
+    background: @theme-green;
+    margin: 0.5rem;
+  }
+
+  .place-form {
+    #effects > .shadow();
+
+    margin: 1rem;
+    padding: 1rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .field-group {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.5rem auto;
+      width: 100%;
+
+      &.working-time-group, &.dishes-group {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+
+    .logo-picture, .cover-picture, .dish-picture {
+      #effects > .shadow();
+
+      &.logo-picture {
+        @size: 10rem;
+        width: @size;
+        height: @size;
+      }
+
+      &.cover-picture {
+        width: 100%;
+        height: 8.75rem;
+      }
+
+      &.dish-picture {
+        @size: 5rem;
+        width: @size;
+        height: @size;
+        font-size: 1rem;
+      }
+
+      border: 0.25rem dashed grey;
+      margin: auto;
+      font-size: 1.5rem;
+
+      &.drag {
+        border-color: @theme-red;
+      }
+    }
+
+    .logo-picture-preview, .cover-picture-preview, .dish-picture-preview {
+      #effects > .shadow();
+
+      position: relative;
+      margin: auto;
+      padding: 0;
+      border: 0;
+
+      &.logo-picture-preview {
+        @size: 10rem;
+        width: @size;
+        height: @size;
+      }
+
+      &.cover-picture-preview {
+        width: 100%;
+        height: 8.75rem;
+      }
+
+      &.dish-picture-preview {
+        @size: 5rem;
+        width: @size;
+        height: @size;
+
+        .remove {
+          font-size: 1rem;
+        }
+      }
+
+      .remove {
+        transition: opacity 0.25s;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        border: none;
+        background: rgba(0, 0, 0, 0.75);
+        opacity: 0;
+        color: white;
+        font-size: 1.5rem;
+        outline: none;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+
+      .preview-image {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .name, .address, .description {
+      #elements > .textbox();
+
+      width: 100%;
+    }
+
+    .latitude, .longitude, .phone, .email {
+      @spacing: 1rem;
+
+      #elements > .textbox();
+
+      width: calc(~"100% / 2 - @{spacing}");
+    }
+
+    .working-times-table {
+      width: 100%;
+    }
+
+    .working-time {
+      .from-day, .to-day,
+      .from-time, .to-time {
+        height: 1.75rem;
+      }
+
+      .remove {
+        #elements > .button();
+
+        padding: 0 0.5rem;
+        height: 1.75rem;
+      }
+    }
+
+    .dishes {
+      margin: 0;
+      padding: 0;
+    }
+
+    .dish {
+      @padding-left: 5.5rem;
+      list-style: none;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding-left: @padding-left;
+      padding: 0.5rem 0 0.5rem @padding-left;
+      border-bottom: 0.0625rem solid lightgrey;
+
+      .picture {
+        position: absolute;
+        left: 0.5rem;
+        top: 0.5rem;
+        bottom: 0.5rem;
+      }
+
+      .name, .ingredients, .pricing {
+        @margin: 0.5rem;
+
+        #elements > .textbox();
+
+        margin: @margin;
+
+        &.name {
+          width: calc(~"100% - @{margin} * 2");
+        }
+
+        &.ingredients {
+          width: calc(~"75% - @{margin} * 2");
+        }
+
+        &.pricing {
+          width: calc(~"25% - @{margin} * 2");
+        }
+      }
+    }
+
+    .add-working-time, .add-dish {
+      #elements > .button();
+
+      background: @theme-green;
+      margin: 0.75rem auto;
+    }
+
+    .save, .cancel {
+      #elements > .button();
+
+      background: @theme-green;
+      margin: auto;
+    }
+
+    .cancel {
+      &:extend(.save);
+
+      background: white;
+      color: black;
+    }
+  }
+
+  .places-table {
+    text-align: left;
+    width: 100%;
+  }
+}

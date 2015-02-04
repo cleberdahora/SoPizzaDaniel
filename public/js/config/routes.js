@@ -55,6 +55,13 @@
         }
       }
     });
+
+    $stateProvider.state({
+      name       : 'admin',
+      url        : '/admin',
+      templateUrl: pagePath('admin.html'),
+      controller : 'AdminCtrl as adminCtrl'
+    });
   }
 
   function pagePath(relativePath) {

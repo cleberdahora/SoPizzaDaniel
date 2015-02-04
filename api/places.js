@@ -14,6 +14,21 @@ module.exports = function(router) {
    * Get a list of places
    */
   function get(req, res) {
+    if (!req.query.coordinates) {
+      // TODO: Verify if user is authenticated
+      return Place
+        .find({ providerInfo: { $ne: null }})
+        .exec(function(err, places) {
+          if (err) {
+            return res.status(500).end(); // Internal Server Error
+          }
+
+          places = places.map(filterPlace);
+          return res.json(places);
+        });
+    }
+
+    // TODO: Validate coordinates format with RegExp
     // Coordinates in latitude,longitude format
     var coordinates = (req.query.coordinates || '').split(',');
 
@@ -29,9 +44,11 @@ module.exports = function(router) {
     }
 
     // Get places info from all sources
-    places.find(toGeoJSON(coordinates), function(err, results) {
+    places.find({
+      location: toGeoJSON(coordinates)
+    }, function(err, results) {
       if (err) {
-        return res.status(500).end();
+        return res.status(500).end(); // Internal Server Error
       }
 
       results = lodash.flatten(results).map(filterPlace);
@@ -86,8 +103,8 @@ module.exports = function(router) {
    * Create a place
    */
   function post(req, res) {
-    var name = req.body.name;
-    var address = req.body.address || {};
+    var name     = req.body.name;
+    var address  = req.body.address || {};
     var location = address.location;
 
     // Verify required fields
@@ -95,15 +112,11 @@ module.exports = function(router) {
       return res.status(422).end(); // Unprocessable Entity
     }
 
-    var place = new Place({
-      name: req.body.name,
-      description: req.body.description,
-      address: {
-      }
-    });
+    var place = new Place(req.body);
 
     place.save(function(err) {
       if (err) {
+        console.log(err);
         return res.status(500).end(); // Internal Server Error
       }
 
@@ -121,13 +134,15 @@ module.exports = function(router) {
       picture      : place.picture,
       pictures     : place.pictures,
       phone        : place.phone,
+      email        : place.email,
       //externalLinks: place.externalLinks,
       address      : place.address,
       dishes       : place.dishes,
-      workingTimes : place.workingTimes.map(function(workingTime) {
+      workingTimes : lodash.map(place.workingTimes, function(workingTime) {
         return {
+          id   : workingTime.id,
           days : workingTime.days,
-          times: workingTime.times.map(function(time) {
+          times: lodash.map(workingTime, function(time) {
             return lodash.pick(time, ['start', 'end']);
           })
         };

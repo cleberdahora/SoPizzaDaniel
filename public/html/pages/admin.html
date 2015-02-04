@@ -1,0 +1,167 @@
+<form class="sign-in-form" ng-if="!adminCtrl.isSignedIn()" ng-submit="adminCtrl.authenticate(email, password)">
+  <h1 class="title">Entrar</h1>
+
+  <input class="email" name="email" placeholder="E-mail" ng-model="email">
+  <input class="password" name="password" placeholder="Senha" ng-model="password">
+  <button class="sign-in">Entrar</button>
+</form>
+
+<section class="places-panel">
+  <header class="header">
+    <h1 class="title">Pizzarias</h1>
+  </header>
+
+  <button class="add" ng-click="adminCtrl.showPlaceForm = true">Adicionar pizzaria</button>
+
+  <form class="place-form" ng-if="adminCtrl.showPlaceForm">
+    <div class="field-group">
+      <button ng-if="!adminCtrl.currentPlace.logoPicture" class="logo-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'logoPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
+        Logo
+      </button>
+
+      <div ng-if="adminCtrl.currentPlace.logoPicture" class="logo-picture-preview">
+        <img class="preview-image" ng-src="{{adminCtrl.currentPlace.logoPicture}}" alt="logo-preview">
+        <button class="remove" ng-click="adminCtrl.currentPlace.logoPicture = undefined">
+          Remover
+        </button>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <button ng-if="!adminCtrl.currentPlace.coverPicture" class="cover-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'coverPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
+        Capa
+      </button>
+
+      <div ng-if="adminCtrl.currentPlace.coverPicture" class="cover-picture-preview">
+        <img class="preview-image" ng-src="{{adminCtrl.currentPlace.coverPicture}}" alt="cover-preview">
+        <button class="remove" ng-click="adminCtrl.currentPlace.coverPicture = undefined">
+          Remover
+        </button>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <input class="name" ng-model="adminCtrl.currentPlace.name" placeholder="Nome">
+    </div>
+
+    <div class="field-group">
+      <textarea class="description" ng-model="adminCtrl.currentPlace.description" placeholder="Descrição" rows="4"></textarea>
+    </div>
+
+    <div class="field-group">
+      <input class="address" ng-model="adminCtrl.currentPlace.address.formatted" placeholder="Endereço">
+    </div>
+
+    <div class="field-group">
+      <input class="phone" ng-model="adminCtrl.currentPlace.phone" placeholder="Telefone">
+      <input class="email" ng-model="adminCtrl.currentPlace.email" placeholder="E-mail">
+    </div>
+
+    <div class="field-group">
+      <input class="latitude" ng-model="adminCtrl.currentPlace.address.latitude" placeholder="Latitude">
+      <input class="longitude" ng-model="adminCtrl.currentPlace.address.longitude" placeholder="Longitude">
+    </div>
+
+    <section class="panel field-group working-time-group">
+      <header class="header">
+        <h3 class="title">Horários de Funcionamento</h3>
+      </header>
+
+      <table class="working-times-table">
+        <thead>
+          <tr>
+            <th>Data Inicial</th>
+            <th>Data Final</th>
+            <th>Hora Inicial</th>
+            <th>Hora Final</th>
+            <th>Opções</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="working-time" ng-repeat="workingTime in adminCtrl.currentPlace.workingTimes">
+            <td>
+              <select class="from-day" ng-model="workingTime.fromDay" ng-options="value for (key, value) in adminCtrl.weekdays" placeholder="De">
+                <option value="">(Dia)</option>
+              </select>
+            </td>
+            <td>
+              <select class="to-day" ng-model="workingTime.toDay" ng-options="value for (key, value) in adminCtrl.weekdays" placeholder="Até">
+                <option value="">(Dia)</option>
+              </select>
+            </td>
+            <td>
+              <input class="from-time" ng-model="workingTime.fromTime" placeholder="Das" type="time">
+            </td>
+            <td>
+              <input class="to-time" ng-model="workingTime.toTime" placeholder="Até" type="time">
+            </td>
+            <td>
+              <button class="remove" ng-click="adminCtrl.removeWorkingTime(workingTime)">Remover</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="add-working-time" ng-click="adminCtrl.addWorkingTime()">
+        Adicionar horário
+      </button>
+    </section>
+
+    <section class="panel field-group dishes-group">
+      <header class="header">
+        <h3 class="title">Cardápio</h3>
+      </header>
+
+      <ul class="dishes">
+        <li class="dish" ng-repeat="dish in adminCtrl.currentPlace.dishes">
+          <button ng-if="!dish.picture" class="picture dish-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'picture', dish)" drag-over-class="drag" hide-on-drop-not-available="true">
+            Foto
+          </button>
+          <div ng-if="dish.picture" class="picture dish-picture-preview">
+            <img class="preview-image" ng-src="{{dish.picture}}" alt="dish-preview">
+            <button class="remove" ng-click="dish.picture = undefined">
+              Remover
+            </button>
+          </div>
+
+          <input class="name" ng-model="dish.name" placeholder="Nome">
+          <input class="ingredients" ng-model="dish.ingredients" placeholder="Ingredientes (separados por vírgula)">
+          <input class="pricing" ng-model="dish.pricing" placeholder="Preço">
+        </li>
+      </ul>
+      <button class="add-dish" ng-click="adminCtrl.addDish()">Adicionar pizza</button>
+    </section>
+
+    <div class="field-group">
+      <button class="save" ng-click="adminCtrl.savePlace(adminCtrl.currentPlace)">
+        Salvar
+      </button>
+      <button class="cancel" ng-click="adminCtrl.showPlaceForm = false">
+        Cancelar
+      </button>
+    </div>
+  </form>
+
+  <table class="places-table" ng-if="adminCtrl.isSignedIn()">
+    <thead>
+      <tr>
+        <th>Origem</th>
+        <th>Pizzaria</th>
+        <th>Endereço</th>
+        <th>Fotos</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="place in adminCtrl.places">
+        <td>{{place.providerInfo}}</td>
+        <td>{{place.name}}</td>
+        <td>{{place.address.formatted}}</td>
+        <td>{{place.pictures.length}}</td>
+        <td>
+          <a href="www">Editar</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
