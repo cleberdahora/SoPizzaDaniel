@@ -15,51 +15,51 @@
 
   <form class="place-form" ng-if="adminCtrl.showPlaceForm">
     <div class="field-group">
-      <button ng-if="!adminCtrl.logoPicture" class="logo-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'logoPicture')" drag-over-class="drag" hide-on-drop-not-available="true">
+      <button ng-if="!adminCtrl.currentPlace.logoPicture" class="logo-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'logoPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
         Logo
       </button>
 
-      <div ng-if="adminCtrl.logoPicture" class="logo-picture-preview">
-        <img class="preview-image" ng-src="{{adminCtrl.logoPicture}}" alt="logo-preview">
-        <button class="remove" ng-click="adminCtrl.logoPicture = undefined">
+      <div ng-if="adminCtrl.currentPlace.logoPicture" class="logo-picture-preview">
+        <img class="preview-image" ng-src="{{adminCtrl.currentPlace.logoPicture}}" alt="logo-preview">
+        <button class="remove" ng-click="adminCtrl.currentPlace.logoPicture = undefined">
           Remover
         </button>
       </div>
     </div>
 
     <div class="field-group">
-      <button ng-if="!adminCtrl.coverPicture" class="cover-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'coverPicture')" drag-over-class="drag" hide-on-drop-not-available="true">
+      <button ng-if="!adminCtrl.currentPlace.coverPicture" class="cover-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'coverPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
         Capa
       </button>
 
-      <div ng-if="adminCtrl.coverPicture" class="cover-picture-preview">
-        <img class="preview-image" ng-src="{{adminCtrl.coverPicture}}" alt="cover-preview">
-        <button class="remove" ng-click="adminCtrl.coverPicture = undefined">
+      <div ng-if="adminCtrl.currentPlace.coverPicture" class="cover-picture-preview">
+        <img class="preview-image" ng-src="{{adminCtrl.currentPlace.coverPicture}}" alt="cover-preview">
+        <button class="remove" ng-click="adminCtrl.currentPlace.coverPicture = undefined">
           Remover
         </button>
       </div>
     </div>
 
     <div class="field-group">
-      <input class="name" placeholder="Nome">
+      <input class="name" ng-model="adminCtrl.currentPlace.name" placeholder="Nome">
     </div>
 
     <div class="field-group">
-      <textarea class="description" placeholder="Descrição" rows="4"></textarea>
+      <textarea class="description" ng-model="adminCtrl.currentPlace.description" placeholder="Descrição" rows="4"></textarea>
     </div>
 
     <div class="field-group">
-      <input class="address" placeholder="Endereço">
+      <input class="address" ng-model="adminCtrl.currentPlace.address.formatted" placeholder="Endereço">
     </div>
 
     <div class="field-group">
-      <input class="phone" placeholder="Telefone">
-      <input class="email" placeholder="E-mail">
+      <input class="phone" ng-model="adminCtrl.currentPlace.phone" placeholder="Telefone">
+      <input class="email" ng-model="adminCtrl.currentPlace.email" placeholder="E-mail">
     </div>
 
     <div class="field-group">
-      <input class="latitude" placeholder="Latitude">
-      <input class="longitude" placeholder="Longitude">
+      <input class="latitude" ng-model="adminCtrl.currentPlace.address.latitude" placeholder="Latitude">
+      <input class="longitude" ng-model="adminCtrl.currentPlace.address.longitude" placeholder="Longitude">
     </div>
 
     <section class="panel field-group working-time-group">
@@ -133,7 +133,7 @@
     </section>
 
     <div class="field-group">
-      <button class="save">
+      <button class="save" ng-click="adminCtrl.savePlace(adminCtrl.currentPlace)">
         Salvar
       </button>
       <button class="cancel" ng-click="adminCtrl.showPlaceForm = false">

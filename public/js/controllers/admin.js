@@ -90,7 +90,42 @@
       currentPlace.dishes.push({});
     }
 
+    function savePlace(place) {
+      // TODO: Choose between createPlace and updatePlace based on application
+      // state
+      createPlace(place);
+      console.log(place);
+    }
+
+    function createPlace(place) {
+      let { latitude, longitude } = place.address || {};
+      place.logo = place.logoPicture;
+      place.cover = place.coverPicture;
+      place.address.location = toGeoJSON([latitude, longitude]);
+
+      Restangular.all('places')
+        .post(place)
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
+    }
+
+    function toGeoJSON(coordinates) {
+      var [latitude, longitude]  = coordinates;
+
+      return {
+        type: 'Point',
+        coordinates: [longitude, latitude]
+      };
+    }
+
+    function updatePlace() {
+
+    }
+
     self.currentPlace      = {};
+    self.savePlace         = savePlace;
+    self.createPlace       = createPlace;
+    self.updatePlace       = updatePlace;
     self.weekdays          = weekdays;
     self.addWorkingTime    = addWorkingTime;
     self.addDish           = addDish;
