@@ -3,7 +3,11 @@
   <ui-gmap-window show="search.selectedPlace" coords="search.selectedPlace.address.location" templateParameter="search.selectedPlace">
     <div class="popup-wrapper">
       <a ng-if="!isEmpty(search.selectedPlace.logo)" ui-sref="place({ placeId: '{{search.selectedPlace.id}}' })">
-        <img class="picture" alt="picture" width="100" height="100" ng-src="{{search.selectedPlace.logo | image}}">
+        <!--<img class="picture" alt="picture" width="100" height="100" ng-src="{{search.selectedPlace.logo | image}}">-->
+        <!--<img class="picture" alt="picture" width="100" height="100" ng-src="{{search.selectedPlace.logo | image}}">-->
+        <cl-image class="picture" alt="picture" width="100" height="100" public-id="search.selectedPlace.logoId" class="thumbnail inline" angle="20" format="jpg">
+          <cl-transformation height="150" width="150" crop="fill" gravity="north" effect="sepia" radius="20"/>
+        </cl-image>
       </a>
       <div class="info">
         <div class="title">

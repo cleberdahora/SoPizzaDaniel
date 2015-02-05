@@ -1,5 +1,7 @@
 <div class="place-box">
-  <img class="background" ng-src="{{place.picture | image:240:120}}" ng-alt="{{place.name}}">
+  <cl-image class="background" ng-alt="{{place.name}}" public-id="{{place.mainPictureId}}" format="jpg">
+    <cl-transformation width="240" height="120" crop="fill" />
+  </cl-image>
   <div class="title">
     <span class="title-text" ng-class="{big: place.name.length > 12}">{{place.name}}</span>
   </div>

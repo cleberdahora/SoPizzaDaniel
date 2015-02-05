@@ -23,7 +23,6 @@ module.exports = function(router) {
             return res.status(500).end(); // Internal Server Error
           }
 
-          places = places.map(filterPlace);
           return res.json(places);
         });
     }
@@ -51,7 +50,7 @@ module.exports = function(router) {
         return res.status(500).end(); // Internal Server Error
       }
 
-      results = lodash.flatten(results).map(filterPlace);
+      results = lodash.flatten(results);
 
       return res.json(results);
     });
@@ -73,7 +72,7 @@ module.exports = function(router) {
         return res.status(404).end(); // Not Found
       }
 
-      return res.json(filterPlace(place));
+      return res.json(place);
     });
   }
 
@@ -122,32 +121,6 @@ module.exports = function(router) {
 
       return res.status(201).end(); // Created
     });
-  }
-
-  function filterPlace(place) {
-    return {
-      id           : place.id,
-      name         : place.name,
-      description  : place.description,
-      cover        : place.cover,
-      logo         : place.logo,
-      picture      : place.picture,
-      pictures     : place.pictures,
-      phone        : place.phone,
-      email        : place.email,
-      //externalLinks: place.externalLinks,
-      address      : place.address,
-      dishes       : place.dishes,
-      workingTimes : lodash.map(place.workingTimes, function(workingTime) {
-        return {
-          id   : workingTime.id,
-          days : workingTime.days,
-          times: lodash.map(workingTime, function(time) {
-            return lodash.pick(time, ['start', 'end']);
-          })
-        };
-      })
-    };
   }
 
   function toGeoJSON(coordinates) {
