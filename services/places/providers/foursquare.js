@@ -218,7 +218,6 @@ function FoursquareProvider() {
         .add(30, 'days')
         .toDate();
 
-      console.log(place.pictures);
       if (venueInfo.page && venueInfo.page.user && venueInfo.page.user.photo) {
         // Save logo before saving place
         var logo = venueInfo.page.user.photo;
@@ -247,7 +246,7 @@ function FoursquareProvider() {
       client_secret: secret,
       categoryId   : pizzeriaCategoryId,
       ll           : denormalizeLocation(location).join(),
-      limit        : 50
+      limit        : 20
     };
 
     request.get({
