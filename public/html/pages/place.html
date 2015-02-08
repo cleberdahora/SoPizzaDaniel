@@ -4,8 +4,11 @@
 
 <section class="jumbotron">
   <my-video-slider class="background" parallax parallax-ratio="0.5">
-    <img ng-if="!isEmpty(placeCtrl.place.cover)" ng-src="{{placeCtrl.place.cover | image:1300:300}}">
+    <cl-image ng-if="placeCtrl.place.coverId" public-id="{{placeCtrl.place.coverId}}" format="jpg">
+      <cl-transformation width="1300" height="300" crop="fill" />
+    </cl-image>
   </my-video-slider>
+
   <div class="profile-info">
     <img class="picture" alt="profile image" ng-if="isEmpty(placeCtrl.place.logoId)" width="160" height="160" src="/resources/images/profile-logo.svg">
     <cl-image class="picture" alt="profile image" ng-if="!isEmpty(placeCtrl.place.logoId)" ng-alt="{{placeCtrl.place.name}}" public-id="{{placeCtrl.place.logoId}}" format="jpg">
