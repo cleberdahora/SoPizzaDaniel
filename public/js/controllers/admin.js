@@ -98,10 +98,26 @@
     }
 
     function createPlace(place) {
+      // Avoid type transformation problems on same properties
+      place = lodash.cloneDeep(place);
+
+      function formatDishes() {
+        return lodash.map(place.dishes, dish => {
+          dish.ingredients = dish.ingredients || '';
+          dish.ingredients = dish.ingredients
+            .split(',')
+            .map(ingredient => ingredient.trim());
+          dish.ingredients = lodash.compact(dish.ingredients);
+          return dish;
+        });
+      }
+
       let { latitude, longitude } = place.address || {};
-      place.logo = place.logoPicture;
-      place.cover = place.coverPicture;
+
+      place.logo             = place.logoPicture;
+      place.cover            = place.coverPicture;
       place.address.location = toGeoJSON([latitude, longitude]);
+      place.dishes           = formatDishes(place.dishes);
 
       Restangular.all('places')
         .post(place)
@@ -122,7 +138,7 @@
 
     }
 
-    self.currentPlace      = {};
+    self.currentPlace      = { address: {} };
     self.savePlace         = savePlace;
     self.createPlace       = createPlace;
     self.updatePlace       = updatePlace;

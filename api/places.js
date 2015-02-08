@@ -1,10 +1,12 @@
 'use strict';
 
-var path     = require('path');
-var lodash   = require('lodash');
-var geoip    = require('geoip-lite');
-var mongoose = require('mongoose');
-var places   = require(path.resolve('./services/places'));
+var path       = require('path');
+var lodash     = require('lodash');
+var geoip      = require('geoip-lite');
+var async      = require('async');
+var mongoose   = require('mongoose');
+var cloudinary = require('cloudinary');
+var places     = require(path.resolve('./services/places'));
 
 var Place = mongoose.model('Place');
 
@@ -105,22 +107,62 @@ module.exports = function(router) {
     var name     = req.body.name;
     var address  = req.body.address || {};
     var location = address.location;
+    var logo     = req.body.logo;
+    var cover    = req.body.cover;
+    var pictures = req.body.pictures;
 
     // Verify required fields
     if (!name || !location) {
       return res.status(422).end(); // Unprocessable Entity
     }
 
-    var place = new Place(req.body);
+    function saveImage(image) {
+      return function(callback) {
+        if (!image) {
+         return callback(null, null); // No ID to give back
+        }
 
-    place.save(function(err) {
+        cloudinary.uploader.upload(image, function(result) {
+          callback(null, result.public_id);
+        });
+      };
+    }
+
+    function saveImages(images) {
+      return function(callback) {
+        async.parallel(lodash.map(images, saveImage), callback);
+      };
+    }
+
+    async.parallel({
+      coverId: saveImage(cover),
+      logoId : saveImage(logo),
+      pictureIds: saveImages(pictures)
+    }, function(err, data) {
       if (err) {
         console.log(err);
         return res.status(500).end(); // Internal Server Error
       }
 
+      console.log('cover: %s', cloudinary.url(data.coverId));
+      console.log('logo: %s', cloudinary.url(data.logoId));
+      lodash.forEach(data.pictureIds, function(pictureId) {
+        console.log('picture: %s', cloudinary.url(data.pictureId));
+      });
+
       return res.status(201).end(); // Created
     });
+
+    //var place = new Place(req.body);
+
+    //place.save(function(err) {
+      //if (err) {
+        //console.log(err);
+        //return res.status(500).end(); // Internal Server Error
+      //}
+
+      //return res.status(201).end(); // Created
+    //});
   }
 
   function toGeoJSON(coordinates) {
