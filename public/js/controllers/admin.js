@@ -118,6 +118,7 @@
       place.cover            = place.coverPicture;
       place.address.location = toGeoJSON([latitude, longitude]);
       place.dishes           = formatDishes(place.dishes);
+      place.pictures         = lodash.compact(place.pictures);
 
       Restangular.all('places')
         .post(place)
@@ -138,7 +139,7 @@
 
     }
 
-    self.currentPlace      = { address: {} };
+    self.currentPlace      = { address: {}, pictures: [] };
     self.savePlace         = savePlace;
     self.createPlace       = createPlace;
     self.updatePlace       = updatePlace;

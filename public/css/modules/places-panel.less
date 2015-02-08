@@ -46,32 +46,39 @@
       margin: 0.5rem auto;
       width: 100%;
 
-      &.working-time-group, &.dishes-group {
+      &.working-time-group, &.dishes-group, &.place-pictures-group {
         display: flex;
         flex-direction: column;
         justify-content: center;
       }
     }
 
-    .logo-picture, .cover-picture, .dish-picture {
+    .logo-picture-select, .cover-picture-select,
+    .dish-picture-select, .place-picture-select {
       #effects > .shadow();
 
-      &.logo-picture {
+      &.logo-picture-select {
         @size: 10rem;
         width: @size;
         height: @size;
       }
 
-      &.cover-picture {
+      &.cover-picture-select {
         width: 100%;
         height: 8.75rem;
       }
 
-      &.dish-picture {
+      &.dish-picture-select {
         @size: 5rem;
         width: @size;
         height: @size;
         font-size: 1rem;
+      }
+
+      &.place-picture-select {
+        @size: 10rem;
+        width: @size;
+        height: @size;
       }
 
       border: 0.25rem dashed grey;
@@ -83,7 +90,8 @@
       }
     }
 
-    .logo-picture-preview, .cover-picture-preview, .dish-picture-preview {
+    .logo-picture-preview, .cover-picture-preview,
+    .dish-picture-preview, .place-picture-preview {
       #effects > .shadow();
 
       position: relative;
@@ -110,6 +118,12 @@
         .remove {
           font-size: 1rem;
         }
+      }
+
+      &.place-picture-preview {
+        @size: 10rem;
+        width: @size;
+        height: @size;
       }
 
       .remove {
@@ -214,7 +228,20 @@
       }
     }
 
-    .add-working-time, .add-dish {
+    .place-pictures {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      .place-picture {
+        padding: 0.5rem;
+        list-style: none;
+      }
+    }
+
+    .add-working-time, .add-dish, .add-place-picture {
       #elements > .button();
 
       background: @theme-green;

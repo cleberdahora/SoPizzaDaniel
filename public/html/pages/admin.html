@@ -15,7 +15,7 @@
 
   <form class="place-form" ng-if="adminCtrl.showPlaceForm" ng-submit="adminCtrl.savePlace(adminCtrl.currentPlace)">
     <div class="field-group">
-      <button ng-if="!adminCtrl.currentPlace.logoPicture" type="button" class="logo-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'logoPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
+      <button ng-if="!adminCtrl.currentPlace.logoPicture" type="button" class="logo-picture-select" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'logoPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
         Logo
       </button>
 
@@ -28,7 +28,7 @@
     </div>
 
     <div class="field-group">
-      <button ng-if="!adminCtrl.currentPlace.coverPicture" class="cover-picture" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'coverPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
+      <button ng-if="!adminCtrl.currentPlace.coverPicture" class="cover-picture-select" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'coverPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
         Capa
       </button>
 
@@ -114,7 +114,7 @@
 
       <ul class="dishes">
         <li class="dish" ng-repeat="dish in adminCtrl.currentPlace.dishes">
-          <button ng-if="!dish.picture" class="picture dish-picture" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'picture', dish)" drag-over-class="drag" hide-on-drop-not-available="true">
+          <button ng-if="!dish.picture" class="picture dish-picture-select" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'picture', dish)" drag-over-class="drag" hide-on-drop-not-available="true">
             Foto
           </button>
           <div ng-if="dish.picture" class="picture dish-picture-preview">
@@ -132,6 +132,26 @@
       <button class="add-dish" type="button" ng-click="adminCtrl.addDish()">Adicionar pizza</button>
     </section>
 
+    <section class="panel field-group place-pictures-group">
+      <header class="header">
+        <h3 class="title">Fotos</h3>
+      </header>
+      <ul class="place-pictures">
+        <li class="place-picture" ng-repeat="picture in adminCtrl.currentPlace.pictures track by $index">
+          <button ng-if="!picture" type="button" class="place-picture-select" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, $index, adminCtrl.currentPlace.pictures)" drag-over-class="drag" hide-on-drop-not-available="true">
+            Foto
+          </button>
+
+          <div ng-if="picture" class="place-picture-preview">
+            <img class="preview-image" ng-src="{{picture}}" alt="picture-preview">
+            <button class="remove" type="button" ng-click="adminCtrl.currentPlace.pictures.splice($index, 1)">
+              Remover
+            </button>
+          </div>
+        </li>
+      </ul>
+      <button class="add-place-picture" type="button" ng-click="adminCtrl.currentPlace.pictures.push(null)">Adicionar foto</button>
+    </section>
     <div class="field-group">
       <button class="save" type="submit">
         Salvar

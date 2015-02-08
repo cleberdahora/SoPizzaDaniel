@@ -147,7 +147,7 @@ module.exports = function(router) {
       console.log('cover: %s', cloudinary.url(data.coverId));
       console.log('logo: %s', cloudinary.url(data.logoId));
       lodash.forEach(data.pictureIds, function(pictureId) {
-        console.log('picture: %s', cloudinary.url(data.pictureId));
+        console.log('picture: %s', cloudinary.url(pictureId));
       });
 
       return res.status(201).end(); // Created
