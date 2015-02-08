@@ -34,7 +34,6 @@
     </div>
     <ul class="dish-list" ng-if="placeCtrl.place.dishes.length">
       <li class="dish" ng-repeat="dish in placeCtrl.place.dishes">
-        <!--<img class="picture" alt="dish picture" ng-src="{{dish.picture | image:100:100}}">-->
         <cl-image class="picture" alt="dish picture" public-id="{{dish.pictureId}}" format="jpg">
           <cl-transformation width="100" height="100" crop="fill" />
         </cl-image>
