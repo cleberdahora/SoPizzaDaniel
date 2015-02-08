@@ -4,10 +4,9 @@
   function AdminCtrl($scope, $window, Auth, Restangular, lodash, moment) {
     let self = this;
 
-    let weekdays = lodash(lodash.range(0, 6))
+    let weekdays = lodash(lodash.range(0, 7))
       .map(dayNumber => {
-        //let languages = $window.navigator.languages;
-        let languages = ['pt-br'];
+        let languages = $window.navigator.languages;
 
         let day = moment(dayNumber, 'day')
           .format('dddd')
@@ -17,9 +16,11 @@
           .locale(languages)
           .format('dddd')
           .toLowerCase();
-        return [day, localeDay];
+        return {
+          name: day,
+          localeName: localeDay
+        };
       })
-      .zipObject()
       .value();
 
     function getPlaces() {
