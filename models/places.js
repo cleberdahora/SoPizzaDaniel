@@ -55,4 +55,7 @@ PlaceSchema.index({ 'providerInfo.provider': 1, 'providerInfo.id': 1 }, {
   sparse: true
 });
 
+// Misc
+PlaceSchema.set('toJSON', { getters: true });
+
 mongoose.model('Place', PlaceSchema);
