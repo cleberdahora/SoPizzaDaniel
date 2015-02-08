@@ -92,10 +92,17 @@
         });
     }
 
-    Restangular.all('places')
-      .getList()
-      .then(places => {
-        self.places = places;
+    Restangular.all('locations')
+      .post()
+      .then(lodash.property('location'))
+      .then(lodash.property('coordinates'))
+      .then(coordinates => coordinates.reverse()) // from [lng,lat] to [lat,lng]
+      .then(coordinates => {
+        Restangular.all('places')
+          .getList({ coordinates: coordinates.join() })
+          .then(places => {
+            self.places = places;
+          });
       });
 
     self.search         = search;
