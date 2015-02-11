@@ -102,10 +102,10 @@
         return {
           // TODO: Use a multiselect to choose as many days as necessary
           days: [workingTime.fromDay, workingTime.toDay],
-          times: {
+          times: [{
             start: moment(workingTime.fromTime).format('HHmm'),
             end: moment(workingTime.toTime).format('HHmm')
-          }
+          }]
         };
       });
     }

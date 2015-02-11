@@ -110,6 +110,7 @@ module.exports = function(router) {
     var logo     = req.body.logo;
     var cover    = req.body.cover;
     var pictures = req.body.pictures;
+    var dishes   = req.body.dishes;
 
     // Verify required fields
     if (!name || !location) {
@@ -134,35 +135,46 @@ module.exports = function(router) {
       };
     }
 
+    function saveDishImages(dishes) {
+      return function(callback) {
+        async.parallel(lodash.map(dishes, function(dish) {
+          return function(callback) {
+            saveImage(dish.picture)(function(err, imageId) {
+              dish.pictureId = imageId;
+              callback(null, dish);
+            });
+          };
+        }), callback);
+      };
+    }
+
     async.parallel({
-      coverId: saveImage(cover),
-      logoId : saveImage(logo),
-      pictureIds: saveImages(pictures)
+      coverId:    saveImage(cover),
+      logoId:     saveImage(logo),
+      pictureIds: saveImages(pictures),
+      dishes:     saveDishImages(dishes)
     }, function(err, data) {
       if (err) {
-        console.log(err);
+        console.error(err);
         return res.status(500).end(); // Internal Server Error
       }
 
-      console.log('cover: %s', cloudinary.url(data.coverId));
-      console.log('logo: %s', cloudinary.url(data.logoId));
-      lodash.forEach(data.pictureIds, function(pictureId) {
-        console.log('picture: %s', cloudinary.url(pictureId));
+      var place = new Place(req.body);
+
+      place.dishes     = data.dishes;
+      place.coverId    = data.coverId;
+      place.logoId     = data.coverId;
+      place.pictureIds = data.pictureIds;
+
+      place.save(function(err) {
+        if (err) {
+          console.error(err);
+          return res.status(500).end(); // Internal Server Error
+        }
+
+        return res.status(201).end(); // Created
       });
-
-      return res.status(201).end(); // Created
     });
-
-    //var place = new Place(req.body);
-
-    //place.save(function(err) {
-      //if (err) {
-        //console.log(err);
-        //return res.status(500).end(); // Internal Server Error
-      //}
-
-      //return res.status(201).end(); // Created
-    //});
   }
 
   function toGeoJSON(coordinates) {
