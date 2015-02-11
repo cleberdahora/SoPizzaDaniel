@@ -95,31 +95,44 @@
       // TODO: Choose between createPlace and updatePlace based on application
       // state
       createPlace(place);
-      console.log(place);
+    }
+
+    function formatWorkingTimes(workingTimes) {
+      return lodash.map(workingTimes, workingTime => {
+        return {
+          // TODO: Use a multiselect to choose as many days as necessary
+          days: [workingTime.fromDay, workingTime.toDay],
+          times: {
+            start: moment(workingTime.fromTime).format('HHmm'),
+            end: moment(workingTime.toTime).format('HHmm')
+          }
+        };
+      });
+    }
+
+    function formatDishes(dishes) {
+      return lodash.map(dishes, dish => {
+        dish.ingredients = dish.ingredients || '';
+        dish.ingredients = dish.ingredients
+          .split(',')
+          .map(ingredient => ingredient.trim());
+        dish.ingredients = lodash.compact(dish.ingredients);
+        return dish;
+      });
     }
 
     function createPlace(place) {
       // Avoid type transformation problems on same properties
       place = lodash.cloneDeep(place);
 
-      function formatDishes() {
-        return lodash.map(place.dishes, dish => {
-          dish.ingredients = dish.ingredients || '';
-          dish.ingredients = dish.ingredients
-            .split(',')
-            .map(ingredient => ingredient.trim());
-          dish.ingredients = lodash.compact(dish.ingredients);
-          return dish;
-        });
-      }
-
       let { latitude, longitude } = place.address || {};
 
       place.logo             = place.logoPicture;
       place.cover            = place.coverPicture;
       place.address.location = toGeoJSON([latitude, longitude]);
-      place.dishes           = formatDishes(place.dishes);
       place.pictures         = lodash.compact(place.pictures);
+      place.dishes           = formatDishes(place.dishes);
+      place.workingTimes     = formatWorkingTimes(place.workingTimes);
 
       Restangular.all('places')
         .post(place)

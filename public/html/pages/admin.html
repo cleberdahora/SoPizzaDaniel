@@ -80,12 +80,12 @@
         <tbody>
           <tr class="working-time" ng-repeat="workingTime in adminCtrl.currentPlace.workingTimes">
             <td>
-              <select class="from-day" ng-model="workingTime.fromDay" ng-options="weekday.localeName for weekday in adminCtrl.weekdays track by weekday.name" placeholder="De">
+              <select class="from-day" ng-model="workingTime.fromDay" ng-options="weekday.name as weekday.localeName for weekday in adminCtrl.weekdays" placeholder="De">
                 <option value="">(dia)</option>
               </select>
             </td>
             <td>
-              <select class="to-day" ng-model="workingTime.toDay" ng-options="weekday.localeName for weekday in adminCtrl.weekdays track by weekday.name" placeholder="Até">
+              <select class="to-day" ng-model="workingTime.toDay" ng-options="weekday.name as weekday.localeName for weekday in adminCtrl.weekdays" placeholder="Até">
                 <option value="">(dia)</option>
               </select>
             </td>
