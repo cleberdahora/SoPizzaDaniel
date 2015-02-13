@@ -16,6 +16,7 @@
           .locale(languages)
           .format('dddd')
           .toLowerCase();
+
         return {
           name: day,
           localeName: localeDay
@@ -91,10 +92,20 @@
       currentPlace.dishes.push({});
     }
 
-    function savePlace(place) {
-      // TODO: Choose between createPlace and updatePlace based on application
-      // state
-      createPlace(place);
+    function toGeoJSON(coordinates) {
+      let [latitude, longitude]  = coordinates;
+
+      return {
+        type: 'Point',
+        coordinates: [longitude, latitude]
+      };
+    }
+
+    function fromGeoJSON(geojson) {
+      let {coordinates} = geojson;
+      let [longitude, latitude]  = coordinates;
+
+      return [latitude, longitude];
     }
 
     function formatWorkingTimes(workingTimes) {
@@ -121,6 +132,12 @@
       });
     }
 
+    function savePlace(place) {
+      // TODO: Choose between createPlace and updatePlace based on application
+      // state
+      createPlace(place);
+    }
+
     function createPlace(place) {
       // Avoid type transformation problems on same properties
       place = lodash.cloneDeep(place);
@@ -140,20 +157,41 @@
         .catch(err => console.log(err));
     }
 
-    function toGeoJSON(coordinates) {
-      var [latitude, longitude]  = coordinates;
+    function updatePlace(place) {
+      // Avoid type transformation problems on same properties
+      place = lodash.cloneDeep(place);
 
-      return {
-        type: 'Point',
-        coordinates: [longitude, latitude]
-      };
+      let { latitude, longitude } = place.address || {};
+
+      place.address.location = toGeoJSON([latitude, longitude]);
+      place.pictures         = lodash.compact(place.pictures);
+      place.dishes           = formatDishes(place.dishes);
+      place.workingTimes     = formatWorkingTimes(place.workingTimes);
+
+      place.put()
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
     }
 
-    function updatePlace() {
+    function editPlace(place) {
+      let currentPlace = lodash.cloneDeep(place);
+      let [latitude, longitude] = fromGeoJSON(place.address.location);
 
+      currentPlace.address.latitude = latitude;
+      currentPlace.address.longitude = longitude;
+      currentPlace.pictures = [];
+
+      self.currentPlace = currentPlace;
+      self.showPlaceForm = true;
+    }
+
+    function cleanCurrentPlace() {
+      self.currentPlace = { address: {}, pictures: [] };
     }
 
     self.currentPlace      = { address: {}, pictures: [] };
+    self.cleanCurrentPlace = cleanCurrentPlace;
+    self.editPlace         = editPlace;
     self.savePlace         = savePlace;
     self.createPlace       = createPlace;
     self.updatePlace       = updatePlace;

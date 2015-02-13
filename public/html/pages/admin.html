@@ -15,26 +15,32 @@
 
   <form class="place-form" ng-if="adminCtrl.showPlaceForm" ng-submit="adminCtrl.savePlace(adminCtrl.currentPlace)">
     <div class="field-group">
-      <button ng-if="!adminCtrl.currentPlace.logoPicture" type="button" class="logo-picture-select" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'logoPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
+      <button ng-if="!adminCtrl.currentPlace.logo && !adminCtrl.currentPlace.logoId" type="button" class="logo-picture-select" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'logo', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
         Logo
       </button>
 
-      <div ng-if="adminCtrl.currentPlace.logoPicture" class="logo-picture-preview">
-        <img class="preview-image" ng-src="{{adminCtrl.currentPlace.logoPicture}}" alt="logo-preview">
-        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.logoPicture = undefined">
+      <div ng-if="adminCtrl.currentPlace.logo || adminCtrl.currentPlace.logoId" class="logo-picture-preview">
+        <cl-image class="preview-image" ng-if="adminCtrl.currentPlace.logoId" public-id="{{adminCtrl.currentPlace.logoId}}" format="jpg" alt="logo-preview">
+          <cl-transformation height="150" width="150" crop="fill" gravity="north" />
+          </cl-image>
+        <img class="preview-image" ng-if="adminCtrl.currentPlace.logo" ng-src="{{adminCtrl.currentPlace.logo}}" alt="logo-preview">
+        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.logo = undefined; adminCtrl.currentPlace.logoId = undefined;">
           Remover
         </button>
       </div>
     </div>
 
     <div class="field-group">
-      <button ng-if="!adminCtrl.currentPlace.coverPicture" class="cover-picture-select" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'coverPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
+      <button ng-if="!adminCtrl.currentPlace.cover" class="cover-picture-select" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'cover', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
         Capa
       </button>
 
-      <div ng-if="adminCtrl.currentPlace.coverPicture" class="cover-picture-preview">
-        <img class="preview-image" ng-src="{{adminCtrl.currentPlace.coverPicture}}" alt="cover-preview">
-        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.coverPicture = undefined">
+      <div ng-if="adminCtrl.currentPlace.cover" class="cover-picture-preview">
+        <cl-image class="preview-image" ng-if="adminCtrl.currentPlace.coverId" public-id="{{adminCtrl.currentPlace.coverId}}" format="jpg" alt="cover-preview">
+          <cl-transformation height="150" width="750" crop="fill" gravity="north" />
+          </cl-image>
+        <img class="preview-image" ng-if="adminCtrl.currentPlace.cover" ng-src="{{adminCtrl.currentPlace.cover}}" alt="cover-preview">
+        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.cover = undefined">
           Remover
         </button>
       </div>
@@ -137,6 +143,17 @@
         <h3 class="title">Fotos</h3>
       </header>
       <ul class="place-pictures">
+        <li class="place-picture" ng-repeat="pictureId in adminCtrl.currentPlace.pictureIds track by $index">
+          <div class="place-picture-preview">
+            <cl-image class="preview-image" public-id="{{pictureId}}" format="jpg" alt="picture-preview">
+              <cl-transformation height="150" width="150" crop="fill" gravity="north" />
+            </cl-image>
+            <button class="remove" type="button" ng-click="adminCtrl.currentPlace.pictureIds.splice($index, 1)">
+              Remover
+            </button>
+          </div>
+        </li>
+
         <li class="place-picture" ng-repeat="picture in adminCtrl.currentPlace.pictures track by $index">
           <button ng-if="!picture" type="button" class="place-picture-select" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, $index, adminCtrl.currentPlace.pictures)" drag-over-class="drag" hide-on-drop-not-available="true">
             Foto
@@ -156,7 +173,7 @@
       <button class="save" type="submit">
         Salvar
       </button>
-      <button class="cancel" ng-click="adminCtrl.showPlaceForm = false">
+      <button class="cancel" ng-click="adminCtrl.showPlaceForm = false; adminCtrl.cleanCurrentPlace()">
         Cancelar
       </button>
     </div>
@@ -179,7 +196,7 @@
         <td>{{place.address.formatted}}</td>
         <td>{{place.pictureIds.length}}</td>
         <td>
-          <a href="www">Editar</a>
+          <a ng-click="adminCtrl.editPlace(place)">Editar</a>
         </td>
       </tr>
     </tbody>
