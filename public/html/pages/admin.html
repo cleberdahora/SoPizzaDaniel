@@ -24,7 +24,7 @@
           <cl-transformation height="150" width="150" crop="fill" gravity="north" />
           </cl-image>
         <img class="preview-image" ng-if="adminCtrl.currentPlace.logo" ng-src="{{adminCtrl.currentPlace.logo}}" alt="logo-preview">
-        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.logo = undefined; adminCtrl.currentPlace.logoId = undefined;">
+        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.logo = null; adminCtrl.currentPlace.logoId = null">
           Remover
         </button>
       </div>
@@ -40,7 +40,7 @@
           <cl-transformation height="150" width="750" crop="fill" gravity="north" />
           </cl-image>
         <img class="preview-image" ng-if="adminCtrl.currentPlace.cover" ng-src="{{adminCtrl.currentPlace.cover}}" alt="cover-preview">
-        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.cover = undefined; adminCtrl.currentPlace.coverId = undefined">
+        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.cover = null; adminCtrl.currentPlace.coverId = null">
           Remover
         </button>
       </div>
@@ -120,12 +120,15 @@
 
       <ul class="dishes">
         <li class="dish" ng-repeat="dish in adminCtrl.currentPlace.dishes">
-          <button ng-if="!dish.picture" class="picture dish-picture-select" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'picture', dish)" drag-over-class="drag" hide-on-drop-not-available="true">
+          <button ng-if="!dish.picture && !dish.pictureId" class="picture dish-picture-select" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'picture', dish)" drag-over-class="drag" hide-on-drop-not-available="true">
             Foto
           </button>
-          <div ng-if="dish.picture" class="picture dish-picture-preview">
-            <img class="preview-image" ng-src="{{dish.picture}}" alt="dish-preview">
-            <button class="remove" type="button" ng-click="dish.picture = undefined">
+          <div ng-if="dish.picture || dish.pictureId" class="picture dish-picture-preview">
+            <cl-image class="preview-image" ng-if="dish.pictureId" public-id="{{dish.pictureId}}" format="jpg" alt="dish-preview">
+              <cl-transformation height="150" width="750" crop="fill" gravity="north"></cl-transformation>
+            </cl-image>
+            <img class="preview-image" ng-if="dish.picture" ng-src="{{dish.picture}}" alt="dish-preview">
+            <button class="remove" type="button" ng-click="dish.picture = null; dish.pictureId = null">
               Remover
             </button>
           </div>
