@@ -19,7 +19,7 @@ module.exports = function(router) {
     if (!req.query.coordinates) {
       // TODO: Verify if user is authenticated
       return Place
-        .find({ providerInfo: { $ne: null }})
+        .find({ providerInfo: null })
         .exec(function(err, places) {
           if (err) {
             return res.status(500).end(); // Internal Server Error
@@ -99,6 +99,91 @@ module.exports = function(router) {
     });
   }
 
+
+  /**
+   * PUT /:id
+   * Update a place
+   */
+  function put(req, res) {
+    var id       = req.body.id;
+    var name     = req.body.name;
+    var address  = req.body.address || {};
+    var location = address.location;
+    var logo     = req.body.logo;
+    var cover    = req.body.cover;
+    var pictures = req.body.pictures;
+    var dishes   = req.body.dishes;
+
+    // Verify required fields
+    if (!name || !location) {
+      return res.status(422).end(); // Unprocessable Entity
+    }
+
+    function saveImage(image) {
+      return function(callback) {
+        if (!image) {
+         return callback(null, null); // No ID to give back
+        }
+
+        cloudinary.uploader.upload(image, function(result) {
+          callback(null, result.public_id);
+        });
+      };
+    }
+
+    function saveImages(images) {
+      return function(callback) {
+        async.parallel(lodash.map(images, saveImage), callback);
+      };
+    }
+
+    function saveDishImages(dishes) {
+      return function(callback) {
+        async.parallel(lodash.map(dishes, function(dish) {
+          return function(callback) {
+            saveImage(dish.picture)(function(err, imageId) {
+              dish.pictureId = imageId;
+              callback(null, dish);
+            });
+          };
+        }), callback);
+      };
+    }
+
+    async.parallel({
+      coverId:    saveImage(cover),
+      logoId:     saveImage(logo),
+      pictureIds: saveImages(pictures),
+      dishes:     saveDishImages(dishes)
+    }, function(err, data) {
+      if (err) {
+        console.error(err);
+        return res.status(500).end(); // Internal Server Error
+      }
+
+      // TODO: Take only necessary fields from body
+      var place = req.body;
+
+      place.dishes     = data.dishes;
+      place.coverId    = data.coverId || place.coverId || null;
+      place.logoId     = data.logoId  || place.logoId  || null;
+      place.pictureIds = lodash(place.pictureIds).concat(data.pictureIds);
+
+      console.log(id);
+      console.log(place);
+      Place
+        .findById(id)
+        .findOneAndUpdate(place, function(err) {
+          if (err) {
+            console.error(err);
+            return res.status(500).end(); // Internal Server Error
+          }
+
+          return res.status(201).end(); // Created
+        });
+    });
+  }
+
   /**
    * POST /
    * Create a place
@@ -163,7 +248,7 @@ module.exports = function(router) {
 
       place.dishes     = data.dishes;
       place.coverId    = data.coverId;
-      place.logoId     = data.coverId;
+      place.logoId     = data.logoId;
       place.pictureIds = data.pictureIds;
 
       place.save(function(err) {
@@ -190,5 +275,6 @@ module.exports = function(router) {
   router.get('/', get);
   router.get('/:id', getSingle);
   router.get('/:id/picture', getPicture);
+  router.put('/:id', put);
   router.post('/', post);
 };
