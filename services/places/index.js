@@ -68,7 +68,7 @@ function findOne(id, callback) {
       return callback(null, null);
     }
 
-    if (place.expiresOn > moment().toDate()) {
+    if (!place.expiresOn || place.expiresOn > moment().toDate()) {
       callback(null, place);
     } else {
       var providerName = place.providerInfo.provider;

@@ -99,7 +99,6 @@ module.exports = function(router) {
     });
   }
 
-
   /**
    * PUT /:id
    * Update a place
