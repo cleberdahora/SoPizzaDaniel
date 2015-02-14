@@ -26,7 +26,8 @@ var Place = mongoose.model('Place');
  */
 function find(options, callback) {
   if (!options.location && !options.providerName) {
-    return callback('location or providerName parameters are required!');
+    var err = new Error('location or providerName parameters are required!');
+    return callback(err);
   }
 
   // Wrap a provider to be called by async library
