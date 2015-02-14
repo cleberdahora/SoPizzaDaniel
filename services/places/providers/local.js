@@ -2,6 +2,7 @@
 
 var BaseProvider = require('./base.js');
 var mongoose     = require('mongoose');
+var lodash       = require('lodash');
 
 var Place = mongoose.model('Place');
 
@@ -13,7 +14,8 @@ function LocalProvider() {
       spherical: true,
       query: { providerInfo: null }
     }, function(err, results, stats) {
-      callback(err, results);
+      var places = lodash.pluck(results, 'obj');
+      callback(err, places);
     });
   }
 
