@@ -31,11 +31,11 @@
     </div>
 
     <div class="field-group">
-      <button ng-if="!adminCtrl.currentPlace.cover" class="cover-picture-select" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'cover', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
+      <button ng-if="!adminCtrl.currentPlace.cover && !adminCtrl.currentPlace.coverId" class="cover-picture-select" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'cover', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
         Capa
       </button>
 
-      <div ng-if="adminCtrl.currentPlace.cover" class="cover-picture-preview">
+      <div ng-if="adminCtrl.currentPlace.cover || adminCtrl.currentPlace.coverId" class="cover-picture-preview">
         <cl-image class="preview-image" ng-if="adminCtrl.currentPlace.coverId" public-id="{{adminCtrl.currentPlace.coverId}}" format="jpg" alt="cover-preview">
           <cl-transformation height="150" width="750" crop="fill" gravity="north" />
           </cl-image>
