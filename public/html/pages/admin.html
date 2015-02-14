@@ -133,6 +133,9 @@
           <input class="name" ng-model="dish.name" placeholder="Nome">
           <input name="ingredients" class="ingredients" ng-model="dish.ingredients" placeholder="Ingredientes (separados por vírgula)">
           <input class="pricing" ng-model="dish.pricing" placeholder="Preço">
+          <button class="remove" type="button" ng-click="adminCtrl.currentPlace.dishes.splice($index, 1)">
+            Remover
+          </button>
         </li>
       </ul>
       <button class="add-dish" type="button" ng-click="adminCtrl.addDish()">Adicionar pizza</button>

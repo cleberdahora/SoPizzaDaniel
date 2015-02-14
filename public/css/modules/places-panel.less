@@ -190,14 +190,13 @@
     }
 
     .dish {
-      @padding-left: 5.5rem;
+      @horizontal-padding: 5.5rem;
       list-style: none;
       position: relative;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      padding-left: @padding-left;
-      padding: 0.5rem 0 0.5rem @padding-left;
+      padding: 0.5rem @horizontal-padding;
       border-bottom: 0.0625rem solid lightgrey;
 
       .picture {
@@ -225,6 +224,22 @@
         &.pricing {
           width: calc(~"25% - @{margin} * 2");
         }
+
+      }
+
+      .remove {
+        @margin: 0.5rem;
+
+        #elements > .button();
+
+        position: absolute;
+        top: 0;
+        right: 0.5rem;
+        bottom: 0;
+        margin: auto;
+        height: 2rem;
+        width: 5rem;
+        padding: 0.5rem;
       }
     }
 
