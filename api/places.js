@@ -168,8 +168,6 @@ module.exports = function(router) {
       place.logoId     = data.logoId  || place.logoId  || null;
       place.pictureIds = lodash(place.pictureIds).concat(data.pictureIds);
 
-      console.log(id);
-      console.log(place);
       Place
         .findById(id)
         .findOneAndUpdate(place, function(err) {

@@ -6,7 +6,7 @@
   <button class="sign-in">Entrar</button>
 </form>
 
-<section class="places-panel">
+<section class="places-panel" ng-if="adminCtrl.isSignedIn()">
   <header class="header">
     <h1 class="title">Pizzarias</h1>
   </header>
@@ -185,7 +185,7 @@
     </div>
   </form>
 
-  <table class="places-table" ng-if="adminCtrl.isSignedIn()">
+  <table class="places-table">
     <thead>
       <tr>
         <th>Origem</th>
