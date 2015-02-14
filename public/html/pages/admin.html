@@ -40,7 +40,7 @@
           <cl-transformation height="150" width="750" crop="fill" gravity="north" />
           </cl-image>
         <img class="preview-image" ng-if="adminCtrl.currentPlace.cover" ng-src="{{adminCtrl.currentPlace.cover}}" alt="cover-preview">
-        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.cover = undefined">
+        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.cover = undefined; adminCtrl.currentPlace.coverId = undefined">
           Remover
         </button>
       </div>
