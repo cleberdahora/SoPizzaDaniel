@@ -142,7 +142,7 @@ module.exports = function(router) {
         async.parallel(lodash.map(dishes, function(dish) {
           return function(callback) {
             saveImage(dish.picture)(function(err, imageId) {
-              dish.pictureId = imageId;
+              dish.pictureId = imageId || dish.pictureId;
               callback(null, dish);
             });
           };
