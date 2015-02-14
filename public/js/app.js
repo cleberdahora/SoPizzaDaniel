@@ -19,6 +19,7 @@
     'uiGmapgoogle-maps',
     'segmentio',
     'ngStorage',
-    'angularFileUpload'
+    'angularFileUpload',
+    'cloudinary'
   ]);
 })();

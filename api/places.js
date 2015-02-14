@@ -1,10 +1,12 @@
 'use strict';
 
-var path     = require('path');
-var lodash   = require('lodash');
-var geoip    = require('geoip-lite');
-var mongoose = require('mongoose');
-var places   = require(path.resolve('./services/places'));
+var path       = require('path');
+var lodash     = require('lodash');
+var geoip      = require('geoip-lite');
+var async      = require('async');
+var mongoose   = require('mongoose');
+var cloudinary = require('cloudinary');
+var places     = require(path.resolve('./services/places'));
 
 var Place = mongoose.model('Place');
 
@@ -17,13 +19,12 @@ module.exports = function(router) {
     if (!req.query.coordinates) {
       // TODO: Verify if user is authenticated
       return Place
-        .find({ providerInfo: { $ne: null }})
+        .find({ providerInfo: null })
         .exec(function(err, places) {
           if (err) {
             return res.status(500).end(); // Internal Server Error
           }
 
-          places = places.map(filterPlace);
           return res.json(places);
         });
     }
@@ -51,7 +52,7 @@ module.exports = function(router) {
         return res.status(500).end(); // Internal Server Error
       }
 
-      results = lodash.flatten(results).map(filterPlace);
+      results = lodash.flatten(results);
 
       return res.json(results);
     });
@@ -73,7 +74,7 @@ module.exports = function(router) {
         return res.status(404).end(); // Not Found
       }
 
-      return res.json(filterPlace(place));
+      return res.json(place);
     });
   }
 
@@ -98,6 +99,91 @@ module.exports = function(router) {
     });
   }
 
+
+  /**
+   * PUT /:id
+   * Update a place
+   */
+  function put(req, res) {
+    var id       = req.body.id;
+    var name     = req.body.name;
+    var address  = req.body.address || {};
+    var location = address.location;
+    var logo     = req.body.logo;
+    var cover    = req.body.cover;
+    var pictures = req.body.pictures;
+    var dishes   = req.body.dishes;
+
+    // Verify required fields
+    if (!name || !location) {
+      return res.status(422).end(); // Unprocessable Entity
+    }
+
+    function saveImage(image) {
+      return function(callback) {
+        if (!image) {
+         return callback(null, null); // No ID to give back
+        }
+
+        cloudinary.uploader.upload(image, function(result) {
+          callback(null, result.public_id);
+        });
+      };
+    }
+
+    function saveImages(images) {
+      return function(callback) {
+        async.parallel(lodash.map(images, saveImage), callback);
+      };
+    }
+
+    function saveDishImages(dishes) {
+      return function(callback) {
+        async.parallel(lodash.map(dishes, function(dish) {
+          return function(callback) {
+            saveImage(dish.picture)(function(err, imageId) {
+              dish.pictureId = imageId || dish.pictureId;
+              callback(null, dish);
+            });
+          };
+        }), callback);
+      };
+    }
+
+    async.parallel({
+      coverId:    saveImage(cover),
+      logoId:     saveImage(logo),
+      pictureIds: saveImages(pictures),
+      dishes:     saveDishImages(dishes)
+    }, function(err, data) {
+      if (err) {
+        console.error(err);
+        return res.status(500).end(); // Internal Server Error
+      }
+
+      // TODO: Take only necessary fields from body
+      var place = req.body;
+
+      place.dishes     = data.dishes;
+      place.coverId    = data.coverId || place.coverId || null;
+      place.logoId     = data.logoId  || place.logoId  || null;
+      place.pictureIds = lodash(place.pictureIds).concat(data.pictureIds);
+
+      console.log(id);
+      console.log(place);
+      Place
+        .findById(id)
+        .findOneAndUpdate(place, function(err) {
+          if (err) {
+            console.error(err);
+            return res.status(500).end(); // Internal Server Error
+          }
+
+          return res.status(201).end(); // Created
+        });
+    });
+  }
+
   /**
    * POST /
    * Create a place
@@ -106,48 +192,74 @@ module.exports = function(router) {
     var name     = req.body.name;
     var address  = req.body.address || {};
     var location = address.location;
+    var logo     = req.body.logo;
+    var cover    = req.body.cover;
+    var pictures = req.body.pictures;
+    var dishes   = req.body.dishes;
 
     // Verify required fields
     if (!name || !location) {
       return res.status(422).end(); // Unprocessable Entity
     }
 
-    var place = new Place(req.body);
+    function saveImage(image) {
+      return function(callback) {
+        if (!image) {
+         return callback(null, null); // No ID to give back
+        }
 
-    place.save(function(err) {
+        cloudinary.uploader.upload(image, function(result) {
+          callback(null, result.public_id);
+        });
+      };
+    }
+
+    function saveImages(images) {
+      return function(callback) {
+        async.parallel(lodash.map(images, saveImage), callback);
+      };
+    }
+
+    function saveDishImages(dishes) {
+      return function(callback) {
+        async.parallel(lodash.map(dishes, function(dish) {
+          return function(callback) {
+            saveImage(dish.picture)(function(err, imageId) {
+              dish.pictureId = imageId;
+              callback(null, dish);
+            });
+          };
+        }), callback);
+      };
+    }
+
+    async.parallel({
+      coverId:    saveImage(cover),
+      logoId:     saveImage(logo),
+      pictureIds: saveImages(pictures),
+      dishes:     saveDishImages(dishes)
+    }, function(err, data) {
       if (err) {
-        console.log(err);
+        console.error(err);
         return res.status(500).end(); // Internal Server Error
       }
 
-      return res.status(201).end(); // Created
-    });
-  }
+      var place = new Place(req.body);
 
-  function filterPlace(place) {
-    return {
-      id           : place.id,
-      name         : place.name,
-      description  : place.description,
-      cover        : place.cover,
-      logo         : place.logo,
-      picture      : place.picture,
-      pictures     : place.pictures,
-      phone        : place.phone,
-      email        : place.email,
-      //externalLinks: place.externalLinks,
-      address      : place.address,
-      dishes       : place.dishes,
-      workingTimes : lodash.map(place.workingTimes, function(workingTime) {
-        return {
-          id   : workingTime.id,
-          days : workingTime.days,
-          times: lodash.map(workingTime, function(time) {
-            return lodash.pick(time, ['start', 'end']);
-          })
-        };
-      })
-    };
+      place.dishes     = data.dishes;
+      place.coverId    = data.coverId;
+      place.logoId     = data.logoId;
+      place.pictureIds = data.pictureIds;
+
+      place.save(function(err) {
+        if (err) {
+          console.error(err);
+          return res.status(500).end(); // Internal Server Error
+        }
+
+        return res.status(201).end(); // Created
+      });
+    });
   }
 
   function toGeoJSON(coordinates) {
@@ -163,5 +275,6 @@ module.exports = function(router) {
   router.get('/', get);
   router.get('/:id', getSingle);
   router.get('/:id/picture', getPicture);
+  router.put('/:id', put);
   router.post('/', post);
 };

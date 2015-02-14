@@ -1,10 +1,12 @@
 'use strict';
 
-var async    = require('async');
-var moment   = require('moment');
-var lodash   = require('lodash');
-var request  = require('request');
-var mongoose = require('mongoose');
+var async      = require('async');
+var util       = require('util');
+var moment     = require('moment');
+var lodash     = require('lodash');
+var request    = require('request');
+var mongoose   = require('mongoose');
+var cloudinary = require('cloudinary');
 
 var Place        = mongoose.model('Place');
 var BaseProvider = require('./base.js');
@@ -20,7 +22,7 @@ var pizzeriaCategoryId = '4bf58dd8d48988d1ca941735';
  * [latitude, longitude] format accepted by Foursquare API
  * @param {array} location - Geographic coordinates on GeoJSON format of
  * Point type
- * @returns {array} Geographic coordinates on [lng, lat] format
+ * @returns {array} Geographic coordinates on [lat, lng] format
  */
 function denormalizeLocation(location) {
   var coordinates = location.coordinates;
@@ -35,6 +37,18 @@ function getCachedPlace(providerInfo, callback) {
     providerInfo: providerInfo,
     expiresOn: { $gt: moment().toDate() }
   }, callback);
+}
+
+function saveImage(image, size, callback) {
+  if (typeof size === 'function') {
+    callback = size;
+    size     = 'cap300';
+  }
+
+  var url = util.format('%s%s%s', image.prefix, size, image.suffix);
+  cloudinary.uploader.upload(url, function(result) {
+    callback(null, result.public_id);
+  });
 }
 
 function FoursquareProvider() {
@@ -111,8 +125,19 @@ function FoursquareProvider() {
       // TODO: Handle err properly
       if (err) {
         console.error(err);
+        return callback(err);
       }
-      callback(null, body.response.photos.items);
+
+      var pictures = lodash.take(body.response.photos.items, 4);
+
+      // Save all pictures and return their IDs
+      async.parallel(pictures.map(function(picture) {
+        return function(callback) {
+          saveImage(picture, callback);
+        };
+      }), function(err, results) {
+        callback(err, results);
+      });
     });
   }
 
@@ -177,30 +202,38 @@ function FoursquareProvider() {
       place       : getPlace,
       venueInfo   : lodash.wrap(place.providerInfo.id, getVenueInfo),
       workingTimes: lodash.wrap(place.providerInfo.id, getWorkingTime),
-      pictures    : lodash.wrap(place.providerInfo.id, getPictures)
+      pictureIds  : lodash.wrap(place.providerInfo.id, getPictures)
     }, function(err, placeInfo) {
       var place        = placeInfo.place;
       var venueInfo    = placeInfo.venueInfo;
       var workingTimes = placeInfo.workingTimes;
-      var pictures     = placeInfo.pictures;
+      var pictureIds   = placeInfo.pictureIds;
 
       // TODO: Handle err properly
-      place.workingTimes = workingTimes;
-      place.description  = venueInfo.description;
-      place.picture      = pictures[0];
-      place.pictures     = pictures;
-      place.expiresOn    = moment()
+      place.workingTimes  = workingTimes;
+      place.description   = venueInfo.description;
+      place.mainPictureId = pictureIds[0];
+      place.pictureIds    = pictureIds;
+      place.expiresOn     = moment()
         .add(30, 'days')
         .toDate();
 
-      if (venueInfo.page && venueInfo.page.user) {
-        place.logo = venueInfo.page.user.photo;
+      if (venueInfo.page && venueInfo.page.user && venueInfo.page.user.photo) {
+        // Save logo before saving place
+        var logo = venueInfo.page.user.photo;
+        saveImage(logo, '96x96', function(err, logoId) {
+          place.logoId = logoId;
+          place.save(function(err, place) {
+            // TODO: Handle err properly
+            callback(null, place);
+          });
+        });
+      } else {
+        place.save(function(err, place) {
+          // TODO: Handle err properly
+          callback(null, place);
+        });
       }
-
-      place.save(function(err, place) {
-        // TODO: Handle err properly
-        callback(null, place);
-      });
     });
   }
 
@@ -213,7 +246,7 @@ function FoursquareProvider() {
       client_secret: secret,
       categoryId   : pizzeriaCategoryId,
       ll           : denormalizeLocation(location).join(),
-      limit        : 50
+      limit        : 20
     };
 
     request.get({
@@ -227,7 +260,7 @@ function FoursquareProvider() {
       var places = body.response.venues.map(function (venue) {
         return {
           providerInfo: {
-            provider:'foursquare',
+            provider: 'foursquare',
             id: venue.id
           },
           name: venue.name,

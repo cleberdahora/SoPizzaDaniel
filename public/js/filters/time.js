@@ -42,6 +42,7 @@
       if (angular.isArray(time) && !time.length) {
         return;
       }
+      console.log(time);
 
       return formatTimes(time, rangeSeparator, timeSeparator);
     }

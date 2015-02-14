@@ -105,6 +105,7 @@ module.exports = function(router) {
       return res.json(locationInfo);
     });
   }
+
   /**
    * POST /
    * Add information about current geographic position and receives back
@@ -152,6 +153,7 @@ module.exports = function(router) {
         return res
           .status(201) // Created
           .json({
+            location     : toGeoJSON(coordinates),
             country      : address.country,
             state        : address.state,
             city         : address.city,
@@ -167,6 +169,16 @@ module.exports = function(router) {
         return res.status(201).end(); // Created
       }
     });
+  }
+
+  function toGeoJSON(coordinates) {
+    var latitude  = coordinates[0];
+    var longitude = coordinates[1];
+
+    return {
+      type: 'Point',
+      coordinates: [longitude, latitude]
+    };
   }
 
   router.get('/', get);

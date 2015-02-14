@@ -13,28 +13,34 @@
 
   <button class="add" ng-click="adminCtrl.showPlaceForm = true">Adicionar pizzaria</button>
 
-  <form class="place-form" ng-if="adminCtrl.showPlaceForm">
+  <form class="place-form" ng-if="adminCtrl.showPlaceForm" ng-submit="adminCtrl.savePlace(adminCtrl.currentPlace)">
     <div class="field-group">
-      <button ng-if="!adminCtrl.currentPlace.logoPicture" class="logo-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'logoPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
+      <button ng-if="!adminCtrl.currentPlace.logo && !adminCtrl.currentPlace.logoId" type="button" class="logo-picture-select" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'logo', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
         Logo
       </button>
 
-      <div ng-if="adminCtrl.currentPlace.logoPicture" class="logo-picture-preview">
-        <img class="preview-image" ng-src="{{adminCtrl.currentPlace.logoPicture}}" alt="logo-preview">
-        <button class="remove" ng-click="adminCtrl.currentPlace.logoPicture = undefined">
+      <div ng-if="adminCtrl.currentPlace.logo || adminCtrl.currentPlace.logoId" class="logo-picture-preview">
+        <cl-image class="preview-image" ng-if="adminCtrl.currentPlace.logoId" public-id="{{adminCtrl.currentPlace.logoId}}" format="jpg" alt="logo-preview">
+          <cl-transformation height="150" width="150" crop="fill" gravity="north" />
+          </cl-image>
+        <img class="preview-image" ng-if="adminCtrl.currentPlace.logo" ng-src="{{adminCtrl.currentPlace.logo}}" alt="logo-preview">
+        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.logo = null; adminCtrl.currentPlace.logoId = null">
           Remover
         </button>
       </div>
     </div>
 
     <div class="field-group">
-      <button ng-if="!adminCtrl.currentPlace.coverPicture" class="cover-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'coverPicture', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
+      <button ng-if="!adminCtrl.currentPlace.cover && !adminCtrl.currentPlace.coverId" class="cover-picture-select" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'cover', adminCtrl.currentPlace)" drag-over-class="drag" hide-on-drop-not-available="true">
         Capa
       </button>
 
-      <div ng-if="adminCtrl.currentPlace.coverPicture" class="cover-picture-preview">
-        <img class="preview-image" ng-src="{{adminCtrl.currentPlace.coverPicture}}" alt="cover-preview">
-        <button class="remove" ng-click="adminCtrl.currentPlace.coverPicture = undefined">
+      <div ng-if="adminCtrl.currentPlace.cover || adminCtrl.currentPlace.coverId" class="cover-picture-preview">
+        <cl-image class="preview-image" ng-if="adminCtrl.currentPlace.coverId" public-id="{{adminCtrl.currentPlace.coverId}}" format="jpg" alt="cover-preview">
+          <cl-transformation height="150" width="750" crop="fill" gravity="north" />
+          </cl-image>
+        <img class="preview-image" ng-if="adminCtrl.currentPlace.cover" ng-src="{{adminCtrl.currentPlace.cover}}" alt="cover-preview">
+        <button class="remove" type="button" ng-click="adminCtrl.currentPlace.cover = null; adminCtrl.currentPlace.coverId = null">
           Remover
         </button>
       </div>
@@ -80,13 +86,13 @@
         <tbody>
           <tr class="working-time" ng-repeat="workingTime in adminCtrl.currentPlace.workingTimes">
             <td>
-              <select class="from-day" ng-model="workingTime.fromDay" ng-options="value for (key, value) in adminCtrl.weekdays" placeholder="De">
-                <option value="">(Dia)</option>
+              <select class="from-day" ng-model="workingTime.fromDay" ng-options="weekday.name as weekday.localeName for weekday in adminCtrl.weekdays" placeholder="De">
+                <option value="">(dia)</option>
               </select>
             </td>
             <td>
-              <select class="to-day" ng-model="workingTime.toDay" ng-options="value for (key, value) in adminCtrl.weekdays" placeholder="Até">
-                <option value="">(Dia)</option>
+              <select class="to-day" ng-model="workingTime.toDay" ng-options="weekday.name as weekday.localeName for weekday in adminCtrl.weekdays" placeholder="Até">
+                <option value="">(dia)</option>
               </select>
             </td>
             <td>
@@ -96,13 +102,13 @@
               <input class="to-time" ng-model="workingTime.toTime" placeholder="Até" type="time">
             </td>
             <td>
-              <button class="remove" ng-click="adminCtrl.removeWorkingTime(workingTime)">Remover</button>
+              <button class="remove" type="button" ng-click="adminCtrl.removeWorkingTime(workingTime)">Remover</button>
             </td>
           </tr>
         </tbody>
       </table>
 
-      <button class="add-working-time" ng-click="adminCtrl.addWorkingTime()">
+      <button class="add-working-time" type="button" ng-click="adminCtrl.addWorkingTime()">
         Adicionar horário
       </button>
     </section>
@@ -114,29 +120,66 @@
 
       <ul class="dishes">
         <li class="dish" ng-repeat="dish in adminCtrl.currentPlace.dishes">
-          <button ng-if="!dish.picture" class="picture dish-picture" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'picture', dish)" drag-over-class="drag" hide-on-drop-not-available="true">
+          <button ng-if="!dish.picture && !dish.pictureId" class="picture dish-picture-select" type="button" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, 'picture', dish)" drag-over-class="drag" hide-on-drop-not-available="true">
             Foto
           </button>
-          <div ng-if="dish.picture" class="picture dish-picture-preview">
-            <img class="preview-image" ng-src="{{dish.picture}}" alt="dish-preview">
-            <button class="remove" ng-click="dish.picture = undefined">
+          <div ng-if="dish.picture || dish.pictureId" class="picture dish-picture-preview">
+            <cl-image class="preview-image" ng-if="dish.pictureId" public-id="{{dish.pictureId}}" format="jpg" alt="dish-preview">
+              <cl-transformation height="150" width="750" crop="fill" gravity="north"></cl-transformation>
+            </cl-image>
+            <img class="preview-image" ng-if="dish.picture" ng-src="{{dish.picture}}" alt="dish-preview">
+            <button class="remove" type="button" ng-click="dish.picture = null; dish.pictureId = null">
               Remover
             </button>
           </div>
 
           <input class="name" ng-model="dish.name" placeholder="Nome">
-          <input class="ingredients" ng-model="dish.ingredients" placeholder="Ingredientes (separados por vírgula)">
+          <input name="ingredients" class="ingredients" ng-model="dish.ingredients" placeholder="Ingredientes (separados por vírgula)">
           <input class="pricing" ng-model="dish.pricing" placeholder="Preço">
+          <button class="remove" type="button" ng-click="adminCtrl.currentPlace.dishes.splice($index, 1)">
+            Remover
+          </button>
         </li>
       </ul>
-      <button class="add-dish" ng-click="adminCtrl.addDish()">Adicionar pizza</button>
+      <button class="add-dish" type="button" ng-click="adminCtrl.addDish()">Adicionar pizza</button>
     </section>
 
+    <section class="panel field-group place-pictures-group">
+      <header class="header">
+        <h3 class="title">Fotos</h3>
+      </header>
+      <ul class="place-pictures">
+        <li class="place-picture" ng-repeat="pictureId in adminCtrl.currentPlace.pictureIds track by $index">
+          <div class="place-picture-preview">
+            <cl-image class="preview-image" public-id="{{pictureId}}" format="jpg" alt="picture-preview">
+              <cl-transformation height="150" width="150" crop="fill" gravity="north" />
+            </cl-image>
+            <button class="remove" type="button" ng-click="adminCtrl.currentPlace.pictureIds.splice($index, 1)">
+              Remover
+            </button>
+          </div>
+        </li>
+
+        <li class="place-picture" ng-repeat="picture in adminCtrl.currentPlace.pictures track by $index">
+          <button ng-if="!picture" type="button" class="place-picture-select" ng-file-select ng-file-drop accept="image/*" ng-file-change="adminCtrl.generateThumb($files, $index, adminCtrl.currentPlace.pictures)" drag-over-class="drag" hide-on-drop-not-available="true">
+            Foto
+          </button>
+
+          <div ng-if="picture" class="place-picture-preview">
+            <img class="preview-image" ng-src="{{picture}}" alt="picture-preview">
+            <button class="remove" type="button" ng-click="adminCtrl.currentPlace.pictures.splice($index, 1)">
+              Remover
+            </button>
+          </div>
+        </li>
+      </ul>
+      <button class="add-place-picture" type="button" ng-click="adminCtrl.currentPlace.pictures.push(null)">Adicionar foto</button>
+    </section>
     <div class="field-group">
-      <button class="save" ng-click="adminCtrl.savePlace(adminCtrl.currentPlace)">
+      <button class="save" type="submit">
         Salvar
       </button>
-      <button class="cancel" ng-click="adminCtrl.showPlaceForm = false">
+      <button class="cancel" ng-click="adminCtrl.showPlaceForm = false; adminCtrl.cleanCurrentPlace()">
         Cancelar
       </button>
     </div>
@@ -154,12 +197,12 @@
     </thead>
     <tbody>
       <tr ng-repeat="place in adminCtrl.places">
-        <td>{{place.providerInfo}}</td>
+        <td>{{place.providerInfo.provider || 'local'}}</td>
         <td>{{place.name}}</td>
         <td>{{place.address.formatted}}</td>
-        <td>{{place.pictures.length}}</td>
+        <td>{{place.pictureIds.length}}</td>
         <td>
-          <a href="www">Editar</a>
+          <a ng-click="adminCtrl.editPlace(place)">Editar</a>
         </td>
       </tr>
     </tbody>

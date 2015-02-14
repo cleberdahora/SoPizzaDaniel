@@ -13,17 +13,9 @@ var weekdays = lodash.range(0, 6).map(function(dayNumber) {
     .toLowerCase();
 });
 
-var PictureSchema = new Schema({
-  prefix: String,
-  suffix: String
-});
-
 var DishSchema = new Schema({
   name: String,
-  picture: {
-    prefix: String,
-    suffix: String
-  },
+  pictureId: String,
   pricing: Mixed,
   ingredients: [String]
 });
@@ -35,19 +27,10 @@ var PlaceSchema = new Schema({
   },
   name: String,
   description: String,
-  cover: {
-    prefix: String,
-    suffix: String
-  },
-  logo: {
-    prefix: String,
-    suffix: String
-  },
-  picture: {
-    prefix: String,
-    suffix: String
-  },
-  pictures: [PictureSchema],
+  coverId: String,
+  logoId: String,
+  mainPictureId: String,
+  pictureIds: [String],
   phone: String,
   email: String,
   address: {
@@ -71,5 +54,8 @@ PlaceSchema.index({ 'providerInfo.provider': 1, 'providerInfo.id': 1 }, {
   unique: true,
   sparse: true
 });
+
+// Misc
+PlaceSchema.set('toJSON', { getters: true });
 
 mongoose.model('Place', PlaceSchema);

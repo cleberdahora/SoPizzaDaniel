@@ -4,11 +4,16 @@
 
 <section class="jumbotron">
   <my-video-slider class="background" parallax parallax-ratio="0.5">
-    <img ng-if="!isEmpty(placeCtrl.place.cover)" ng-src="{{placeCtrl.place.cover | image:1300:300}}">
+    <cl-image ng-if="placeCtrl.place.coverId" public-id="{{placeCtrl.place.coverId}}" format="jpg">
+      <cl-transformation width="1300" height="300" crop="fill" />
+    </cl-image>
   </my-video-slider>
+
   <div class="profile-info">
-    <img class="picture" alt="profile image" ng-if="isEmpty(placeCtrl.place.logo)" width="300" height="300" src="/resources/images/profile-logo.svg">
-    <img class="picture" alt="profile image" ng-if="!isEmpty(placeCtrl.place.logo)" width="300" height="300" ng-src="{{placeCtrl.place.logo | image:300:300}}">
+    <img class="picture" alt="profile image" ng-if="isEmpty(placeCtrl.place.logoId)" width="160" height="160" src="/resources/images/profile-logo.svg">
+    <cl-image class="picture" alt="profile image" ng-if="!isEmpty(placeCtrl.place.logoId)" ng-alt="{{placeCtrl.place.name}}" public-id="{{placeCtrl.place.logoId}}" format="jpg">
+      <cl-transformation width="160" height="160" crop="fill" />
+    </cl-image>
 
     <div class="info">
       <h1 class="name">{{placeCtrl.place.name}}</h1>
@@ -29,7 +34,9 @@
     </div>
     <ul class="dish-list" ng-if="placeCtrl.place.dishes.length">
       <li class="dish" ng-repeat="dish in placeCtrl.place.dishes">
-        <img class="picture" alt="dish picture" ng-src="{{dish.picture | image:100:100}}">
+        <cl-image class="picture" alt="dish picture" public-id="{{dish.pictureId}}" format="jpg">
+          <cl-transformation width="100" height="100" crop="fill" />
+        </cl-image>
 
         <div class="informations">
           <div class="name">{{dish.name}}</div>
@@ -59,8 +66,12 @@
 <aside id="sidebar">
   <section class="image-slider">
     <h2 class="title">Fotos do local</h2>
-    <flex-slider animation="slide" slide="picture in placeCtrl.place.pictures track by $index" control-nav="false" smooth-height="true">
-      <li><img ng-src="{{picture | image:300:200}}"></li>
+    <flex-slider animation="slide" slide="pictureId in placeCtrl.place.pictureIds track by $index" control-nav="false" smooth-height="true">
+      <li>
+        <cl-image public-id="{{pictureId}}" format="jpg">
+          <cl-transformation width="300" height="200" crop="fill" />
+        </cl-image>
+      </li>
     </flex-slider>
   </section>
 
@@ -96,7 +107,6 @@
           <div ng-repeat="workingTime in placeCtrl.place.workingTimes">
             <span class="day">{{workingTime.days | day}}</span>:
             <span class="time">{{workingTime.times | time}}</span>
-
           </div>
         </div>
       </div>
