@@ -1,7 +1,8 @@
 (function() {
   'use strict';
 
-  function AdminCtrl($scope, $window, Auth, Restangular, lodash, moment) {
+  function AdminCtrl($scope, $window, Auth, Restangular, lodash, moment,
+      $state) {
     let self = this;
 
     let weekdays = lodash(lodash.range(0, 7))
@@ -150,12 +151,12 @@
 
       if (place.id) {
         place.put()
-          .then(res => console.log(res))
+          .then(() => $state.reload())
           .catch(err => console.log(err));
       } else {
         Restangular.all('places')
           .post(place)
-          .then(res => console.log(res))
+          .then(() => $state.reload())
           .catch(err => console.log(err));
       }
     }
