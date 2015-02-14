@@ -267,7 +267,7 @@ module.exports = function(router) {
 
     return {
       type: 'Point',
-      coordinates: [longitude, latitude]
+      coordinates: [parseFloat(longitude), parseFloat(latitude)]
     };
   }
 

@@ -46,9 +46,7 @@ var PlaceSchema = new Schema({
 });
 
 // Indexes
-PlaceSchema.index({ 'address.coordinates': 1 }, {
-  type: '2dsphere'
-});
+PlaceSchema.index({ 'address.location': '2dsphere' });
 
 PlaceSchema.index({ 'providerInfo.provider': 1, 'providerInfo.id': 1 }, {
   unique: true,

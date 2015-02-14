@@ -29,7 +29,7 @@ function denormalizeLocation(location) {
   var longitude   = coordinates[0];
   var latitude    = coordinates[1];
 
-  return [latitude, longitude];
+  return [parseFloat(latitude), parseFloat(longitude)];
 }
 
 function getCachedPlace(providerInfo, callback) {
