@@ -53,7 +53,7 @@
             {{dish.pricing | currency:''}}
           </div>
 
-          <div class="price" ng-if="isArray(dish.pricing)" ng-repeat="pricing in dish.pricing">
+          <div class="price" ng-if="isArray(dish.pricing)" ng-repeat="pricing in dish.pricing track by $index">
             <div class="type">{{pricing.type}}</div>
             <span class="currency">R$</span>
             {{pricing.price | currency:''}}

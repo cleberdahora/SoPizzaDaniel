@@ -133,6 +133,7 @@
           .split(',')
           .map(ingredient => ingredient.trim());
         dish.ingredients = lodash.compact(dish.ingredients);
+        dish.pricing = parseFloat(dish.pricing);
         return dish;
       });
     }
