@@ -123,7 +123,12 @@
 
     function formatDishes(dishes) {
       return lodash.map(dishes, dish => {
-        dish.ingredients = dish.ingredients || '';
+        if (lodash.isArray(dish.ingredients)) {
+          dish.ingredients = dish.ingredients.join();
+        } else {
+          dish.ingredients = dish.ingredients || '';
+        }
+
         dish.ingredients = dish.ingredients
           .split(',')
           .map(ingredient => ingredient.trim());
@@ -133,33 +138,7 @@
     }
 
     function savePlace(place) {
-      // TODO: Choose between createPlace and updatePlace based on application
-      // state
-      createPlace(place);
-    }
-
-    function createPlace(place) {
-      // Avoid type transformation problems on same properties
-      place = lodash.cloneDeep(place);
-
-      let { latitude, longitude } = place.address || {};
-
-      place.logo             = place.logoPicture;
-      place.cover            = place.coverPicture;
-      place.address.location = toGeoJSON([latitude, longitude]);
-      place.pictures         = lodash.compact(place.pictures);
-      place.dishes           = formatDishes(place.dishes);
-      place.workingTimes     = formatWorkingTimes(place.workingTimes);
-
-      Restangular.all('places')
-        .post(place)
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
-    }
-
-    function updatePlace(place) {
-      // Avoid type transformation problems on same properties
-      place = lodash.cloneDeep(place);
+      place = Restangular.copy(place);
 
       let { latitude, longitude } = place.address || {};
 
@@ -168,9 +147,16 @@
       place.dishes           = formatDishes(place.dishes);
       place.workingTimes     = formatWorkingTimes(place.workingTimes);
 
-      place.put()
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
+      if (place.id) {
+        place.put()
+          .then(res => console.log(res))
+          .catch(err => console.log(err));
+      } else {
+        Restangular.all('places')
+          .post(place)
+          .then(res => console.log(res))
+          .catch(err => console.log(err));
+      }
     }
 
     function editPlace(place) {
@@ -193,8 +179,6 @@
     self.cleanCurrentPlace = cleanCurrentPlace;
     self.editPlace         = editPlace;
     self.savePlace         = savePlace;
-    self.createPlace       = createPlace;
-    self.updatePlace       = updatePlace;
     self.weekdays          = weekdays;
     self.addWorkingTime    = addWorkingTime;
     self.addDish           = addDish;
