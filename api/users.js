@@ -31,7 +31,7 @@ module.exports = function(router) {
       }
 
       user.save(function(err) {
-        const DUPLICATE_KEY = 11000;
+        var DUPLICATE_KEY = 11000;
         if (err && err.code === DUPLICATE_KEY) {
           return res.status(409).end(); // Internal Server Error
         }
