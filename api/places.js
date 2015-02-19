@@ -104,7 +104,7 @@ module.exports = function(router) {
    * Update a place
    */
   function put(req, res) {
-    var id       = req.body.id;
+    var id       = req.params.id;
     var name     = req.body.name;
     var address  = req.body.address || {};
     var location = address.location;
@@ -259,6 +259,44 @@ module.exports = function(router) {
     });
   }
 
+  /**
+   * POST /
+   * Remove a place
+   */
+  function remove(req, res) {
+    var id = req.params.id;
+
+    Place.findByIdAndRemove(id, function(err, place) {
+      if (err) {
+        console.error(err);
+        return res.status(500).end(); // Internal Server Error
+      }
+
+      if (!place) {
+        return res.status(404).end(); // Not Found
+      }
+
+      res.status(204).end(); // No Content
+
+      // Post-processing (remove images)
+      var pictureIds = place.pictureIds;
+      var logoId     = place.logoId;
+      var coverId    = place.coverId;
+      var imageIds   = lodash(new Array(pictureIds, logoId, coverId))
+        .flatten()
+        .compact()
+        .value();
+
+      async.parallel(imageIds.map(function(imageId) {
+        return lodash.partial(cloudinary.uploader.destroy, imageId);
+      }), function(err, results) {
+        if (err) {
+          console.error(err);
+        }
+      });
+    });
+  }
+
   function toGeoJSON(coordinates) {
     var latitude  = coordinates[0];
     var longitude = coordinates[1];
@@ -274,4 +312,5 @@ module.exports = function(router) {
   router.get('/:id/picture', getPicture);
   router.put('/:id', put);
   router.post('/', post);
+  router.delete('/:id', remove);
 };

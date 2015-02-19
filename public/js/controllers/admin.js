@@ -152,12 +152,12 @@
       if (place.id) {
         place.put()
           .then(() => $state.reload())
-          .catch(err => console.log(err));
+          .catch(err => console.error(err));
       } else {
         Restangular.all('places')
           .post(place)
           .then(() => $state.reload())
-          .catch(err => console.log(err));
+          .catch(err => console.error(err));
       }
     }
 
@@ -173,6 +173,13 @@
       self.showPlaceForm = true;
     }
 
+    function removePlace(place) {
+      place.remove()
+        .then(() => $state.reload())
+        .catch(err => console.error(err));
+
+    }
+
     function cleanCurrentPlace() {
       self.currentPlace = { address: {}, pictures: [] };
     }
@@ -181,6 +188,7 @@
     self.cleanCurrentPlace = cleanCurrentPlace;
     self.editPlace         = editPlace;
     self.savePlace         = savePlace;
+    self.removePlace       = removePlace;
     self.weekdays          = weekdays;
     self.addWorkingTime    = addWorkingTime;
     self.addDish           = addDish;
