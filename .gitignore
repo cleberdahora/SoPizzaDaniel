@@ -9,3 +9,4 @@ public/dist/
 *.un~
 .nodemonignore
 npm-debug.log
+.tags
