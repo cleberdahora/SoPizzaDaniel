@@ -2,7 +2,10 @@
   'use strict';
 
   function segmentConfig(segmentio) {
-    segmentio.load('Ne0RPhSmNNFRlLNp8uBG9Sx1ubuQd5GV');
+    // Dev
+    //segmentio.load('Ne0RPhSmNNFRlLNp8uBG9Sx1ubuQd5GV');
+    // Prod
+    segmentio.load('nZvoRY5XEAXmK6hFci9YrxpNHmoLYBhg');
   }
 
   angular.module('app')
