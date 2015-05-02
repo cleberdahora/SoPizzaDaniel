@@ -11,8 +11,8 @@ var cloudinary = require('cloudinary');
 var Place        = mongoose.model('Place');
 var BaseProvider = require('./base.js');
 
-var key     = 'MIZINJMCPGVQUKA5TVGVQRKQULGLVNQE3T0JCTGCZSANU5VM';
-var secret  = 'EHWQEOYIC3QAI3SXZ4Y4CWEH4B4EYK2K4XPT55Y31QAAUNX3';
+var key     = 'J345Y5QR1TB42E1C1YMZJ3QQGOC2ZSYMROW1J5WUAEZZ0TWF';
+var secret  = 'L2EPZONRXGONIEFKS4TULUFST55BSBNZ2SW1DEXX2HRRGO1P';
 var baseURL = 'https://api.foursquare.com/v2/venues/';
 
 var pizzeriaCategoryId = '4bf58dd8d48988d1ca941735';
