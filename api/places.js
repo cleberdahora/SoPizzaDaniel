@@ -161,7 +161,7 @@ module.exports = function(router) {
       }
 
       // TODO: Take only necessary fields from body
-      var place = req.body;
+      var place = lodash.omit(req.body, '_id');
 
       place.dishes     = data.dishes;
       place.coverId    = data.coverId || place.coverId || null;
