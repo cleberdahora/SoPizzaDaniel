@@ -2,11 +2,9 @@
   <ui-gmap-markers models="search.places" coords="'location'" fit="true" click="'onClick'"></ui-gmap-markers>
   <ui-gmap-window show="search.selectedPlace" coords="search.selectedPlace.address.location" templateParameter="search.selectedPlace">
     <div class="popup-wrapper">
-      <a ng-if="!isEmpty(search.selectedPlace.logo)" ui-sref="place({ placeId: '{{search.selectedPlace.id}}' })">
-        <!--<img class="picture" alt="picture" width="100" height="100" ng-src="{{search.selectedPlace.logo | image}}">-->
-        <!--<img class="picture" alt="picture" width="100" height="100" ng-src="{{search.selectedPlace.logo | image}}">-->
-        <cl-image class="picture" alt="picture" width="100" height="100" public-id="search.selectedPlace.logoId" class="thumbnail inline" angle="20" format="jpg">
-          <cl-transformation height="150" width="150" crop="fill" gravity="north" effect="sepia" radius="20"/>
+      <a ng-if="search.selectedPlace.logoId" ui-sref="place({ placeId: '{{search.selectedPlace.id}}' })">
+        <cl-image class="picture" public-id="{{search.selectedPlace.logoId}}" format="jpg">
+          <cl-transformation width="50" height="50" crop="fill"></cl-transformation>
         </cl-image>
       </a>
       <div class="info">
