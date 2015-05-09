@@ -53,6 +53,13 @@ module.exports = function(router) {
       }
 
       results = lodash.flatten(results);
+      results = lodash.sortBy(results, function(place) {
+        if (!place.providerInfo) {
+          // Places without provider (provided by us) have priority
+          return 1;
+        }
+        return 2;
+      });
 
       return res.json(results);
     });
