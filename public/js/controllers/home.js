@@ -81,6 +81,11 @@
           return Restangular.all('locations')
             .post({ coordinates });
         })
+        .catch(() => {
+          // Use GeoIP as fallback
+          return Restangular.all('locations')
+            .post();
+        })
         .then(location => {
           self.query = lodash.compact([
             location.streetName,
