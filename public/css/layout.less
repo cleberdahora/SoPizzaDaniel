@@ -3,18 +3,26 @@
 @import (reference) "variables";
 
 #page-footer {
-  line-height: 2rem;
+  padding: 1rem;
   margin: 1rem auto 0rem;
   background-color: rgb(116, 30, 30);
   color: white;
   font-weight: bold;
   text-align: center;
-  font-size: 0.75rem;
+
+  .copyright, .contact {
+    font-size: 0.75rem;
+  }
+
+  a {
+    color: @theme-orange;
+  }
 
   @media screen and (min-width: @device-medium) {
-    line-height: 4rem;
+    .copyright, .contact {
+      font-size: 1rem;
+    }
     margin: 2rem auto 4rem;
-    font-size: 1.25rem;
   }
 }
 
