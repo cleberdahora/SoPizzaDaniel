@@ -74,14 +74,19 @@
     // Get user location using HTML5 Geolocation feature
     function getLocation() {
       geolocation.getLocation()
-        .then(data => {
-          let { longitude, latitude } = data.coords;
-          let coordinates             = [latitude, longitude];
+        .then(lodash.property('coords'))
+        .then(({latitude, longitude}) => {
+          let coordinates = [latitude, longitude];
 
           self.coordinates = coordinates;
 
           return Restangular.all('locations')
             .post({ coordinates });
+        })
+        .catch(() => {
+          // Use GeoIP as fallback
+          return Restangular.all('locations')
+            .post();
         })
         .then(location => {
           self.query = lodash.compact([
