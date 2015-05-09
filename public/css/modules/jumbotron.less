@@ -6,7 +6,7 @@
   @shadow-height: 10rem;
 
   position: relative;
-  height: 60vh;
+  height: 25rem;
   color: white;
   text-shadow: 0 0 1rem black;
   text-align: center;
@@ -15,10 +15,14 @@
 
   @media screen and (min-width: @device-medium) {
     padding: 0;
+    height: 60vh;
   }
 
   &.fullscreen {
-    height: 100vh;
+    height: 35rem;
+    @media screen and (min-width: @device-medium) {
+      height: 100vh;
+    }
   }
 
   .background {
@@ -33,15 +37,21 @@
     overflow: hidden;
 
     img, video {
-      height: 100vmax;
+      height: 35rem;
       width: 100%;
       width: 160vmax;
+      @media screen and (min-width: @device-medium) {
+        height: 100vmax;
+      }
     }
   }
 
   > .title {
     font-size: 3rem;
-    margin: 25vh 0 0;
+    margin: 8rem 0 0;
+    @media screen and (min-width: @device-medium) {
+      margin: 25vh 0 0;
+    }
   }
 
   .subtitle {
