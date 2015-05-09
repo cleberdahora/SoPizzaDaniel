@@ -54,7 +54,7 @@ module.exports = function(router) {
 
       results = lodash.flatten(results);
       results = lodash.sortBy(results, function(place) {
-        if (!place.providerInfo) {
+        if (lodash.isEmpty(place.providerInfo)) {
           // Places without provider (provided by us) have priority
           return 1;
         }
