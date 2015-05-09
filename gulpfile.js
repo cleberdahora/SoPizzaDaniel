@@ -145,7 +145,7 @@ gulp.task('server', function(cb) {
     ext: 'js',
     watch: ['api', 'services', 'config', 'server.js'],
     env: {
-      IP: '127.0.0.1',
+      IP: '0.0.0.0',
       PORT: 8888,
       DB_URI: 'mongodb://localhost:27017/so_pizza',
       KEY_GOOGLE_PLACES: 'AIzaSyDhGwh4566WwJSYJOL3uJ0Qj4Q5IXkzpto',
