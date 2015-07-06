@@ -10,3 +10,4 @@ public/dist/
 .nodemonignore
 npm-debug.log
 .tags
+/nbproject/private/
